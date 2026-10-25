@@ -4,35 +4,85 @@ MIT IDS.865 final project, Yvette Ge and Mengxiang (Louis) Liu. This is the v1 p
 
 Before a job, the worker agent locks its forecast of success, cost and time. After it delivers, Referral checks the result and scores how far the delivery fell from the promise, adjusting for task difficulty and tracing failures to the subcontractor that caused them. Hiring agents call Referral as an MCP server. They get back a tier and short guidance, never raw scores. Referral can also issue a signed credential, so registries such as ERC-8004 or NANDA AgentFacts can carry a checked track record instead of open ratings.
 
-## Quick start
+## Team
+
+- Yvette Ge (Harvard GSD): protocol, Notary, insight wording
+- Mengxiang (Louis) Liu (MIT): MCP integration, Checker, evaluation
+
+## Status
+
+- **Proposal:** HW5.
+- **v1 prototype:** done (2026-10-22).
+- **HW6 MVP:** done (2026-10-25). Two real Claude Code agents hire and deliver through Referral's MCP server, and an independent audit checks the result.
+- **Next:** see the roadmap in `docs/design.md`. Demo day is the final deliverable.
+
+## Setup
+
+You need:
+
+- Python 3.11 or later (we use 3.14 on macOS);
+- for `referral mvp` only: the [Claude Code](https://claude.com/claude-code) CLI on your `PATH`, signed in (`claude` then `/login`);
+- for `live-eval` only: an `ANTHROPIC_API_KEY`.
 
 ```bash
-cd referral
+git clone <this repository> referral && cd referral
 python3 -m venv .venv
-.venv/bin/pip install -e ".[dev,llm]"
-export PYTHONPATH=src        # see the note below
-.venv/bin/python -m referral demo                # narrated end-to-end demo (about 1 second)
-.venv/bin/python -m referral eval --seeds 30     # strategy comparison, writes results/eval.json
-.venv/bin/python -m pytest -q                    # 55 tests, no network
-.venv/bin/python -m referral live-eval --n 30    # real Claude workers; prints a plan, needs --yes
+.venv/bin/pip install -r requirements-lock.txt -e .     # exact versions we tested
+# or: .venv/bin/pip install -e ".[dev,llm]"             # latest compatible versions
+export PYTHONPATH=src
 ```
 
-On macOS with Python 3.13 or later, the editable install's `.pth` file can get the hidden flag, and Python then skips it. Setting `PYTHONPATH=src` avoids the problem.
+Always set `PYTHONPATH=src`. On macOS with Python 3.13 or later, the editable install's `.pth` file can get the hidden flag, and Python then skips it. The commands below assume you are in the repository root with `PYTHONPATH=src` set.
 
-The demo defaults to seed 4. We picked it because every beat of the story shows up, and each beat is typical across 50 seeds. The overconfident worker is flagged as overstating its chances in 50 of 50 seeds and stays at the trial tier in 42. The first hard hire passes in 25 of 50 seeds; with one rematch, 36 of 50 pass. Seed 4 shows the rematch path. Every seed runs the same code; `--seed N` shows others.
+## Check that it works
+
+Each command below should produce the result shown. The first three need no network, no API key and no Claude account.
+
+| Command | What you should see |
+| --- | --- |
+| `.venv/bin/python -m pytest -q` | `58 passed` in a few seconds |
+| `.venv/bin/python -m referral demo` | eight narrated scenes in about a second. Scene 3: nia-newcomer fails one fact, then rae-reliable passes on the rematch. Scene 8: `chain ok=True`, and the tampered copy shows `ok=False`. |
+| `.venv/bin/python -m referral eval --seeds 30` | the table in "v1 results" below, written to `results/eval.json` |
+| `.venv/bin/python -m referral mvp` | two Claude agents hire and deliver through Referral, then `RESULT: all checks pass` (needs Claude Code; about 40 seconds and $0.04) |
+
+`demo` and `eval` are deterministic: the same seed gives the same output on any machine. `mvp` uses real models, so its wording and forecasts change from run to run. Compare yours with the committed runs in `runs/`.
+
+The demo defaults to seed 4. We picked it because every beat of the story shows up, and each beat is typical across 50 seeds:
+
+- The overconfident worker is flagged as overstating its chances in 50 of 50 seeds and stays at the trial tier in 42.
+- The first hard hire passes in 25 of 50 seeds; with one rematch, 36 of 50 pass.
+- Seed 4 shows the rematch path.
+
+Every seed runs the same code; `--seed N` shows others.
+
+## Commands
+
+| Command | What it does |
+| --- | --- |
+| `referral demo [--seed N]` | narrated simulation of hires, misuse and a two-hop chain |
+| `referral eval --seeds N` | compares three ways of picking workers on identical histories |
+| `referral serve` | Referral as an MCP server over stdio. Add `--transport http --port 8791` for HTTP, and `--claude-worker haiku` to add a Claude worker that Claude Code runs on dispatch. |
+| `referral mvp` | the HW6 run: a Claude buyer agent hires through Referral, then the run is audited |
+| `referral audit runs/<timestamp>` | re-checks a saved run from its ledger and answer alone |
+| `referral live-eval --n 30` | measures real Claude workers' calibration; prints a plan and needs `--yes` |
+
+Run each one as `.venv/bin/python -m referral ...`.
 
 ### Use it from Claude Code or another MCP client
 
-`referral serve` runs a stdio MCP server. At startup it seeds a history: five simulated workers, each with 12 trial jobs. Copy `.mcp.json.example` to the repository root as `.mcp.json` and adjust the paths if needed. Then ask the agent to register as a buyer and hire someone for a task, for example: "Get the latest funding and headcount for three Acme Robotics competitors through Referral."
+`referral serve` runs a stdio MCP server. At startup it seeds a history: five simulated workers, each with 12 trial jobs.
+
+1. Copy `.mcp.json.example` to `.mcp.json` in the folder you open Claude Code in. Make its paths absolute if that folder is not this repository.
+2. Ask the agent to register as a buyer and hire someone for a task, for example: "Get the latest funding and headcount for three Acme Robotics competitors through Referral."
 
 ### HW6 MVP: two Claude agents through Referral
 
 ```bash
-PYTHONPATH=src .venv/bin/python -m referral mvp      # about 40 seconds, about $0.04 of Claude usage
-PYTHONPATH=src .venv/bin/python -m referral audit runs/<timestamp>
+.venv/bin/python -m referral mvp      # about 40 seconds, about $0.04 of Claude usage
+.venv/bin/python -m referral audit runs/<timestamp>
 ```
 
-`mvp` serves Referral over HTTP (`serve --transport http --claude-worker haiku`). It then starts a buyer agent, Claude Code in headless mode on Sonnet 5.5, whose only tools are Referral's MCP tools. When Referral dispatches a job to the Claude Haiku worker, a dispatch hook starts that worker's own Claude Code runtime, and the worker also acts only through the MCP tools. The buyer waits with `get_record(wait_seconds=...)`.
+`mvp` serves Referral over HTTP (`serve --transport http --claude-worker haiku`). It then starts a buyer agent: Claude Code in headless mode on Sonnet 5.5, whose only tools are Referral's MCP tools. When Referral dispatches a job to the Claude Haiku worker, a dispatch hook starts that worker's own Claude Code runtime. The worker also acts only through the MCP tools. The buyer waits for the verdict with `get_record(wait_seconds=...)`.
 
 `audit` re-checks the run from the SQLite ledger and the buyer's answer alone:
 
@@ -42,7 +92,7 @@ PYTHONPATH=src .venv/bin/python -m referral audit runs/<timestamp>
 - each Checker verdict against ground truth;
 - that every fact in the brief is correct and comes from a passed job.
 
-Run folders, the recorded result and the video plan are described in `docs/hw6_mvp.md`.
+Run folders, the recorded results, the video plan and the submission paragraph are in `docs/hw6_mvp.md`.
 
 ## How a hire works
 
@@ -155,3 +205,40 @@ Two caveats apply. First, we wrote the personas and their parameters, so these n
 - Agent-held asymmetric keys for log entries. Agents still use a server-issued HMAC key; only the credential issuer uses Ed25519.
 - Equal-exposure paired trials for newcomers.
 - Sybil buyers with different owners. v1 only catches self-dealing by shared owner.
+
+## Repository layout
+
+```
+src/referral/
+  models.py         data types: bands, tiers, tasks, facts, clocks
+  notary.py         SQLite store, hash-chained log, HMAC signatures
+  corpus.py         the fictional dated corpus, ground truth, task generation
+  checker.py        citation checks, the hidden check, chain attribution
+  scorer.py         profiles, tiers and descriptive insights
+  matcher.py        picking a worker and the action
+  service.py        ReferralService: all business rules and permissions
+  credentials.py    Ed25519-signed tier credentials
+  mcp_server.py     the MCP tools
+  workers.py        simulated personas and LLMWorker (Claude through the API)
+  claude_agents.py  Claude Code buyer and worker runtimes for the MVP
+  mvp.py, trace.py  the HW6 run and its live trace
+  audit.py          independent check of a saved run
+  sim.py            demo scenes
+  evaluate.py       strategy comparison
+  live_eval.py      real-model calibration
+  cli.py            the `referral` command
+tests/              unit and scenario tests (no network)
+docs/design.md      design notes, results history, roadmap, ownership
+docs/hw6_mvp.md     the HW6 MVP: what runs, recorded results, video plan
+runs/               committed MVP runs (evidence)
+results/            eval output (git-ignored; regenerate with `referral eval`)
+```
+
+## Working on it together
+
+- Branch from `main` (for example `yvette/insight-wording`), open a pull request, and ask the other person to review it.
+- Run `.venv/bin/python -m pytest -q` before you push. A change to scoring or matching should also re-run `referral eval --seeds 30` and update the results tables if they move.
+- Keep the black-box rule: no MCP tool returns raw scores.
+- Commit an `mvp` run folder only when it is evidence for a writeup.
+- Write code, comments and docs in English.
+

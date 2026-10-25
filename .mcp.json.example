@@ -1,9 +1,9 @@
 {
   "mcpServers": {
     "referral": {
-      "command": "referral/.venv/bin/python",
+      "command": ".venv/bin/python",
       "args": ["-m", "referral", "serve"],
-      "env": { "PYTHONPATH": "referral/src" }
+      "env": { "PYTHONPATH": "src" }
     }
   }
 }
