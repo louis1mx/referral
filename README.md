@@ -25,7 +25,7 @@ You need:
 - for `live-eval` only: an `ANTHROPIC_API_KEY`.
 
 ```bash
-git clone <this repository> referral && cd referral
+git clone https://github.com/louis1mx/referral.git && cd referral
 python3 -m venv .venv
 .venv/bin/pip install -r requirements-lock.txt -e .     # exact versions we tested
 # or: .venv/bin/pip install -e ".[dev,llm]"             # latest compatible versions
