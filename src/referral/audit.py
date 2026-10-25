@@ -6,7 +6,8 @@ It does not trust what the agents or the Checker said. It checks:
 2. per job: the forecast was locked before the delivery, and the hidden-check commitment
    made at contract time opens to the slot the verdict revealed;
 3. per delivered fact: the Checker's pass/fail against the corpus ground truth, which only
-   evaluation code can see (a pass on a wrong value would be a Checker error);
+   evaluation code can see (a pass on a wrong value would be a Checker error), and what the
+   semantic layer said (failing a correct, properly cited value would also be an error);
 4. the buyer's final brief: every requested fact is present, equals the ground truth, and
    comes from a job the Checker passed.
 """
@@ -20,7 +21,7 @@ import tempfile
 from collections.abc import Callable
 from pathlib import Path
 
-from .corpus import norm
+from .corpus import norm, same_value
 from .models import Slot
 from .service import ReferralService
 
@@ -31,8 +32,7 @@ REQUESTED = [("Ironbark AI", "latest_funding"), ("Gantry Labs", "latest_funding"
 
 
 def _same(value, truth: str) -> bool:
-    v, t = norm(str(value or "")), norm(truth)
-    return bool(v) and (v == t or t in v)
+    return same_value(str(value or ""), truth)
 
 
 def run_audit(run_dir: Path, say: Callable[[str], None] = print) -> dict:
@@ -56,7 +56,7 @@ def _audit(service: ReferralService, run_dir: Path, say) -> dict:
 
     buyer = service.find_agent(BUYER_NAME)
     jobs = store.query("SELECT * FROM jobs WHERE buyer_id = ? ORDER BY job_id", (buyer["agent_id"],)) if buyer else []
-    job_reports, checker_errors = [], 0
+    job_reports, checker_errors, semantic_false_rejects = [], 0, 0
     say(f"2-3. Jobs hired by {BUYER_NAME}: {len(jobs)}")
     for job in jobs:
         worker = store.get("agents", "agent_id", job["worker_id"])
@@ -78,14 +78,22 @@ def _audit(service: ReferralService, run_dir: Path, say) -> dict:
         say(f"   {job['job_id']}  worker={worker['name']} ({worker['model']})  band={job['band']}  "
             f"forecast p={pred.get('p_success')}  status={job['status']}")
         say(f"      forecast locked before delivery: {locked_first};  hidden-check commitment opens: {commitment_ok}")
+        semantic = (job["verdict"] or {}).get("semantic_check")
+        if semantic:
+            say(f"      semantic layer ({semantic['model']}): {semantic['status']}, judged {semantic['judged']} "
+                f"rule-passing facts, rejected {semantic['rejected']}")
         facts = []
         for i, slot in enumerate(spec_slots):
             f, v = delivered.get(slot), verdicts.get(i)
             correct = bool(f) and _same(f["value"], truth[slot])
             passed = bool(v and v["passed"])
+            sem = (v or {}).get("semantic")
             if passed and not correct:
                 checker_errors += 1
                 agreement = "CHECKER ERROR: passed a wrong value"
+            elif sem == "fail" and correct:
+                semantic_false_rejects += 1
+                agreement = "CHECKER ERROR: semantic layer failed a correct value"
             elif passed:
                 agreement = "agrees (correct value)"
             elif not correct:
@@ -98,12 +106,13 @@ def _audit(service: ReferralService, run_dir: Path, say) -> dict:
                 f"{hidden}  -> {agreement}")
             facts.append({"slot": [slot.competitor, slot.attribute], "delivered": f and f["value"],
                           "truth": truth[slot], "checker_pass": passed, "correct": correct,
-                          "hidden_check": bool(v and v.get("canary"))})
+                          "hidden_check": bool(v and v.get("canary")), "semantic": sem})
         job_reports.append({"job_id": job["job_id"], "worker": worker["name"], "model": worker["model"],
                             "band": job["band"], "forecast": pred.get("p_success"), "status": job["status"],
                             "forecast_locked_first": locked_first, "commitment_ok": commitment_ok,
-                            "facts": facts})
-    say(f"   Checker verdicts that contradict ground truth (false passes): {checker_errors}")
+                            "semantic_check": semantic, "facts": facts})
+    say(f"   Checker verdicts that contradict ground truth: false passes {checker_errors}, "
+        f"semantic false rejects {semantic_false_rejects}")
 
     answer = json.loads((run_dir / "answer.json").read_text()) if (run_dir / "answer.json").exists() else None
     passed_jobs = {j["job_id"] for j in jobs if j["status"] == "passed"}
@@ -128,11 +137,12 @@ def _audit(service: ReferralService, run_dir: Path, say) -> dict:
         insights[name] = ins
         say(f"   {name} now: [{ins.get('tier')}] {'; '.join(ins.get('guidance', [])[:3])}")
 
-    all_ok = (ledger["ok"] and checker_errors == 0 and answer_ok
+    all_ok = (ledger["ok"] and checker_errors == 0 and semantic_false_rejects == 0 and answer_ok
               and all(j["forecast_locked_first"] and j["commitment_ok"] for j in job_reports))
     say(f"RESULT: {'all checks pass' if all_ok else 'some checks FAILED'}")
     return {"ledger": {k: ledger[k] for k in ("ok", "entries", "head")}, "jobs": job_reports,
-            "checker_false_passes": checker_errors, "answer": answer_rows, "answer_ok": answer_ok,
+            "checker_false_passes": checker_errors, "semantic_false_rejects": semantic_false_rejects,
+            "answer": answer_rows, "answer_ok": answer_ok,
             "insights": insights, "all_checks_pass": all_ok}
 
 

@@ -1,0 +1,156 @@
+{
+  "ledger": {
+    "ok": true,
+    "entries": 253,
+    "head": "0d91506a64fde137cc58bb0bb53376bfb9740028adc45e846abefacaf933f510"
+  },
+  "jobs": [
+    {
+      "job_id": "job-0061",
+      "worker": "claude-haiku-worker",
+      "model": "claude-haiku-5-5",
+      "band": "hard",
+      "forecast": 0.45,
+      "status": "passed",
+      "forecast_locked_first": true,
+      "commitment_ok": true,
+      "semantic_check": {
+        "judged": 5,
+        "model": "claude-haiku-5-5",
+        "rejected": 0,
+        "status": "ok"
+      },
+      "facts": [
+        {
+          "slot": [
+            "Ironbark AI",
+            "latest_funding"
+          ],
+          "delivered": "$22M",
+          "truth": "$22M",
+          "checker_pass": true,
+          "correct": true,
+          "hidden_check": true,
+          "semantic": "pass"
+        },
+        {
+          "slot": [
+            "Gantry Labs",
+            "latest_funding"
+          ],
+          "delivered": "$75M",
+          "truth": "$75M",
+          "checker_pass": true,
+          "correct": true,
+          "hidden_check": false,
+          "semantic": "pass"
+        },
+        {
+          "slot": [
+            "Gantry Labs",
+            "headcount"
+          ],
+          "delivered": "420",
+          "truth": "420",
+          "checker_pass": true,
+          "correct": true,
+          "hidden_check": false,
+          "semantic": "pass"
+        },
+        {
+          "slot": [
+            "Dunmore Robotics",
+            "flagship_product"
+          ],
+          "delivered": "Wren warehouse robot",
+          "truth": "Wren",
+          "checker_pass": true,
+          "correct": true,
+          "hidden_check": false,
+          "semantic": "pass"
+        },
+        {
+          "slot": [
+            "Everline Systems",
+            "hq_city"
+          ],
+          "delivered": "Austin",
+          "truth": "Austin",
+          "checker_pass": true,
+          "correct": true,
+          "hidden_check": false,
+          "semantic": "pass"
+        }
+      ]
+    }
+  ],
+  "checker_false_passes": 0,
+  "semantic_false_rejects": 0,
+  "answer": [
+    {
+      "slot": [
+        "Ironbark AI",
+        "latest_funding"
+      ],
+      "value": "$22M",
+      "truth": "$22M",
+      "correct": true,
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Gantry Labs",
+        "latest_funding"
+      ],
+      "value": "$75M",
+      "truth": "$75M",
+      "correct": true,
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Gantry Labs",
+        "headcount"
+      ],
+      "value": "420",
+      "truth": "420",
+      "correct": true,
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Dunmore Robotics",
+        "flagship_product"
+      ],
+      "value": "Wren warehouse robot",
+      "truth": "Wren",
+      "correct": true,
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Everline Systems",
+        "hq_city"
+      ],
+      "value": "Austin",
+      "truth": "Austin",
+      "correct": true,
+      "from_passed_job": true
+    }
+  ],
+  "answer_ok": true,
+  "insights": {
+    "claude-haiku-worker": {
+      "agent_id": "agt-claude-haiku-worker",
+      "name": "claude-haiku-worker",
+      "tier": "trial",
+      "evidence": "thin",
+      "guidance": [
+        "little evidence on easy tasks",
+        "little evidence on medium tasks",
+        "only one checked hard job so far"
+      ]
+    }
+  },
+  "all_checks_pass": true
+}

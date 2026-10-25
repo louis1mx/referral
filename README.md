@@ -7,13 +7,14 @@ Before a job, the worker agent locks its forecast of success, cost and time. Aft
 ## Team
 
 - Yvette Ge (Harvard GSD): protocol, Notary, insight wording
-- Mengxiang (Louis) Liu (MIT): MCP integration, Checker, evaluation
+- Mengxiang (Louis) Liu (Harvard HSPH): MCP integration, Checker, evaluation
 
 ## Status
 
 - **Proposal:** HW5.
 - **v1 prototype:** done (2026-10-22).
 - **HW6 MVP:** done (2026-10-25). Two real Claude Code agents hire and deliver through Referral's MCP server, and an independent audit checks the result.
+- **Checker semantic layer:** done (2026-10-25). A language model judges whether each cited quote states the requested attribute and is still current; `referral check-eval` measures it.
 - **Next:** see the roadmap in `docs/design.md`. Demo day is the final deliverable.
 
 ## Setup
@@ -21,7 +22,7 @@ Before a job, the worker agent locks its forecast of success, cost and time. Aft
 You need:
 
 - Python 3.11 or later (we use 3.14 on macOS);
-- for `referral mvp` only: the [Claude Code](https://claude.com/claude-code) CLI on your `PATH`, signed in (`claude` then `/login`);
+- for `referral mvp` and `referral check-eval` only: the [Claude Code](https://claude.com/claude-code) CLI on your `PATH`, signed in (`claude` then `/login`);
 - for `live-eval` only: an `ANTHROPIC_API_KEY`.
 
 ```bash
@@ -40,12 +41,13 @@ Each command below should produce the result shown. The first three need no netw
 
 | Command | What you should see |
 | --- | --- |
-| `.venv/bin/python -m pytest -q` | `58 passed` in a few seconds |
+| `.venv/bin/python -m pytest -q` | `66 passed` in a few seconds |
 | `.venv/bin/python -m referral demo` | eight narrated scenes in about a second. Scene 3: nia-newcomer fails one fact, then rae-reliable passes on the rematch. Scene 8: `chain ok=True`, and the tampered copy shows `ok=False`. |
 | `.venv/bin/python -m referral eval --seeds 30` | the table in "v1 results" below, written to `results/eval.json` |
-| `.venv/bin/python -m referral mvp` | two Claude agents hire and deliver through Referral, then `RESULT: all checks pass` (needs Claude Code; about 40 seconds and $0.04) |
+| `.venv/bin/python -m referral check-eval` | `stale facts passed 16/16 → 0/16`, `wrong_attribute facts passed 24/24 → 0/24`, `correct facts rejected 0/40` (needs Claude Code; under a minute) |
+| `.venv/bin/python -m referral mvp` | two Claude agents hire and deliver through Referral, the semantic layer judges each delivery, then `RESULT: all checks pass` (needs Claude Code; one to a few minutes) |
 
-`demo` and `eval` are deterministic: the same seed gives the same output on any machine. `mvp` uses real models, so its wording and forecasts change from run to run. Compare yours with the committed runs in `runs/`.
+`demo` and `eval` are deterministic: the same seed gives the same output on any machine, because simulations use the Checker's rule layer only. `check-eval` and `mvp` use real models, so its wording and forecasts change from run to run. Compare yours with the committed runs in `runs/`.
 
 The demo defaults to seed 4. We picked it because every beat of the story shows up, and each beat is typical across 50 seeds:
 
@@ -61,8 +63,9 @@ Every seed runs the same code; `--seed N` shows others.
 | --- | --- |
 | `referral demo [--seed N]` | narrated simulation of hires, misuse and a two-hop chain |
 | `referral eval --seeds N` | compares three ways of picking workers on identical histories |
-| `referral serve` | Referral as an MCP server over stdio. Add `--transport http --port 8791` for HTTP, and `--claude-worker haiku` to add a Claude worker that Claude Code runs on dispatch. |
-| `referral mvp` | the HW6 run: a Claude buyer agent hires through Referral, then the run is audited |
+| `referral serve` | Referral as an MCP server over stdio. Add `--transport http --port 8791` for HTTP, `--claude-worker haiku` to add a Claude worker that Claude Code runs on dispatch, and `--semantic-checker haiku` to turn on the semantic layer for live jobs. |
+| `referral mvp [--checker-model haiku\|none]` | the HW6 run: a Claude buyer agent hires through Referral, then the run is audited |
+| `referral check-eval [--model haiku]` | 80 rule-passing facts (half stale or wrong-attribute) through the rule layer vs. both layers |
 | `referral audit runs/<timestamp>` | re-checks a saved run from its ledger and answer alone |
 | `referral live-eval --n 30` | measures real Claude workers' calibration; prints a plan and needs `--yes` |
 
@@ -99,7 +102,7 @@ Run folders, the recorded results, the video plan and the submission paragraph a
 1. The buyer calls `request_match` with the task (competitor/attribute slots from a permitted corpus), the acceptance criteria, a budget and a deadline. It can also pass `min_success`, the lowest chance of success worth paying for. Referral assigns a difficulty band. It returns a candidate with a tier, an evidence-strength label, guidance, and an action: `hire`, `bounded_trial` or `no_eligible_match`.
 2. `hire` locks a contract in the Notary and dispatches the task, without the hidden canary slot.
 3. The worker calls `submit_prediction` to lock its success probability, cost and finish time. A second call is rejected and logged. A delivery without a locked forecast is also rejected.
-4. The worker calls `submit_delivery`. The Checker verifies each fact: the cited document is permitted and is about that competitor, the quote appears in it verbatim, and the value appears in the quote. One hidden known-answer slot also has to match the current value, which catches stale citations. A timeout or a cost over budget counts as a failure.
+4. The worker calls `submit_delivery`. The Checker verifies each fact in two layers. **Rules:** the cited document is permitted and is about that competitor, the quote appears in it verbatim, and the value appears in the quote. One hidden known-answer slot also has to match the current value. **Semantics** (when on): a language model reads the rule-passing facts with every permitted document about that company and fails any fact whose quote does not state the requested attribute, or whose value a later document supersedes. A timeout or a cost over budget counts as a failure.
 5. The buyer calls `get_record`. Each fact has a pass/fail reason, and the record ends in `accept` or `reject_and_rematch`. For a rematch, the buyer calls `request_match` again with `exclude_workers`.
 
 A worker can `subcontract` part of a job. Each hop gets its own contract and its own check, so a failure is traced to the agent whose output caused it.
@@ -120,7 +123,7 @@ One service (`service.py`) and one SQLite database hold five components:
 
 - **Matcher** (`matcher.py`) estimates each candidate's chance of passing a task in the requested band and hires the most likely one. If candidates are within 5 points, it hires the cheapest. It returns `no_eligible_match` when no candidate clears the buyer's `min_success` (default 0.35). The tier decides between `hire` and `bounded_trial`; it does not filter candidates.
 - **Notary** (`notary.py`) keeps an append-only, hash-chained log of contracts, forecasts, deliveries, verdicts, refused attempts and issued credentials. SQLite triggers block updates and deletes, and each entry carries an HMAC made with the acting agent's key. Each contract commits to the hidden canary with a salted hash; the verdict reveals it afterwards so an auditor can check it. A live service draws the canary with `secrets`. Only simulations, which pass a seed, derive it from (seed, task) so that strategies can be compared on identical draws.
-- **Checker** (`checker.py`) runs deterministic citation checks, the hidden canary, and chain attribution.
+- **Checker** (`checker.py`, `semantic.py`) runs deterministic citation checks, the hidden canary and chain attribution, then the semantic layer: an LLM judge that reads only trusted corpus text and never sees ground truth. Tiers and scores stay deterministic. See `docs/design.md` §4 for why, and for the `check-eval` numbers.
 - **Scorer** (`scorer.py`) rebuilds each profile from settled jobs under the worker's current model. v1 scores three of the proposal's six signals:
   - Calibration, judged per difficulty band: Brier score and bias in each band.
   - Difficulty-weighted quality, with weights 1/2/3.
@@ -213,7 +216,9 @@ src/referral/
   models.py         data types: bands, tiers, tasks, facts, clocks
   notary.py         SQLite store, hash-chained log, HMAC signatures
   corpus.py         the fictional dated corpus, ground truth, task generation
-  checker.py        citation checks, the hidden check, chain attribution
+  checker.py        citation checks, the hidden check, chain attribution, semantic review
+  semantic.py       the semantic layer's LLM judge (Claude Code, structured output)
+  check_eval.py     rule layer vs. rules + semantic layer on adversarial facts
   scorer.py         profiles, tiers and descriptive insights
   matcher.py        picking a worker and the action
   service.py        ReferralService: all business rules and permissions
@@ -230,7 +235,7 @@ src/referral/
 tests/              unit and scenario tests (no network)
 docs/design.md      design notes, results history, roadmap, ownership
 docs/hw6_mvp.md     the HW6 MVP: what runs, recorded results, video plan
-runs/               committed MVP runs (evidence)
+runs/               committed MVP runs and the check-eval result (evidence)
 results/            eval output (git-ignored; regenerate with `referral eval`)
 ```
 

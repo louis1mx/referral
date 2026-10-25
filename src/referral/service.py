@@ -23,7 +23,7 @@ from collections.abc import Callable
 from dataclasses import asdict
 
 from . import matcher
-from .checker import attribute_failures, check_delivery
+from .checker import attribute_failures, check_delivery, review_semantics
 from .credentials import Issuer, verify_credential
 from .corpus import Corpus, slug
 from .models import (Action, Band, Fact, LiveClock, ReferralError, SimClock, Slot, Status,
@@ -63,6 +63,9 @@ class ReferralService:
         self.clock = clock or LiveClock()
         self.corpus = corpus or Corpus.default()
         self.seed = seed
+        # The Checker's semantic layer (semantic.Judge). None runs the rule layer only, as
+        # simulations do; the MVP server sets it after seeding the simulated history.
+        self.judge = None
         self.notary = Notary(self.store, self._key_of)
         self._handlers: dict[str, Callable[[ReferralService, dict], None]] = {}
         self._lock = threading.RLock()
@@ -407,28 +410,33 @@ class ReferralService:
         else:
             spec = TaskSpec.from_dict(job["spec"])
             verdicts = check_delivery(spec, job["canary"], parsed, self.corpus)
+            semantic = None
+            if self.judge is not None:
+                # Runs under the service lock: one model call per delivery, a few seconds.
+                verdicts, semantic = review_semantics(verdicts, spec, parsed, self.corpus, self.judge)
             within_budget = cost <= spec.budget + 1e-9
             if all(v.passed for v in verdicts) and within_budget:
-                self._settle(job, Status.PASSED, verdicts, cost, elapsed, [], within_budget)
+                self._settle(job, Status.PASSED, verdicts, cost, elapsed, [], within_budget, semantic)
             else:
                 subs = {j["job_id"]: j for j in
                         self.store.query("SELECT * FROM jobs WHERE parent_job_id = ?", (job_id,))}
                 culprits = attribute_failures(agent_id, spec, parsed, verdicts, subs) or [agent_id]
-                self._settle(job, Status.FAILED, verdicts, cost, elapsed, culprits, within_budget)
+                self._settle(job, Status.FAILED, verdicts, cost, elapsed, culprits, within_budget, semantic)
         return {"job_id": job_id, "status": self._job(job_id)["status"]}
 
     def _settle(self, job: dict, status: Status, verdicts: list, cost: float | None,
-                elapsed: float | None, culprits: list[str], within_budget: bool) -> None:
+                elapsed: float | None, culprits: list[str], within_budget: bool,
+                semantic: dict | None = None) -> None:
         now = self.clock.now()
         verdict = {"facts": [asdict(v) for v in verdicts], "within_budget": within_budget,
-                   "timeout": status == Status.TIMEOUT}
+                   "timeout": status == Status.TIMEOUT, "semantic_check": semantic}
         self.store.update("jobs", "job_id", job["job_id"], {
             "status": status, "verdict": verdict, "outcome": int(status == Status.PASSED),
             "cost": cost, "elapsed": elapsed, "attributed": culprits, "settled_at": now,
         })
         self.notary.append("verdict", self.checker_id, {
             "status": str(status), "facts": [[v.slot, v.passed, v.reason] for v in verdicts],
-            "within_budget": within_budget, "failure_traced_to": culprits,
+            "within_budget": within_budget, "failure_traced_to": culprits, "semantic_check": semantic,
             # Opening the commitment lets an auditor confirm which slot was the hidden check.
             "canary": job["canary"], "canary_salt": job["canary_salt"],
         }, job["job_id"], now)
@@ -485,7 +493,7 @@ class ReferralService:
             "job_id": job_id, "status": status, "difficulty_band": job["band"], "worker": worker["name"],
             "locked_forecast": job["prediction"], "facts": rows, "cost": job["cost"],
             "elapsed_s": job["elapsed"], "within_budget": (job["verdict"] or {}).get("within_budget"),
-            "recommendation": recommendation,
+            "recommendation": recommendation, "semantic_check": (job["verdict"] or {}).get("semantic_check"),
             "failure_traced_to": [self.store.get("agents", "agent_id", a)["name"] for a in job["attributed"] or []],
             "subcontracts": [{"job_id": s["job_id"], "worker": self.store.get("agents", "agent_id", s["worker_id"])["name"],
                               "status": s["status"]} for s in subs],

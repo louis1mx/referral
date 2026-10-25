@@ -51,6 +51,14 @@ def norm(s: str) -> str:
     return re.sub(r"[\s,]+", " ", s.lower()).strip()
 
 
+def same_value(value: str, truth: str) -> bool:
+    """True if `value` starts with `truth` as a whole token: "Wren warehouse robot" matches
+    "Wren", but "180" does not match "80", and a padded span that only contains the answer
+    somewhere inside ("$22M round ... has 115") does not match "115"."""
+    v, t = norm(value), norm(truth)
+    return re.match(rf"{re.escape(t)}(?![\w.])", v) is not None
+
+
 def slug(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
 

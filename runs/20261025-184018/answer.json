@@ -1,0 +1,47 @@
+{
+  "facts": [
+    {
+      "competitor": "Ironbark AI",
+      "attribute": "latest_funding",
+      "value": "$22M",
+      "doc_id": "ironbark-ai-update-2026",
+      "job_id": "job-0061"
+    },
+    {
+      "competitor": "Gantry Labs",
+      "attribute": "latest_funding",
+      "value": "$75M",
+      "doc_id": "gantry-labs-update-2026",
+      "job_id": "job-0061"
+    },
+    {
+      "competitor": "Gantry Labs",
+      "attribute": "headcount",
+      "value": "420",
+      "doc_id": "gantry-labs-update-2026",
+      "job_id": "job-0061"
+    },
+    {
+      "competitor": "Dunmore Robotics",
+      "attribute": "flagship_product",
+      "value": "Wren warehouse robot",
+      "doc_id": "dunmore-robotics-profile-2024",
+      "job_id": "job-0061"
+    },
+    {
+      "competitor": "Everline Systems",
+      "attribute": "hq_city",
+      "value": "Austin",
+      "doc_id": "everline-systems-profile-2024",
+      "job_id": "job-0061"
+    }
+  ],
+  "hires": [
+    {
+      "job_id": "job-0061",
+      "worker": "claude-haiku-worker",
+      "status": "passed"
+    }
+  ],
+  "note": "One bounded-trial hire (claude-haiku-worker, $0.80) passed all five checks and was accepted, but the Dunmore and Everline facts come from 2024 profiles, and I did not check them against the 2026 updates."
+}

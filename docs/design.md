@@ -22,7 +22,8 @@ Section 4 of the proposal ("Prototype and checks") was the acceptance test for v
 ```
 buyer agent  ──MCP──▶ ReferralService ──▶ Matcher  (picks a worker; returns tier, evidence, guidance, action)
 worker agent ──MCP──▶        │         ──▶ Notary   (append-only, hash-chained log; locks forecasts)
-                             │         ──▶ Checker  (checks each citation, plus a hidden known-answer slot)
+                             │         ──▶ Checker  (rule layer: citations + hidden known-answer slot;
+                             │                       semantic layer: an LLM judges meaning)
                              │         ──▶ Scorer   (log → profile → tier → descriptive insight)
                              ▼
                           SQLite (agents / matches / jobs / notary_log)
@@ -59,12 +60,12 @@ The other three signals (stability and trend, cost and time overruns, delegator 
 - **Simulated workers, real deliveries.** Each persona has a per-fact accuracy for each band. When it gets a fact wrong it produces a real wrong delivery: a stale citation, an invented quote, a value missing from its quote, or a missing fact. The Checker runs its real, deterministic checks on these deliveries. The simulation is reproducible, free and offline.
 - **Real agents connect directly.** The MCP server works over stdio or HTTP. Claude Code (or any MCP client) can act as a buyer and call `request_match` → `hire` → `get_record`. Any agent can also register as a worker and work through `get_assignment` / `submit_*`. `referral mvp` runs both sides with Claude Code (see `docs/hw6_mvp.md`).
 - **`LLMWorker`, a real Claude worker inside the service.** It uses the same service API. It reads the corpus, locks its forecast in one request and delivers the facts in a second, both with structured outputs and the corpus in a cached system block. Three are defined: Opus 5.5, Sonnet 5.5 and Haiku 5.5. Server-side refusal fallbacks are deliberately off, because a fallback would answer with a different model and spoil the per-model calibration; a refusal is recorded as an API error. `referral live-eval --n 30` gives each model the same 30 tasks and reports, per band, the mean forecast, the checked pass rate, the Brier score, the bias, the latency and the token cost. It needs `ANTHROPIC_API_KEY`, prints a plan, and starts only with `--yes` (180 requests by default). Unit tests use a fake client and never call the API.
-- **The Checker's public checks.**
-  - The quote appears verbatim in a permitted corpus document.
-  - The value appears in the quote.
-  - The document is about that company.
-
-  **The hidden check:** one random slot per task is the canary. The Checker knows its current value, which catches stale citations. The simulator also records ground truth, used only to measure the Checker's own miss rate and never shown to Referral.
+- **The Checker has two layers.**
+  - **Rule layer** (`checker.py`, every job): the quote appears verbatim in a permitted corpus document, the value appears in the quote, and the document is about that company. **The hidden check:** one random slot per task is the canary. The Checker knows its current value, which catches stale citations in that slot. The simulator also records ground truth, used only to measure the Checker's own miss rate and never shown to Referral.
+  - **Semantic layer** (`semantic.py`, live jobs). String checks cannot tell whether a quote *states* the requested attribute (the value "40" with the quote "Ironbark AI employs 40 people." passes as Ironbark's latest funding round), or whether a later document supersedes it (a 2024 round cited as the latest). Outside the canary slot, both pass the rule layer. The semantic layer sends the facts that passed the rules to a language model (Claude Haiku 5.5 by default, through `claude -p` with no tools and a JSON schema). The model gets each claim and every permitted document about that company with its date. It answers two questions: does the quote state this attribute, and is the value still current? A "no" fails the fact with the model's reason, and the verdict and the model's name go into the Notary.
+  - **Why this split.** The judge only reads facts that passed the rules, so its whole input is trusted corpus text: a worker chooses which sentence to cite but cannot write prose or instructions into the judge's input. The judge never sees ground truth. The canary and the audit keep measuring it against the truth. If the model call fails twice, the rule verdicts stand and the verdict records `semantic_check.status = "unavailable"`. Tiers and scores stay deterministic: an LLM judges facts, never workers' reputations.
+  - **Measured (`referral check-eval`, 2026-10-25, Haiku 5.5).** 80 facts that all pass the rule layer: 40 correct, 16 stale, 24 with the wrong attribute. With the rule layer alone, 40 of 40 wrong facts pass. With both layers, 0 of 40 pass and 0 of 40 correct facts are rejected. A second run gave the same result. Evidence: `runs/semantic-check-20261025.json`.
+  - Simulations (`demo`, `eval`) and the seeded history in `serve` use the rule layer only, so they stay offline and reproducible.
 - **Signatures.** Log entries are signed with HMAC keys that the server issues to each agent. Public credentials are signed with Referral's own Ed25519 key. Agent-held private keys come in v2.
 - **Time.** Simulations use `SimClock`, which advances as workers spend time, and deadlines follow that clock. The live MCP flow uses the wall clock.
 
@@ -93,7 +94,8 @@ Done after v1:
 - unpredictable live canaries;
 - `LLMWorker` and `live-eval`;
 - `get_credential`;
-- the HW6 MVP, in which two Claude Code agents hire and work through Referral, followed by an independent audit.
+- the HW6 MVP, in which two Claude Code agents hire and work through Referral, followed by an independent audit;
+- the Checker's semantic layer and `check-eval` (2026-10-25).
 
 Not done yet:
 

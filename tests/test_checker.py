@@ -82,3 +82,15 @@ def test_parent_blamed_when_it_changes_a_passing_subcontract(corpus):
     verdicts = check_delivery(spec, None, [changed], corpus)
     sub = _sub_job(BOREALIS_FUNDING, True, good.__dict__)
     assert attribute_failures("agt-parent", spec, [changed], verdicts, {"job-sub": sub}) == ["agt-parent"]
+
+
+def test_hidden_check_accepts_the_value_as_a_whole_token(corpus):
+    from referral.corpus import same_value
+    assert same_value("Wren warehouse robot", "Wren") and same_value("$22M", "$22M")
+    assert not same_value("180", "80") and not same_value("$122M", "$22M") and not same_value("", "80")
+    assert not same_value("$22M funding round in May 2026. After the round, Ironbark AI has 115", "115")
+    slot = Slot("Dunmore Robotics", "flagship_product")
+    doc = corpus.source_doc(slot)
+    f = Fact(slot.competitor, slot.attribute, "Wren warehouse robot", doc.doc_id,
+             corpus.sentence_with(doc, "Wren"))
+    assert check_fact(f, slot, 0, corpus, set(corpus.docs), True).passed

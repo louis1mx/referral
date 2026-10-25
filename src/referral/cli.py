@@ -1,4 +1,4 @@
-"""Command line: `referral demo | eval | live-eval | serve | mvp | audit`."""
+"""Command line: `referral demo | eval | live-eval | check-eval | serve | mvp | audit`."""
 
 from __future__ import annotations
 
@@ -32,11 +32,18 @@ def main(argv: list[str] | None = None) -> None:
     serve.add_argument("--claude-worker", choices=["haiku", "sonnet", "opus"],
                        help="also register a Claude worker that Claude Code runs on dispatch (http only)")
     serve.add_argument("--run-dir", default="runs/serve", help="where Claude worker logs go")
+    serve.add_argument("--semantic-checker", default="none", choices=["none", "haiku", "sonnet", "opus"],
+                       help="model for the Checker's semantic layer on live jobs (runs the claude CLI)")
     mvp = sub.add_parser("mvp", help="two Claude Code agents hire and work through Referral, then audit")
     mvp.add_argument("--buyer-model", default="sonnet", choices=["haiku", "sonnet", "opus"])
     mvp.add_argument("--worker-model", default="haiku", choices=["haiku", "sonnet", "opus"])
     mvp.add_argument("--port", type=int, default=8791)
+    mvp.add_argument("--checker-model", default="haiku", choices=["none", "haiku", "sonnet", "opus"],
+                     help="model for the Checker's semantic layer; none runs the rule layer only")
     mvp.add_argument("--out", default="runs", help="a timestamped run folder is created here")
+    ce = sub.add_parser("check-eval", help="adversarial facts through the rule layer vs. rules + semantic layer (runs the claude CLI)")
+    ce.add_argument("--model", default="haiku", choices=["haiku", "sonnet", "opus"])
+    ce.add_argument("--out", default="results/semantic_check.json")
     aud = sub.add_parser("audit", help="independently check a run: ledger, Checker vs ground truth, answer")
     aud.add_argument("run_dir")
     args = parser.parse_args(argv)
@@ -54,7 +61,10 @@ def main(argv: list[str] | None = None) -> None:
         serve_main(args)
     elif args.cmd == "mvp":
         from .mvp import run
-        sys.exit(run(args.buyer_model, args.worker_model, args.port, args.out))
+        sys.exit(run(args.buyer_model, args.worker_model, args.port, args.out, args.checker_model))
+    elif args.cmd == "check-eval":
+        from .check_eval import run as check_eval
+        sys.exit(check_eval(args.model, args.out))
     elif args.cmd == "audit":
         from .audit import main as audit_main
         sys.exit(audit_main(args.run_dir))
@@ -69,7 +79,13 @@ def serve_main(args) -> None:
     run_trials(world)
     service = world.service
     print(f"referral: seeded {service.store.count('jobs')} trial jobs for {len(world.workers)} "
-          "simulated workers", file=sys.stderr, flush=True)
+          "simulated workers (rule layer only)", file=sys.stderr, flush=True)
+    if args.semantic_checker != "none":
+        from .claude_agents import MODELS
+        from .semantic import ClaudeJudge
+        service.judge = ClaudeJudge(MODELS[args.semantic_checker])
+        print(f"referral: Checker semantic layer on for live jobs ({service.judge.model})",
+              file=sys.stderr, flush=True)
     if args.claude_worker:
         if args.transport != "http":
             sys.exit("--claude-worker needs --transport http: the worker connects as its own MCP client")

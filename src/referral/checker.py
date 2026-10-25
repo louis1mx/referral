@@ -1,16 +1,23 @@
-"""The Checker: deterministic verification of a delivery against the permitted corpus.
+"""The Checker: verification of a delivery against the permitted corpus, in two layers.
 
-Public checks apply to every fact: the cited document is permitted and is about that
-competitor, the quote appears in it verbatim, and the value appears in the quote.
-One slot per job is a hidden canary whose answer Referral already knows; it also has
-to match that answer, which catches well-cited but stale facts. Workers cannot tell
-which slot is the canary.
+Rule layer, for every fact: the cited document is permitted and is about that competitor,
+the quote appears in it verbatim, and the value appears in the quote. One slot per job is
+a hidden canary whose answer Referral already knows; it also has to match that answer.
+Workers cannot tell which slot is the canary.
+
+Semantic layer (semantic.py), when a judge is configured: a language model reads the facts
+that passed the rules and fails any whose quote does not state the requested attribute or
+whose value a later document supersedes. Without it, those facts pass unless they happen
+to sit in the canary slot.
 """
 
 from __future__ import annotations
 
-from .corpus import Corpus, norm
+from dataclasses import replace
+
+from .corpus import Corpus, norm, same_value
 from .models import Fact, FactVerdict, Slot, TaskSpec
+from .semantic import Claim, Judge, JudgeError
 
 
 def check_fact(fact: Fact | None, slot: Slot, index: int, corpus: Corpus,
@@ -29,7 +36,7 @@ def check_fact(fact: Fact | None, slot: Slot, index: int, corpus: Corpus,
         return fail("quote does not appear in the cited document")
     if not fact.value or norm(fact.value) not in norm(fact.quote):
         return fail("value is not supported by the quoted passage")
-    if is_canary and norm(fact.value) != norm(corpus.truth[slot]):
+    if is_canary and not same_value(fact.value, corpus.truth[slot]):
         return fail("value is not current as of the corpus date")
     return FactVerdict(index, True, "verified", is_canary)
 
@@ -42,6 +49,40 @@ def check_delivery(spec: TaskSpec, canary: int | None, facts: list[Fact],
     permitted = corpus.permitted(spec)
     return [check_fact(by_slot.get(slot), slot, i, corpus, permitted, i == canary)
             for i, slot in enumerate(spec.slots)]
+
+
+def review_semantics(verdicts: list[FactVerdict], spec: TaskSpec, facts: list[Fact], corpus: Corpus,
+                     judge: Judge) -> tuple[list[FactVerdict], dict]:
+    """Send the rule-passing facts to the judge and fail the ones it rejects. If the judge is
+    unavailable the rule verdicts stand, and the summary records that the layer did not run."""
+    by_slot = {}
+    for f in facts:
+        by_slot.setdefault(Slot(f.competitor, f.attribute), f)
+    claims = []
+    for v in verdicts:
+        if v.passed:
+            slot = spec.slots[v.slot]
+            f = by_slot[slot]
+            claims.append(Claim(v.slot, slot, f.value, f.doc_id, f.quote))
+    summary = {"model": judge.model, "status": "ok", "judged": len(claims), "rejected": 0}
+    try:
+        judgments = {j.index: j for j in judge.judge(claims, corpus)}
+    except JudgeError as e:
+        summary.update(status="unavailable", error=str(e)[:300])
+        judged = {c.index for c in claims}
+        return [replace(v, semantic="unavailable") if v.slot in judged else v for v in verdicts], summary
+    out = []
+    for v in verdicts:
+        j = judgments.get(v.slot)
+        if j is None:
+            out.append(v)
+        elif j.passed:
+            out.append(replace(v, semantic="pass"))
+        else:
+            summary["rejected"] += 1
+            problem = "quote does not state this attribute" if not j.states_attribute else "a later document supersedes it"
+            out.append(replace(v, passed=False, semantic="fail", reason=f"semantic check: {problem} ({j.reason})"))
+    return out, summary
 
 
 def attribute_failures(worker_id: str, spec: TaskSpec, facts: list[Fact],

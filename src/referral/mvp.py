@@ -33,8 +33,10 @@ BUYER_SYSTEM = """You are {name}, the competitive-intelligence agent of Acme Rob
 {model}. You never research facts yourself: you hire worker agents through Referral, a hiring \
 service for agents, using only its MCP tools. Register yourself once as a buyer (name {name}, \
 owner owner-acme, model {model}).
-Rules: spend at most $2.00 and allow 300 seconds per hire. Use only facts whose Checker result is \
-pass. If a hire fails, rematch without that worker, at most twice. Never invent or repair a fact."""
+Rules: spend at most $2.00 and allow 300 seconds per hire. Accept a job only when get_record \
+recommends accept, and use facts only from accepted jobs: a failed job's work is rejected as a \
+whole, even its facts marked pass. If a hire fails, rematch the whole task without that worker, \
+at most twice. Never invent or repair a fact."""
 
 BUYER_TASK = """Acme's strategy team needs a verified brief for Monday's board meeting with five \
 facts: Ironbark AI's latest funding, Gantry Labs' latest funding, Gantry Labs' headcount, Dunmore \
@@ -88,7 +90,7 @@ def _answer(final: dict | None) -> dict | None:
         return None
 
 
-def run(buyer_model: str, worker_model: str, port: int, out: str) -> int:
+def run(buyer_model: str, worker_model: str, port: int, out: str, checker_model: str = "haiku") -> int:
     if _port_open(port):
         sys.exit(f"port {port} is already in use; pass --port")
     run_dir = (Path(out) / datetime.now().strftime("%Y%m%d-%H%M%S")).resolve()
@@ -100,7 +102,8 @@ def run(buyer_model: str, worker_model: str, port: int, out: str) -> int:
     server_log = run_dir / "server.log"
     server = subprocess.Popen(
         [sys.executable, "-m", "referral", "serve", "--transport", "http", "--port", str(port),
-         "--db", str(run_dir / "referral.sqlite"), "--claude-worker", worker_model, "--run-dir", str(run_dir)],
+         "--db", str(run_dir / "referral.sqlite"), "--claude-worker", worker_model, "--run-dir", str(run_dir),
+         "--semantic-checker", checker_model],
         stdout=subprocess.DEVNULL, stderr=server_log.open("w"), env=env, cwd=run_dir)
     try:
         for _ in range(100):

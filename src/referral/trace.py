@@ -74,6 +74,10 @@ def result_line(name: str, data: dict | None, raw) -> list[str]:
                  f"recommendation={data.get('recommendation')}"]
         for f in data.get("facts", []):
             lines.append(f"      {f['competitor']:<20} {f['attribute']:<17} {str(f['value']):<14} {f['check']}")
+        sem = data.get("semantic_check")
+        if sem:
+            lines.append(f"      semantic check ({sem.get('model')}): {sem.get('status')}, judged {sem.get('judged')} "
+                         f"rule-passing facts, rejected {sem.get('rejected')}")
         return lines
     if tool == "get_insight":
         return [f"  ← [{data.get('tier')}] {_short('; '.join(data.get('guidance', [])), 120)}"]

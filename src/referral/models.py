@@ -124,6 +124,8 @@ class FactVerdict:
     passed: bool
     reason: str
     canary: bool = field(default=False)
+    # The semantic layer's view: "pass", "fail" or "unavailable"; None if it did not judge it.
+    semantic: str | None = field(default=None)
 
 
 class SimClock:

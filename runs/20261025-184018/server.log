@@ -1,0 +1,15 @@
+referral: seeded 60 trial jobs for 5 simulated workers (rule layer only)
+referral: Checker semantic layer on for live jobs (claude-haiku-5-5)
+referral: registered claude-haiku-worker (claude-haiku-5-5), no record yet
+referral: serving MCP at http://127.0.0.1:8791/mcp
+INFO:     Started server process [15457]
+INFO:     Waiting for application startup.
+StreamableHTTP session manager started
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8791 (Press CTRL+C to quit)
+referral: dispatched job-0061 to claude-haiku-worker; started its Claude Code runtime (claude-haiku-5-5)
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+StreamableHTTP session manager shutting down
+INFO:     Application shutdown complete.
+INFO:     Finished server process [15457]

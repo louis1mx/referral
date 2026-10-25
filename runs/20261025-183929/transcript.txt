@@ -1,0 +1,80 @@
+[referral] seeded 60 trial jobs for 5 simulated workers (rule layer only)
+[referral] Checker semantic layer on for live jobs (claude-haiku-5-5)
+[referral] registered claude-haiku-worker (claude-haiku-5-5), no record yet
+[referral] serving MCP at http://127.0.0.1:8791/mcp
+[buyer] goal: Acme's strategy team needs a verified brief for Monday's board meeting with five facts: Ironbark AI's latest funding, Gantry Labs' latest funding, Gantry Labs' headcount, Dunmore Robotics' flagship product, and Everline Systems' headquarters city. Get them through Referral.
+[buyer] → register_agent  {"name":"acme-intel-agent","role":"buyer","owner":"owner-acme","model":"claude-sonnet-5-5"}
+[buyer] → describe_corpus  {}
+[buyer] ← registered agt-acme-intel-agent
+[buyer] ← 19 permitted documents about 8 competitors, as of 2026-09-30
+[buyer] → request_match  5 facts, budget $2  [Ironbark AI latest_funding; Gantry Labs latest_funding; Gantry Labs headcount; Dunmore Ro…]
+[buyer] ← band=hard  action=bounded_trial  candidate=claude-haiku-worker [trial, evidence none]  little evidence on hard tasks; little evidence on easy tasks
+[referral] dispatched job-0061 to claude-haiku-worker; started its Claude Code runtime (claude-haiku-5-5)
+[buyer] → hire  {"match_id":"match-0001"}
+[buyer] ← job-0061 dispatched to claude-haiku-worker  status=dispatched
+[buyer] → get_record  {"job_id":"job-0061","wait_seconds":300}
+[worker:job-0061] → get_assignment  {}
+[worker:job-0061] → describe_corpus  {}
+[worker:job-0061] ← 1 assignment(s): job-0061 (hard, 5 slots)
+[worker:job-0061] ← 19 permitted documents about 8 competitors, as of 2026-09-30
+[worker:job-0061] → submit_prediction  job=job-0061  p_success=0.5  cost=$0.8  finish=150s
+[worker:job-0061] ← forecast locked=True
+[worker:job-0061] → read_document  {"doc_id":"ironbark-ai-update-2026"}
+[worker:job-0061] ← ironbark-ai-update-2026 (Ironbark AI, 2026-06-10)
+[worker:job-0061] → read_document  {"doc_id":"gantry-labs-update-2026"}
+[worker:job-0061] ← gantry-labs-update-2026 (Gantry Labs, 2026-06-10)
+[worker:job-0061] → read_document  {"doc_id":"dunmore-robotics-update-2026"}
+[worker:job-0061] ← dunmore-robotics-update-2026 (Dunmore Robotics, 2026-06-10)
+[worker:job-0061] → read_document  {"doc_id":"everline-systems-update-2026"}
+[worker:job-0061] ← everline-systems-update-2026 (Everline Systems, 2026-06-10)
+[worker:job-0061] → read_document  {"doc_id":"gantry-labs-profile-2024"}
+[worker:job-0061] ← gantry-labs-profile-2024 (Gantry Labs, 2024-02-15)
+[worker:job-0061] → read_document  {"doc_id":"dunmore-robotics-profile-2024"}
+[worker:job-0061] ← dunmore-robotics-profile-2024 (Dunmore Robotics, 2024-02-15)
+[worker:job-0061] → read_document  {"doc_id":"everline-systems-profile-2024"}
+[worker:job-0061] ← everline-systems-profile-2024 (Everline Systems, 2024-02-15)
+[worker:job-0061] → submit_delivery  job=job-0061  5 facts  [Ironbark AI latest_funding=$22M; Gantry Labs latest_funding=$75M; Gantry Labs headcount=420; Dunmore Robotics…]
+[buyer] ← job-0061 by claude-haiku-worker: status=passed  recommendation=accept
+[buyer]       Ironbark AI          latest_funding    $22M           pass
+[buyer]       Gantry Labs          latest_funding    $75M           pass
+[buyer]       Gantry Labs          headcount         420            pass
+[buyer]       Dunmore Robotics     flagship_product  Wren           pass
+[buyer]       Everline Systems     hq_city           Austin         pass
+[buyer]       semantic check (claude-haiku-5-5): ok, judged 5 rule-passing facts, rejected 0
+[worker:job-0061] ← Checker verdict: passed
+[worker:job-0061] says: job-0061: status "passed"
+[worker:job-0061] done: 12 turns, 19s, model cost $0.003
+[buyer] → read_document  {"doc_id":"dunmore-robotics-update-2026"}
+[buyer] ← dunmore-robotics-update-2026 (Dunmore Robotics, 2026-06-10)
+[buyer] → read_document  {"doc_id":"everline-systems-update-2026"}
+[buyer] ← everline-systems-update-2026 (Everline Systems, 2026-06-10)
+[buyer] says: The job passed and Referral recommends accepting it. I checked the newer Dunmore and Everline updates, and they don't contradict the facts, so I'm accepting th…
+[buyer] done: 8 turns, 30s, model cost $0.042
+[buyer] final brief:
+[buyer]   Ironbark AI latest_funding: $22M  (source ironbark-ai-update-2026, job-0061)
+[buyer]   Gantry Labs latest_funding: $75M  (source gantry-labs-update-2026, job-0061)
+[buyer]   Gantry Labs headcount: 420  (source gantry-labs-update-2026, job-0061)
+[buyer]   Dunmore Robotics flagship_product: Wren  (source dunmore-robotics-profile-2024, job-0061)
+[buyer]   Everline Systems hq_city: Austin  (source everline-systems-profile-2024, job-0061)
+==============================================================================
+Independent audit (reads only the ledger and the buyer's answer)
+1. Notary chain: 253 entries, hash chain and signatures ok=True
+2-3. Jobs hired by acme-intel-agent: 1
+   job-0061  worker=claude-haiku-worker (claude-haiku-5-5)  band=hard  forecast p=0.5  status=passed
+      forecast locked before delivery: True;  hidden-check commitment opens: True
+      semantic layer (claude-haiku-5-5): ok, judged 5 rule-passing facts, rejected 0
+      Ironbark AI          latest_funding    got=$22M         truth=$22M       checker=pass  -> agrees (correct value)
+      Gantry Labs          latest_funding    got=$75M         truth=$75M       checker=pass  -> agrees (correct value)
+      Gantry Labs          headcount         got=420          truth=420        checker=pass [hidden check]  -> agrees (correct value)
+      Dunmore Robotics     flagship_product  got=Wren         truth=Wren       checker=pass  -> agrees (correct value)
+      Everline Systems     hq_city           got=Austin       truth=Austin     checker=pass  -> agrees (correct value)
+   Checker verdicts that contradict ground truth: false passes 0, semantic false rejects 0
+4. Buyer's final brief vs ground truth:
+   Ironbark AI          latest_funding    brief=$22M         truth=$22M       correct=True  from a passed job=True
+   Gantry Labs          latest_funding    brief=$75M         truth=$75M       correct=True  from a passed job=True
+   Gantry Labs          headcount         brief=420          truth=420        correct=True  from a passed job=True
+   Dunmore Robotics     flagship_product  brief=Wren         truth=Wren       correct=True  from a passed job=True
+   Everline Systems     hq_city           brief=Austin       truth=Austin     correct=True  from a passed job=True
+   claude-haiku-worker now: [trial] little evidence on easy tasks; little evidence on medium tasks; only one checked hard job so far
+RESULT: all checks pass
+run folder: /Users/louis/Desktop/MIT IDS.865/.claude/worktrees/project-v1-planning-9fd9d4/referral/runs/20261025-183929
