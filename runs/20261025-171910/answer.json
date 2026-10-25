@@ -1,0 +1,47 @@
+{
+  "facts": [
+    {
+      "competitor": "Ironbark AI",
+      "attribute": "latest_funding",
+      "value": "$22M",
+      "doc_id": "ironbark-ai-update-2026",
+      "job_id": "job-0061"
+    },
+    {
+      "competitor": "Gantry Labs",
+      "attribute": "latest_funding",
+      "value": "$75M",
+      "doc_id": "gantry-labs-update-2026",
+      "job_id": "job-0061"
+    },
+    {
+      "competitor": "Gantry Labs",
+      "attribute": "headcount",
+      "value": "420",
+      "doc_id": "gantry-labs-update-2026",
+      "job_id": "job-0061"
+    },
+    {
+      "competitor": "Dunmore Robotics",
+      "attribute": "flagship_product",
+      "value": "Wren",
+      "doc_id": "dunmore-robotics-profile-2024",
+      "job_id": "job-0061"
+    },
+    {
+      "competitor": "Everline Systems",
+      "attribute": "hq_city",
+      "value": "Austin",
+      "doc_id": "everline-systems-profile-2024",
+      "job_id": "job-0061"
+    }
+  ],
+  "hires": [
+    {
+      "job_id": "job-0061",
+      "worker": "claude-haiku-worker",
+      "status": "passed"
+    }
+  ],
+  "note": "All five facts passed the Checker in one $0.80 bounded-trial hire; the Dunmore flagship product and Everline HQ come from 2024 profiles, since the 2026 updates don't mention them."
+}
