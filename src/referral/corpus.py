@@ -161,18 +161,20 @@ class Corpus:
     # --- task generation -----------------------------------------------------------
 
     def make_task(self, rng: random.Random, band: Band, n: int = 5, budget: float = 2.0,
-                  deadline_s: float = 120.0) -> TaskSpec:
-        static = [Slot(c, a) for c in self.competitors for a in STATIC_ATTRS]
-        plain_dynamic = [Slot(c, a) for c in self.competitors if c not in self.lookalikes
-                         for a in DYNAMIC_ATTRS]
-        twin_dynamic = [Slot(c, a) for c in self.lookalikes for a in DYNAMIC_ATTRS]
+                  deadline_s: float = 120.0, competitors: list[str] | None = None) -> TaskSpec:
+        """`competitors` limits the draw to a subset, e.g. a held-out group. The subset needs a
+        plain firm for medium tasks, and a look-alike firm plus a plain one for hard tasks."""
+        pool = [c for c in self.competitors if competitors is None or c in competitors]
+        static = [Slot(c, a) for c in pool for a in STATIC_ATTRS]
+        plain_dynamic = [Slot(c, a) for c in pool if c not in self.lookalikes for a in DYNAMIC_ATTRS]
+        twin_dynamic = [Slot(c, a) for c in pool if c in self.lookalikes for a in DYNAMIC_ATTRS]
         if band == Band.EASY:
             slots = rng.sample(static, n)
         elif band == Band.MEDIUM:
-            k = rng.randint(2, 3)
+            k = rng.randint(2, min(3, len(plain_dynamic)))
             slots = rng.sample(plain_dynamic, k) + rng.sample(static, n - k)
         else:
-            k = rng.randint(2, 3)
+            k = rng.randint(2, min(3, len(twin_dynamic)))
             slots = rng.sample(twin_dynamic, k) + rng.sample(plain_dynamic, 1)
             slots += rng.sample(static, n - len(slots))
         rng.shuffle(slots)
