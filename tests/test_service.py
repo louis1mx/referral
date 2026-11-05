@@ -1,6 +1,8 @@
+import random
+
 import pytest
 
-from referral.models import ReferralError, SimClock, Status
+from referral.models import Band, ReferralError, SimClock, Status
 from referral.service import ReferralService
 
 
@@ -71,10 +73,24 @@ def test_timeout_counts_as_failure(service, buyer, worker, easy_task, correct_fa
         service.submit_delivery(*worker, job_id, correct_facts(easy_task))
 
 
-def test_over_budget_fails(service, buyer, worker, easy_task, correct_facts):
+def test_buyer_pays_the_contract_price_not_the_workers_claim(service, buyer, worker, easy_task, correct_facts):
     job_id = hire_worker(service, buyer, worker, easy_task)
     service.submit_prediction(*worker, job_id, 0.9, 1.0, 60)
     service.submit_delivery(*worker, job_id, correct_facts(easy_task), cost=easy_task["budget"] + 1)
+    rec = service.get_record(*buyer, job_id)
+    assert rec["status"] == Status.PASSED and rec["cost"] == service._job(job_id)["price"]
+    assert service._job(job_id)["reported_cost"] == easy_task["budget"] + 1
+    delivery = next(e for e in service.notary.entries(job_id) if e["kind"] == "delivery")
+    assert delivery["payload"]["reported_cost"] == easy_task["budget"] + 1
+    assert service.profile(worker[0]).cost_overruns == 1   # the claim still counts as a cost miss
+
+
+def test_contract_price_over_budget_fails(service, buyer, easy_task, correct_facts):
+    pricey = service.register_agent("pricey", "worker", "owner-p", "atlas-large-2",
+                                    price=easy_task["budget"] + 1)
+    job_id = service.direct_hire(*buyer, pricey["agent_id"], easy_task)["job_id"]
+    service.submit_prediction(pricey["agent_id"], pricey["key"], job_id, 0.9, 1.0, 60)
+    service.submit_delivery(pricey["agent_id"], pricey["key"], job_id, correct_facts(easy_task))
     rec = service.get_record(*buyer, job_id)
     assert rec["status"] == Status.FAILED and rec["within_budget"] is False
 
@@ -153,3 +169,39 @@ def test_buyer_floor_turns_a_weak_pool_into_no_match(service, buyer, worker, eas
 def test_exclude_workers_by_name(service, buyer, worker, easy_task):
     match = service.request_match(*buyer, easy_task, exclude=("test-worker",))
     assert match["action"] == "no_eligible_match"
+
+
+def test_declared_success_is_recorded_but_only_self_report_reads_it(service, buyer, corpus):
+    for name, declared, price in (("modest", 0.6, 0.5), ("boastful", 0.95, 1.5), ("cheap-boast", 0.95, 1.0)):
+        service.register_agent(name, "worker", f"owner-{name}", "atlas-mini-2", price=price,
+                               declared_success=declared)
+    assert service.find_agent("boastful")["declared_success"] == 0.95
+    entry = next(e for e in service.notary.entries(None) if e["kind"] == "register"
+                 and e["payload"]["name"] == "boastful")
+    assert entry["payload"]["declared_success"] == 0.95
+    task = corpus.make_task(random.Random(3), Band.EASY).to_dict()
+    picked = service.request_match(*buyer, task, strategy="self_report")["candidate"]["name"]
+    assert picked == "cheap-boast"                          # exact tie on the claim goes to the cheaper
+    with pytest.raises(ReferralError, match="declared_success"):
+        service.register_agent("liar", "worker", "o", "m", price=1.0, declared_success=1.5)
+
+
+def test_priors_are_neutral_unless_the_operator_sets_them(service):
+    a = service.register_agent("fictional", "worker", "o1", "corvid-1", price=1.0)
+    b = service.register_agent("real", "worker", "o2", "claude-sonnet-5-5", price=1.0)
+    assert service.profile(a["agent_id"]).benchmark == service.profile(b["agent_id"]).benchmark
+    service.model_priors = {"corvid-1": 0.85}
+    assert service.profile(a["agent_id"]).benchmark == 0.85
+
+
+def test_older_databases_gain_new_columns_on_open(tmp_path):
+    import sqlite3
+    path = tmp_path / "old.sqlite"
+    old = sqlite3.connect(path)
+    old.execute("CREATE TABLE agents (agent_id TEXT PRIMARY KEY, name TEXT UNIQUE, role TEXT, owner TEXT, "
+                "model TEXT, key TEXT, domains TEXT, price REAL, typical_seconds REAL, created_at REAL)")
+    old.commit()
+    old.close()
+    s = ReferralService(str(path), SimClock())
+    cols = {r["name"] for r in s.store.db.execute("PRAGMA table_info(agents)")}
+    assert "declared_success" in cols

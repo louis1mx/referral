@@ -7,6 +7,10 @@ histories:
 - `outcomes`: per-band outcome profiles that skip self-commissioned jobs, no forecasts.
 - `referral`: outcome profiles plus per-band calibrated forecasts, tier-labelled actions and a
   buyer-set success floor that can answer no match.
+
+`self_report` is a baseline outside that comparison: it hires whoever declared the highest
+success rate at registration, exact ties going to the cheaper worker. It is what a buyer
+does with no record at all, only the workers' own descriptions.
 """
 
 from __future__ import annotations
@@ -17,6 +21,7 @@ from .models import BAND_TIME, Action, Band, TaskSpec, Tier
 from .scorer import Profile, band_estimate
 
 STRATEGIES = ("success_rate", "outcomes", "referral")
+BASELINES = ("self_report",)
 
 # Below this estimated chance of success Referral answers no_eligible_match. Buyers can
 # pass their own `min_success`. 0.35 was picked on seeds 31-60: higher floors save money
@@ -48,7 +53,9 @@ def feasible(agent: dict, spec: TaskSpec, band: Band) -> bool:
     return True
 
 
-def estimate(profile: Profile, band: Band, strategy: str) -> float:
+def estimate(profile: Profile, band: Band, strategy: str, agent: dict | None = None) -> float:
+    if strategy == "self_report":
+        return (agent or {}).get("declared_success") or 0.0
     if strategy == "success_rate":
         return (profile.raw_successes + 1) / (profile.raw_n + 2)
     return band_estimate(profile, band, use_forecasts=(strategy == "referral"))
@@ -66,13 +73,18 @@ def pick(cands: list[Candidate]) -> Candidate | None:
 
 def decide(spec: TaskSpec, band: Band, workers: list[tuple[dict, Profile]], strategy: str,
            exclude: set[str] = frozenset(), min_success: float | None = None) -> Decision:
-    if strategy not in STRATEGIES:
+    if strategy not in STRATEGIES + BASELINES:
         raise ValueError(f"unknown strategy {strategy!r}")
     ranked = sorted(
-        (Candidate(a, p, estimate(p, band, strategy)) for a, p in workers
+        (Candidate(a, p, estimate(p, band, strategy, a)) for a, p in workers
          if a["agent_id"] not in exclude and feasible(a, spec, band)),
         key=lambda c: (-c.estimate, c.agent["price"] or 0, c.agent["name"]),
     )
+    if strategy == "self_report":
+        # The sort already breaks exact ties by price; no PRICE_TIE band, since a declared
+        # rate is a claim, not an estimate with error bars.
+        chosen = ranked[0] if ranked else None
+        return Decision(Action.HIRE if chosen else Action.NO_MATCH, chosen, ranked)
     if strategy != "referral":
         chosen = pick(ranked)
         return Decision(Action.HIRE if chosen else Action.NO_MATCH, chosen, ranked)

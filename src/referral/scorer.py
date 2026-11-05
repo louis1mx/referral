@@ -15,9 +15,10 @@ from dataclasses import dataclass, field
 
 from .models import BAND_WEIGHT, BANDS, Band, Tier
 
-# Illustrative public-benchmark priors for the fictional models in the simulation.
-# Real models (e.g. live LLM workers) are not listed on purpose: they get
-# DEFAULT_BENCHMARK, a placeholder, until we source a real benchmark score.
+# Illustrative public-benchmark priors for the fictional models in the simulation. The
+# simulated worlds hand these to the service (`ReferralService.model_priors`); a service
+# with no priors set gives every model DEFAULT_BENCHMARK, so a mixed pool of simulated and
+# real workers starts level. Real models get a prior only once we source a real score.
 MODEL_BENCHMARKS = {
     "atlas-large-2": 0.92,
     "atlas-mini-2": 0.78,
@@ -93,11 +94,12 @@ class Profile:
     tier: Tier = Tier.TRIAL
 
 
-def benchmark_for(model: str) -> float:
-    return MODEL_BENCHMARKS.get(model, DEFAULT_BENCHMARK)
+def benchmark_for(model: str, priors: dict[str, float] | None = None) -> float:
+    return (priors or {}).get(model, DEFAULT_BENCHMARK)
 
 
-def build_profile(agent: dict, jobs: list[dict], previous_models: list[str] | None = None) -> Profile:
+def build_profile(agent: dict, jobs: list[dict], previous_models: list[str] | None = None,
+                  priors: dict[str, float] | None = None) -> Profile:
     """Profile from settled jobs under the agent's current model, oldest first."""
     bands = {b: BandStats() for b in BANDS}
     counted = [j for j in jobs if not j["self_dealing"]]
@@ -116,7 +118,10 @@ def build_profile(agent: dict, jobs: list[dict], previous_models: list[str] | No
             stats.pairs.append((pred["p_success"], j["outcome"]))
             sq_errors.append((pred["p_success"] - j["outcome"]) ** 2)
             errors.append(pred["p_success"] - j["outcome"])
-            if j["cost"] is not None and j["cost"] > pred["cost"] * 1.05:
+            spent = j.get("reported_cost")
+            if spent is None:
+                spent = j["cost"]
+            if spent is not None and spent > pred["cost"] * 1.05:
                 cost_over += 1
             if j["elapsed"] is not None and j["elapsed"] > pred["finish_s"] * 1.10:
                 time_over += 1
@@ -140,7 +145,7 @@ def build_profile(agent: dict, jobs: list[dict], previous_models: list[str] | No
 
     profile = Profile(
         agent_id=agent["agent_id"], name=agent["name"], model=agent["model"],
-        benchmark=benchmark_for(agent["model"]), bands=bands,
+        benchmark=benchmark_for(agent["model"], priors), bands=bands,
         n_counted=len(counted), n_self_dealing=len(jobs) - len(counted),
         raw_n=len(jobs), raw_successes=sum(j["outcome"] for j in jobs),
         brier=statistics.mean(sq_errors) if sq_errors else None,

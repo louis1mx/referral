@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import time
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Protocol
@@ -50,8 +51,10 @@ JUDGE_SCHEMA = {
         "type": "object",
         "properties": {"index": {"type": "integer"}, "states_attribute": {"type": "boolean"},
                        "current": {"type": "boolean"}, "reason": {"type": "string"}},
-        "required": ["index", "states_attribute", "current", "reason"]}}},
+        "required": ["index", "states_attribute", "current", "reason"],
+        "additionalProperties": False}}},
     "required": ["judgments"],
+    "additionalProperties": False,
 }
 
 
@@ -135,9 +138,51 @@ def _claude_cli(prompt: str, model: str, timeout_s: float) -> dict:
     return out["structured_output"]
 
 
+class ApiRunner:
+    """Runs the judge through the Anthropic API instead of the claude CLI, so a service needs
+    only an API key, and records each call's tokens and cost for the operator's spend."""
+
+    def __init__(self, client=None, effort: str = "low"):
+        self._client = client
+        self.effort = effort
+        self.calls: list[dict] = []
+
+    @property
+    def client(self):
+        if self._client is None:
+            import anthropic
+            self._client = anthropic.Anthropic()
+        return self._client
+
+    def __call__(self, prompt: str, model: str, timeout_s: float) -> dict:
+        from .workers import LLM_PRICING, _api_errors
+        t0 = time.perf_counter()
+        try:
+            response = self.client.messages.create(
+                model=model, max_tokens=16000, system=JUDGE_SYSTEM, timeout=timeout_s,
+                output_config={"effort": self.effort, "format": {"type": "json_schema", "schema": JUDGE_SCHEMA}},
+                messages=[{"role": "user", "content": prompt}],
+            )
+        except _api_errors() as e:
+            raise JudgeError(f"API call failed: {e}") from e
+        u = response.usage
+        price_in, price_out = LLM_PRICING.get(model, (0.0, 0.0))
+        self.calls.append({"model": model, "seconds": time.perf_counter() - t0,
+                           "input_tokens": u.input_tokens, "output_tokens": u.output_tokens,
+                           "usd": (u.input_tokens * price_in + u.output_tokens * price_out) / 1e6})
+        if response.stop_reason in ("refusal", "max_tokens"):
+            raise JudgeError(f"API judge stopped: stop_reason={response.stop_reason}")
+        text = next((b.text for b in response.content if b.type == "text"), None)
+        try:
+            return json.loads(text or "")
+        except json.JSONDecodeError as e:
+            raise JudgeError(f"API judge returned invalid JSON ({e})") from e
+
+
 class ClaudeJudge:
-    """Runs the judge with Claude Code in headless mode, with no tools and structured output.
-    One call covers every claim in a delivery; a failed call is retried once."""
+    """Runs the judge with no tools and structured output, through the claude CLI by default
+    or the API with `runner=ApiRunner()`. One call covers every claim in a delivery; a failed
+    call is retried once."""
 
     def __init__(self, model: str, timeout_s: float = 120.0,
                  runner: Callable[[str, str, float], dict] = _claude_cli):

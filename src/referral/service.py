@@ -66,6 +66,9 @@ class ReferralService:
         # The Checker's semantic layer (semantic.Judge). None runs the rule layer only, as
         # simulations do; the MVP server sets it after seeding the simulated history.
         self.judge = None
+        # Benchmark priors per model, set by the operator. Empty means every model starts
+        # from the same neutral prior: a prior nobody can check should not favor anyone.
+        self.model_priors: dict[str, float] = {}
         self.notary = Notary(self.store, self._key_of)
         self._handlers: dict[str, Callable[[ReferralService, dict], None]] = {}
         self._lock = threading.RLock()
@@ -98,9 +101,13 @@ class ReferralService:
     @locked
     def register_agent(self, name: str, role: str, owner: str, model: str,
                        price: float | None = None, typical_seconds: float | None = None,
-                       domains: list[str] | None = None) -> dict:
+                       domains: list[str] | None = None, declared_success: float | None = None) -> dict:
+        """`declared_success` is the worker's own claim about its success rate. Referral records
+        it so buyers can compare it with checked results; its own Matcher never reads it."""
         if role not in ("buyer", "worker"):
             raise ReferralError("role must be 'buyer' or 'worker'")
+        if declared_success is not None and not 0.0 <= declared_success <= 1.0:
+            raise ReferralError("declared_success must be in [0, 1]")
         if self.store.get("agents", "name", name) is not None:
             raise ReferralError(f"an agent named {name!r} is already registered")
         if role == "worker" and price is None:
@@ -110,10 +117,12 @@ class ReferralService:
         self.store.insert("agents", {
             "agent_id": agent_id, "name": name, "role": role, "owner": owner, "model": model,
             "key": key, "domains": domains or ["sourced-research"], "price": price,
-            "typical_seconds": typical_seconds, "created_at": self.clock.now(),
+            "typical_seconds": typical_seconds, "declared_success": declared_success,
+            "created_at": self.clock.now(),
         })
         self.notary.append("register", agent_id, {
             "name": name, "role": role, "owner": owner, "model": model, "price": price,
+            "declared_success": declared_success,
             "key_fingerprint": hashlib.sha256(key.encode()).hexdigest()[:16],
         }, None, self.clock.now())
         return {"agent_id": agent_id, "key": key, "tier": "trial",
@@ -160,7 +169,7 @@ class ReferralService:
         jobs = self._settled_jobs(agent_id)
         current = [j for j in jobs if j["worker_model"] == agent["model"]]
         previous = sorted({j["worker_model"] for j in jobs} - {agent["model"]})
-        return build_profile(agent, current, previous)
+        return build_profile(agent, current, previous, self.model_priors)
 
     def workers(self, domain: str) -> list[dict]:
         return [a for a in self.store.query("SELECT * FROM agents WHERE role = 'worker' ORDER BY name")
@@ -401,9 +410,13 @@ class ReferralService:
         parsed = [Fact.from_dict(f) for f in facts]
         now = self.clock.now()
         elapsed = now - job["created_at"]
-        cost = float(cost) if cost is not None else job["price"]
+        # The buyer is charged the price locked in the contract. What the worker says it spent
+        # is kept beside it, as a signal about its cost forecasts, but never billed.
+        reported = float(cost) if cost is not None else None
+        cost = job["price"]
         self.notary.append("delivery", agent_id, {"facts": [asdict(f) for f in parsed], "cost": cost,
-                                                  "elapsed_s": elapsed}, job_id, now)
+                                                  "reported_cost": reported, "elapsed_s": elapsed}, job_id, now)
+        self.store.update("jobs", "job_id", job_id, {"reported_cost": reported})
         self.store.update("jobs", "job_id", job_id, {"delivery": {"facts": [asdict(f) for f in parsed]}})
         if now > job["deadline_at"]:
             self._settle(job, Status.TIMEOUT, [], cost, elapsed, [agent_id], within_budget=True)

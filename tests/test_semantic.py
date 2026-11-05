@@ -1,12 +1,14 @@
 """The semantic layer of the Checker, with stand-in judges (the real one needs the claude CLI)."""
 
 import json
+from types import SimpleNamespace
 
 import pytest
 
 from referral.checker import check_delivery, review_semantics
 from referral.models import Fact, Slot, Status, TaskSpec
-from referral.semantic import Claim, ClaudeJudge, JudgeError, Judgment, judge_prompt, parse_judgments
+from referral.semantic import (JUDGE_SCHEMA, JUDGE_SYSTEM, ApiRunner, Claim, ClaudeJudge, JudgeError, Judgment,
+                               judge_prompt, parse_judgments)
 
 IRONBARK_FUNDING = Slot("Ironbark AI", "latest_funding")
 IRONBARK_HQ = Slot("Ironbark AI", "hq_city")
@@ -135,3 +137,37 @@ def test_check_eval_suite_passes_the_rules_and_is_half_wrong(corpus):
     assert len(cases) == 80 and sum(not c["correct"] for c in cases) == 40
     from referral.checker import check_fact
     assert all(check_fact(c["fact"], c["slot"], 0, corpus, set(corpus.docs), False).passed for c in cases)
+
+
+class FakeApi:
+    """Stands in for anthropic.Anthropic(): answers through the judge schema, no network."""
+
+    def __init__(self, reply, stop_reason="end_turn"):
+        self.reply, self.stop_reason, self.requests = reply, stop_reason, []
+        self.messages = self
+
+    def create(self, **kw):
+        self.requests.append(kw)
+        content = [SimpleNamespace(type="text", text=json.dumps(self.reply))]
+        return SimpleNamespace(stop_reason=self.stop_reason, content=content,
+                               usage=SimpleNamespace(input_tokens=2000, output_tokens=100))
+
+
+def test_api_runner_judges_through_the_schema_and_records_cost(corpus):
+    claims = [Claim(0, IRONBARK_FUNDING, "40", "ironbark-ai-profile-2024", "Ironbark AI employs 40 people.")]
+    api = FakeApi({"judgments": [{"index": 0, "states_attribute": False, "current": True,
+                                  "reason": "a headcount"}]})
+    runner = ApiRunner(client=api)
+    [j] = ClaudeJudge("claude-haiku-5-5", runner=runner).judge(claims, corpus)
+    assert not j.passed
+    [req] = api.requests
+    assert req["model"] == "claude-haiku-5-5" and req["system"] == JUDGE_SYSTEM
+    assert req["output_config"]["format"]["schema"] == JUDGE_SCHEMA
+    [call] = runner.calls
+    assert call["usd"] == pytest.approx((2000 * 0.10 + 100 * 0.50) / 1e6)
+
+
+def test_api_runner_refusal_is_a_judge_error(corpus):
+    runner = ApiRunner(client=FakeApi({}, stop_reason="refusal"))
+    with pytest.raises(JudgeError, match="refusal"):
+        runner("prompt", "claude-haiku-5-5", 10)

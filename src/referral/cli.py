@@ -33,7 +33,9 @@ def main(argv: list[str] | None = None) -> None:
                        help="also register a Claude worker that Claude Code runs on dispatch (http only)")
     serve.add_argument("--run-dir", default="runs/serve", help="where Claude worker logs go")
     serve.add_argument("--semantic-checker", default="none", choices=["none", "haiku", "sonnet", "opus"],
-                       help="model for the Checker's semantic layer on live jobs (runs the claude CLI)")
+                       help="model for the Checker's semantic layer on live jobs")
+    serve.add_argument("--semantic-via", default="cli", choices=["cli", "api"],
+                       help="run the semantic layer through the claude CLI or the Anthropic API")
     mvp = sub.add_parser("mvp", help="two Claude Code agents hire and work through Referral, then audit")
     mvp.add_argument("--buyer-model", default="sonnet", choices=["haiku", "sonnet", "opus"])
     mvp.add_argument("--worker-model", default="haiku", choices=["haiku", "sonnet", "opus"])
@@ -82,8 +84,9 @@ def serve_main(args) -> None:
           "simulated workers (rule layer only)", file=sys.stderr, flush=True)
     if args.semantic_checker != "none":
         from .claude_agents import MODELS
-        from .semantic import ClaudeJudge
-        service.judge = ClaudeJudge(MODELS[args.semantic_checker])
+        from .semantic import ApiRunner, ClaudeJudge
+        runner = {"runner": ApiRunner()} if args.semantic_via == "api" else {}
+        service.judge = ClaudeJudge(MODELS[args.semantic_checker], **runner)
         print(f"referral: Checker semantic layer on for live jobs ({service.judge.model})",
               file=sys.stderr, flush=True)
     if args.claude_worker:

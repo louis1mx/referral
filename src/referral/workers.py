@@ -73,11 +73,12 @@ class SimWorker:
         self.truth: dict[str, Truth] = {}
         self.rejections: list[str] = []
         self._attempts: dict[str, int] = {}
+        self.declared_success: float | None = None   # its own claim, stated at registration
 
     def register(self, service) -> None:
         p = self.persona
         creds = service.register_agent(p.name, "worker", p.owner, p.model, price=p.price,
-                                       typical_seconds=p.seconds)
+                                       typical_seconds=p.seconds, declared_success=self.declared_success)
         self.agent_id, self.key = creds["agent_id"], creds["key"]
         service.attach_worker(self.agent_id, self)
 
@@ -295,9 +296,12 @@ class LLMWorker:
     """
 
     def __init__(self, key: str, corpus: Corpus, client=None, effort: str = "medium",
-                 owner: str | None = None):
+                 owner: str | None = None, name: str | None = None,
+                 declared_success: float | None = None):
         self.key_name = key
         self.name, self.model, self.price, self.typical_seconds = LLM_WORKERS[key]
+        self.name = name or self.name   # a second worker on the same model needs its own name
+        self.declared_success = declared_success
         self.owner = owner or f"owner-{self.name}"
         self.corpus = corpus
         self.effort = effort
@@ -316,7 +320,8 @@ class LLMWorker:
 
     def register(self, service) -> None:
         creds = service.register_agent(self.name, "worker", self.owner, self.model, price=self.price,
-                                       typical_seconds=self.typical_seconds)
+                                       typical_seconds=self.typical_seconds,
+                                       declared_success=self.declared_success)
         self.agent_id, self.key = creds["agent_id"], creds["key"]
         service.attach_worker(self.agent_id, self)
 
@@ -378,4 +383,6 @@ class LLMWorker:
         if not isinstance(service.clock, LiveClock):
             service.clock.advance(sum(c.seconds for c in self.calls[started:]))
         facts = [{k: str(fact.get(k, "")) for k in FACT_FIELDS} for fact in d.get("facts", [])]
-        service.submit_delivery(self.agent_id, self.key, job_id, facts, self.price)
+        # Report what the job really cost in API calls; the buyer is billed the contract price.
+        spent = round(sum(c.usd for c in self.calls[started:]), 6)
+        service.submit_delivery(self.agent_id, self.key, job_id, facts, spent)

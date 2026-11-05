@@ -17,7 +17,8 @@ from collections.abc import Callable
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS agents (
     agent_id TEXT PRIMARY KEY, name TEXT UNIQUE, role TEXT, owner TEXT, model TEXT,
-    key TEXT, domains TEXT, price REAL, typical_seconds REAL, created_at REAL
+    key TEXT, domains TEXT, price REAL, typical_seconds REAL, declared_success REAL,
+    created_at REAL
 );
 CREATE TABLE IF NOT EXISTS matches (
     match_id TEXT PRIMARY KEY, buyer_id TEXT, spec TEXT, band TEXT, candidate_id TEXT,
@@ -28,7 +29,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     parent_job_id TEXT, match_id TEXT, spec TEXT, band TEXT, canary INTEGER, canary_salt TEXT,
     status TEXT, trial INTEGER, self_dealing INTEGER, created_at REAL, deadline_at REAL,
     budget REAL, price REAL, prediction TEXT, delivery TEXT, verdict TEXT, outcome INTEGER,
-    cost REAL, elapsed REAL, attributed TEXT, settled_at REAL
+    cost REAL, reported_cost REAL, elapsed REAL, attributed TEXT, settled_at REAL
 );
 CREATE TABLE IF NOT EXISTS notary_log (
     seq INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL, kind TEXT, job_id TEXT, actor TEXT,
@@ -41,6 +42,9 @@ BEGIN SELECT RAISE(ABORT, 'notary_log is append-only'); END;
 """
 
 JSON_COLUMNS = {"spec", "domains", "prediction", "delivery", "verdict", "attributed"}
+# Columns added after runs were already recorded; older databases get them on open so they
+# can still be audited.
+ADDED_COLUMNS = {("agents", "declared_success"): "REAL", ("jobs", "reported_cost"): "REAL"}
 GENESIS = "0" * 64
 
 
@@ -53,6 +57,11 @@ class Store:
         self.db = sqlite3.connect(path, check_same_thread=False)
         self.db.row_factory = sqlite3.Row
         self.db.executescript(SCHEMA)
+        for (table, col), kind in ADDED_COLUMNS.items():
+            have = {r["name"] for r in self.db.execute(f"PRAGMA table_info({table})")}
+            if col not in have:
+                with self.db:
+                    self.db.execute(f"ALTER TABLE {table} ADD COLUMN {col} {kind}")
 
     def _encode(self, row: dict) -> dict:
         return {k: canonical(v) if k in JSON_COLUMNS and v is not None else v

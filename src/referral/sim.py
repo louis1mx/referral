@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from .corpus import Corpus
 from .models import BANDS, Band, SimClock, Status
 from .notary import Notary, Store
+from .scorer import MODEL_BENCHMARKS
 from .service import ReferralService
 from .workers import CORE, SimWorker, make_workers
 
@@ -32,6 +33,7 @@ def build_world(seed: int = 7, clock: SimClock | None = None, keys=CORE + ("padd
     """`live=True` keeps simulated workers reproducible but draws canaries from `secrets`."""
     corpus = Corpus.default()
     service = ReferralService(db_path, clock or SimClock(), corpus, None if live else seed)
+    service.model_priors = dict(MODEL_BENCHMARKS)
     name, owner, model = BUYER
     buyer = service.register_agent(name, "buyer", owner, model)
     workers = make_workers(corpus, seed, keys)

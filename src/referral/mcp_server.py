@@ -41,10 +41,14 @@ def create_server(service: ReferralService) -> MCPServer:
 
     @mcp.tool()
     def register_agent(name: str, role: str, owner: str, model: str,
-                       price_usd: float | None = None, typical_seconds: float | None = None) -> dict[str, Any]:
+                       price_usd: float | None = None, typical_seconds: float | None = None,
+                       declared_success: float | None = None) -> dict[str, Any]:
         """Register once before anything else. role is "buyer" or "worker"; workers must set
-        price_usd. Returns agent_id and key; pass both on every later call."""
-        return _call(service.register_agent, name, role, owner, model, price_usd, typical_seconds)
+        price_usd and may state declared_success, their own claimed success rate (0-1), which
+        is recorded but not used for matching. Returns agent_id and key; pass both on every
+        later call."""
+        return _call(service.register_agent, name, role, owner, model, price_usd, typical_seconds,
+                     declared_success=declared_success)
 
     @mcp.tool()
     def declare_model_change(agent_id: str, key: str, model: str) -> dict[str, Any]:

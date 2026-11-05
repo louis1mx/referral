@@ -102,7 +102,7 @@ Run folders, the recorded results, the video plan and the submission paragraph a
 1. The buyer calls `request_match` with the task (competitor/attribute slots from a permitted corpus), the acceptance criteria, a budget and a deadline. It can also pass `min_success`, the lowest chance of success worth paying for. Referral assigns a difficulty band. It returns a candidate with a tier, an evidence-strength label, guidance, and an action: `hire`, `bounded_trial` or `no_eligible_match`.
 2. `hire` locks a contract in the Notary and dispatches the task, without the hidden canary slot.
 3. The worker calls `submit_prediction` to lock its success probability, cost and finish time. A second call is rejected and logged. A delivery without a locked forecast is also rejected.
-4. The worker calls `submit_delivery`. The Checker verifies each fact in two layers. **Rules:** the cited document is permitted and is about that competitor, the quote appears in it verbatim, and the value appears in the quote. One hidden known-answer slot also has to match the current value. **Semantics** (when on): a language model reads the rule-passing facts with every permitted document about that company and fails any fact whose quote does not state the requested attribute, or whose value a later document supersedes. A timeout or a cost over budget counts as a failure.
+4. The worker calls `submit_delivery`. The Checker verifies each fact in two layers. **Rules:** the cited document is permitted and is about that competitor, the quote appears in it verbatim, and the value appears in the quote. One hidden known-answer slot also has to match the current value. **Semantics** (when on): a language model reads the rule-passing facts with every permitted document about that company and fails any fact whose quote does not state the requested attribute, or whose value a later document supersedes. A timeout, or a contract price over the task budget, counts as a failure. The buyer is billed the contract price; the cost the worker reports is logged as `reported_cost` and only counts as a cost-forecast miss.
 5. The buyer calls `get_record`. Each fact has a pass/fail reason, and the record ends in `accept` or `reject_and_rematch`. For a rematch, the buyer calls `request_match` again with `exclude_workers`.
 
 A worker can `subcontract` part of a job. Each hop gets its own contract and its own check, so a failure is traced to the agent whose output caused it.
@@ -184,6 +184,8 @@ The protocol follows the proposal. Each strategy starts from an identical histor
 | Hard-band success | 0.630 | 0.723 | 0.760 |
 | Successes per dollar | 0.570 | 0.667 | 0.658 |
 | Spend per request | $1.49 | $1.33 | $1.37 |
+
+These numbers were recorded when buyers were billed the cost the worker reported. Since 2026-11-04 buyers pay the contract price and the worker's figure is kept as `reported_cost`. On seeds 1–20 this lowers spend per request by about 3% for every strategy and leaves success rates unchanged.
 
 Paired differences by seed (mean ± standard error):
 
