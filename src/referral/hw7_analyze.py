@@ -213,7 +213,7 @@ def retest_figure(named, replay) -> None:
     for ax, (title, vals, fmt) in zip(axes, panels):
         ax.set_facecolor(PAPER)
         names = list(vals)
-        colors = [BLUE if "after" in n else INK for n in names]
+        colors = [BLUE if n in ("R after", "new rule") else INK for n in names]
         ax.bar(names, list(vals.values()), color=colors, edgecolor=INK, linewidth=1, width=0.6)
         top = max(list(vals.values()) + [1e-9]) * 1.3
         for x, v in enumerate(vals.values()):
