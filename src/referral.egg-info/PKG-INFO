@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: referral
+Version: 0.1.0
+Summary: Verified track records for agents that hire agents (MIT IDS.865 final project)
+Requires-Python: >=3.11
+Requires-Dist: mcp<3,>=2.3
+Requires-Dist: cryptography>=42
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Provides-Extra: llm
+Requires-Dist: anthropic>=2.1; extra == "llm"

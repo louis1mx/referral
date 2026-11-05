@@ -69,6 +69,9 @@ class ReferralService:
         # Benchmark priors per model, set by the operator. Empty means every model starts
         # from the same neutral prior: a prior nobody can check should not favor anyone.
         self.model_priors: dict[str, float] = {}
+        # True restores the rule layer as it was before HW7: the whole delivered value must
+        # appear in the quote, so "$36M (May 2026)" failed against "...a $36M funding round...".
+        self.strict_values = False
         self.notary = Notary(self.store, self._key_of)
         self._handlers: dict[str, Callable[[ReferralService, dict], None]] = {}
         self._lock = threading.RLock()
@@ -422,7 +425,7 @@ class ReferralService:
             self._settle(job, Status.TIMEOUT, [], cost, elapsed, [agent_id], within_budget=True)
         else:
             spec = TaskSpec.from_dict(job["spec"])
-            verdicts = check_delivery(spec, job["canary"], parsed, self.corpus)
+            verdicts = check_delivery(spec, job["canary"], parsed, self.corpus, self.strict_values)
             semantic = None
             if self.judge is not None:
                 # Runs under the service lock: one model call per delivery, a few seconds.

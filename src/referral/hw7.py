@@ -207,10 +207,11 @@ def judge_facts(corpus: Corpus, spec: TaskSpec, facts: list[dict]) -> list[dict]
 
 def run_request(step: str, cond: str, strategy: str, spec: TaskSpec, task_id: str, band: str,
                 pool: list[str], profiles: dict, repeat: int, persona_seed: int,
-                min_success: float | None = None) -> dict:
+                min_success: float | None = None, strict_values: bool = False) -> dict:
     corpus = Corpus.default()
     tag = f"{step}/{cond}-r{repeat}-{task_id}"
     s, b, judge = fresh_service(corpus, RUNS / f"{tag}.sqlite")
+    s.strict_values = strict_values
     workers = {}
     for k in pool:
         w = make_worker(k, corpus, persona_seed)
@@ -326,7 +327,7 @@ def main(argv=None) -> None:
     elif a.step == "retest":
         from . import hw7_change
         extra = hw7_change.options(a.variant)
-        run_batch(f"retest-{a.variant}", items(f"retest-{a.variant}", ["R"], tasks_for("retest", FRESH, 2),
+        run_batch(f"retest-{a.variant}", items(f"retest-{a.variant}", ["R", "B0"], tasks_for("retest", FRESH, 2),
                                                hw7_change.POOL, **extra), a.parallel)
     else:
         from .hw7_analyze import analyze

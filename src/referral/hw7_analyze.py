@@ -117,16 +117,17 @@ def bar_figure(named: list[tuple[str, dict]], path_stem: str, title: str, highli
     colors = [BLUE if n == highlight else INK for n in names]
     ax.bar(names, vals, color=colors, edgecolor=INK, linewidth=1, width=0.6)
     ax.errorbar(names, vals, yerr=err, fmt="none", ecolor=INK, elinewidth=1, capsize=4)
-    for x, v in enumerate(vals):
-        ax.text(x, v + 1.2, f"{v:.1f}", ha="center", va="bottom", color=INK, fontsize=9)
-    ax.set_ylabel("errors per 100 requested facts", color=INK)
-    ax.set_title(title, color=INK, fontsize=10, loc="left")
+    top = max(max(s["ci"][1] for _, s in named) * 1.25, 10)
+    for x, (v, (_, s)) in enumerate(zip(vals, named)):
+        ax.text(x, s["ci"][1] + top * 0.02, f"{v:.1f}", ha="center", va="bottom", color=INK, fontsize=9)
+    ax.set_ylabel("errors per 100 requested facts", color=INK, fontsize=9)
+    ax.set_title(title, color=INK, fontsize=9, loc="left")
     for side in ("top", "right", "left"):
         ax.spines[side].set_visible(False)
     ax.spines["bottom"].set_color(INK)
     ax.spines["bottom"].set_linewidth(0.6)
     ax.tick_params(colors=INK, length=0)
-    ax.set_ylim(0, max(max(s["ci"][1] for _, s in named) * 1.2, 10))
+    ax.set_ylim(0, top)
     fig.tight_layout()
     for ext in ("png", "svg"):
         fig.savefig(OUT / f"{path_stem}.{ext}", dpi=200, facecolor=PAPER)

@@ -13,6 +13,7 @@ to sit in the canary slot.
 
 from __future__ import annotations
 
+import re
 from dataclasses import replace
 
 from .corpus import Corpus, norm, same_value
@@ -20,8 +21,27 @@ from .models import Fact, FactVerdict, Slot, TaskSpec
 from .semantic import Claim, Judge, JudgeError
 
 
+def core_value(value: str) -> str:
+    """The value without a qualifier the worker added: "$36M (May 2026)" and "$48M funding round"
+    become "$36M" and "$48M". A number or amount is its first token; other values only lose a
+    trailing parenthetical, so "Wren warehouse robot" stays whole."""
+    v = re.sub(r"\s*\([^)]*\)\s*$", "", value.strip())
+    first = v.split()[0] if v.split() else v
+    return first if first[:1] in "$0123456789" else v
+
+
+def supported(value: str, quote: str, strict: bool = False) -> bool:
+    """The value, or under the default rule its core, appears in the quote as whole words."""
+    if norm(value) in norm(quote):
+        return True
+    if strict:
+        return False
+    core = norm(core_value(value))
+    return bool(core) and re.search(rf"(?<![\w.$]){re.escape(core)}(?![\w.])", norm(quote)) is not None
+
+
 def check_fact(fact: Fact | None, slot: Slot, index: int, corpus: Corpus,
-               permitted: set[str], is_canary: bool) -> FactVerdict:
+               permitted: set[str], is_canary: bool, strict_values: bool = False) -> FactVerdict:
     def fail(reason: str) -> FactVerdict:
         return FactVerdict(index, False, reason, is_canary)
 
@@ -34,7 +54,7 @@ def check_fact(fact: Fact | None, slot: Slot, index: int, corpus: Corpus,
         return fail(f"cited document is about {doc.subject}, not {slot.competitor}")
     if norm(fact.quote) not in norm(doc.text):
         return fail("quote does not appear in the cited document")
-    if not fact.value or norm(fact.value) not in norm(fact.quote):
+    if not fact.value or not supported(fact.value, fact.quote, strict_values):
         return fail("value is not supported by the quoted passage")
     if is_canary and not same_value(fact.value, corpus.truth[slot]):
         return fail("value is not current as of the corpus date")
@@ -42,12 +62,12 @@ def check_fact(fact: Fact | None, slot: Slot, index: int, corpus: Corpus,
 
 
 def check_delivery(spec: TaskSpec, canary: int | None, facts: list[Fact],
-                   corpus: Corpus) -> list[FactVerdict]:
+                   corpus: Corpus, strict_values: bool = False) -> list[FactVerdict]:
     by_slot = {}
     for f in facts:
         by_slot.setdefault(Slot(f.competitor, f.attribute), f)
     permitted = corpus.permitted(spec)
-    return [check_fact(by_slot.get(slot), slot, i, corpus, permitted, i == canary)
+    return [check_fact(by_slot.get(slot), slot, i, corpus, permitted, i == canary, strict_values)
             for i, slot in enumerate(spec.slots)]
 
 

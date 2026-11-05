@@ -1,0 +1,8 @@
+mcp<3,>=2.3
+cryptography>=42
+
+[dev]
+pytest>=8
+
+[llm]
+anthropic>=2.1

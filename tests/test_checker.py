@@ -94,3 +94,16 @@ def test_hidden_check_accepts_the_value_as_a_whole_token(corpus):
     f = Fact(slot.competitor, slot.attribute, "Wren warehouse robot", doc.doc_id,
              corpus.sentence_with(doc, "Wren"))
     assert check_fact(f, slot, 0, corpus, set(corpus.docs), True).passed
+
+
+def test_a_qualified_value_passes_when_its_core_is_in_the_quote():
+    from referral.checker import core_value, supported
+    quote = "Halcyon Motion announced a $36M funding round in May 2026."
+    assert core_value("$36M (May 2026)") == "$36M" and core_value("$48M funding round") == "$48M"
+    assert core_value("Wren warehouse robot") == "Wren warehouse robot"
+    assert supported("$36M (May 2026)", quote)
+    assert not supported("$36M (May 2026)", quote, strict=True)      # the rule before HW7
+    assert not supported("$3M", quote)                               # no partial-number match
+    assert not supported("$360M round", quote)
+    assert not supported("1200", "Gantry Labs employs 120 people.")  # the padder's appended digit
+    assert not supported("Tern robot", "Its flagship product is the Wren warehouse robot.")

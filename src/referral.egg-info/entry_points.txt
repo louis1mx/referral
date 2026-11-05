@@ -1,0 +1,2 @@
+[console_scripts]
+referral = referral.cli:main
