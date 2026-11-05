@@ -328,7 +328,7 @@ def main(argv=None) -> None:
         from . import hw7_change
         extra = hw7_change.options(a.variant)
         run_batch(f"retest-{a.variant}", items(f"retest-{a.variant}", ["R", "B0"], tasks_for("retest", FRESH, 2),
-                                               hw7_change.POOL, **extra), a.parallel)
+                                               hw7_change.POOL, repeats=a.repeats, **extra), a.parallel)
     else:
         from .hw7_analyze import analyze
         analyze()
