@@ -1,0 +1,6758 @@
+{
+ "agents": {
+  "opus": {
+   "agent_id": "agt-claude-opus-worker",
+   "name": "claude-opus-worker",
+   "model": "claude-opus-5-5",
+   "price": 1.6
+  },
+  "haiku": {
+   "agent_id": "agt-claude-haiku-worker",
+   "name": "claude-haiku-worker",
+   "model": "claude-haiku-5-5",
+   "price": 0.3
+  },
+  "overconfident": {
+   "agent_id": "agt-olu-overconfident",
+   "name": "olu-overconfident",
+   "model": "corvid-1",
+   "price": 0.9
+  },
+  "overconfident-2": {
+   "agent_id": "agt-olu-overconfident-2",
+   "name": "olu-overconfident-2",
+   "model": "corvid-1",
+   "price": 0.9
+  },
+  "padder": {
+   "agent_id": "agt-pat-padder",
+   "name": "pat-padder",
+   "model": "atlas-mini-2",
+   "price": 0.7
+  },
+  "padder-2": {
+   "agent_id": "agt-pat-padder-2",
+   "name": "pat-padder-2",
+   "model": "atlas-mini-2",
+   "price": 0.7
+  },
+  "sonnet": {
+   "agent_id": "agt-claude-sonnet-worker",
+   "name": "claude-sonnet-worker",
+   "model": "claude-sonnet-5-5",
+   "price": 0.9
+  }
+ },
+ "jobs": {
+  "opus|1": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-opus-worker",
+    "worker_model": "claude-opus-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 2,
+    "canary_salt": "d24df5d1f623c80a",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 1.6,
+    "prediction": {
+     "cost": 1.6,
+     "finish_s": 20.0,
+     "locked_at": 0.0,
+     "p_success": 0.95
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "2015",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-profile-2024",
+       "quote": "Its flagship product is the Keel warehouse robot.",
+       "value": "Keel",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 1.6,
+    "reported_cost": 0.046271,
+    "elapsed": 9.858025291992817,
+    "attributed": [],
+    "settled_at": 9.858025291992817
+   },
+   "usage": {
+    "api_usd": 0.046271,
+    "tokens": 7530,
+    "api_seconds": 9.858025291992817,
+    "api_error": null
+   },
+   "judge_usd": 0.00029319999999999997
+  },
+  "opus|0": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-opus-worker",
+    "worker_model": "claude-opus-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 4,
+    "canary_salt": "eb48f4e2ede7d8c7",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 1.6,
+    "prediction": {
+     "cost": 1.6,
+     "finish_s": 20.0,
+     "locked_at": 0.0,
+     "p_success": 0.95
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Its flagship product is the Forge warehouse robot.",
+       "value": "Forge",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 1.6,
+    "reported_cost": 0.045901,
+    "elapsed": 10.014063334005186,
+    "attributed": [],
+    "settled_at": 10.014063334005186
+   },
+   "usage": {
+    "api_usd": 0.045901,
+    "tokens": 7510,
+    "api_seconds": 10.014063334005186,
+    "api_error": null
+   },
+   "judge_usd": 0.0003092
+  },
+  "haiku|4": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-haiku-worker",
+    "worker_model": "claude-haiku-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 2,
+    "canary_salt": "8bdde706929e8143",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.3,
+    "prediction": {
+     "cost": 0.3,
+     "finish_s": 45.0,
+     "locked_at": 0.0,
+     "p_success": 0.8
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-update-2026",
+       "quote": "After the round, Fathom Mechatronics has 175 employees.",
+       "value": "175",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M funding round in May 2026",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.3,
+    "reported_cost": 0.001744,
+    "elapsed": 12.646103707986185,
+    "attributed": [],
+    "settled_at": 12.646103707986185
+   },
+   "usage": {
+    "api_usd": 0.0017435250000000001,
+    "tokens": 8735,
+    "api_seconds": 12.646103707986185,
+    "api_error": null
+   },
+   "judge_usd": 0.0003787
+  },
+  "haiku|2": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-haiku-worker",
+    "worker_model": "claude-haiku-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 1,
+    "canary_salt": "f9a143fb4ec9a841",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.3,
+    "prediction": {
+     "cost": 0.3,
+     "finish_s": 90.0,
+     "locked_at": 0.0,
+     "p_success": 0.6
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290 employees",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "Everline Systems announced a $48M funding round in May 2026.",
+       "value": "$48M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.3,
+    "reported_cost": 0.001367,
+    "elapsed": 13.562785416987026,
+    "attributed": [],
+    "settled_at": 13.562785416987026
+   },
+   "usage": {
+    "api_usd": 0.001366885,
+    "tokens": 8598,
+    "api_seconds": 13.562785416987026,
+    "api_error": null
+   },
+   "judge_usd": 0.00031069999999999996
+  },
+  "haiku|3": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-haiku-worker",
+    "worker_model": "claude-haiku-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 4,
+    "canary_salt": "dca74cefc6a0d9c0",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.3,
+    "prediction": {
+     "cost": 0.3,
+     "finish_s": 45.0,
+     "locked_at": 0.0,
+     "p_success": 0.7
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-update-2026",
+       "quote": "After the round, Ironbark AI has 115 employees.",
+       "value": "115",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern warehouse robot",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-profile-2024",
+       "quote": "Its flagship product is the Canopy warehouse robot.",
+       "value": "Canopy warehouse robot",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.3,
+    "reported_cost": 0.001539,
+    "elapsed": 12.396834957995452,
+    "attributed": [],
+    "settled_at": 12.396834957995452
+   },
+   "usage": {
+    "api_usd": 0.0015393849999999999,
+    "tokens": 8937,
+    "api_seconds": 12.396834957995452,
+    "api_error": null
+   },
+   "judge_usd": 0.0003697
+  },
+  "haiku|5": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-haiku-worker",
+    "worker_model": "claude-haiku-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 4,
+    "canary_salt": "f62f1482d33eb5dc",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.3,
+    "prediction": {
+     "cost": 0.3,
+     "finish_s": 60.0,
+     "locked_at": 0.0,
+     "p_success": 0.7
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M (May 2026)",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M (May 2026)",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "value is not supported by the quoted passage",
+       "semantic": null,
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": false,
+       "reason": "value is not supported by the quoted passage",
+       "semantic": null,
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 3,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.3,
+    "reported_cost": 0.001728,
+    "elapsed": 15.782319373975042,
+    "attributed": [
+     "agt-claude-haiku-worker"
+    ],
+    "settled_at": 15.782319373975042
+   },
+   "usage": {
+    "api_usd": 0.0017276350000000002,
+    "tokens": 9321,
+    "api_seconds": 15.782319373975042,
+    "api_error": null
+   },
+   "judge_usd": 0.00024619999999999997
+  },
+  "haiku|1": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-haiku-worker",
+    "worker_model": "claude-haiku-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 0,
+    "canary_salt": "dfce2da35e99dcf0",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.3,
+    "prediction": {
+     "cost": 0.3,
+     "finish_s": 25.0,
+     "locked_at": 0.0,
+     "p_success": 0.8
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "2015",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-profile-2024",
+       "quote": "Its flagship product is the Keel warehouse robot.",
+       "value": "Keel",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.3,
+    "reported_cost": 0.001594,
+    "elapsed": 15.990802374988561,
+    "attributed": [],
+    "settled_at": 15.990802374988561
+   },
+   "usage": {
+    "api_usd": 0.001593635,
+    "tokens": 9059,
+    "api_seconds": 15.990802374988561,
+    "api_error": null
+   },
+   "judge_usd": 0.0002877
+  },
+  "haiku|0": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-haiku-worker",
+    "worker_model": "claude-haiku-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 1,
+    "canary_salt": "4dd5e5980a92b28a",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.3,
+    "prediction": {
+     "cost": 0.3,
+     "finish_s": 30.0,
+     "locked_at": 0.0,
+     "p_success": 0.55
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Its flagship product is the Forge warehouse robot.",
+       "value": "Forge",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.3,
+    "reported_cost": 0.001535,
+    "elapsed": 16.004775832989253,
+    "attributed": [],
+    "settled_at": 16.004775832989253
+   },
+   "usage": {
+    "api_usd": 0.001535385,
+    "tokens": 8941,
+    "api_seconds": 16.004775832989253,
+    "api_error": null
+   },
+   "judge_usd": 0.0002927
+  },
+  "overconfident|0": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 4,
+    "canary_salt": "be3e70ac461bea6c",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 42.0,
+     "locked_at": 0.0,
+     "p_success": 0.98
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Its flagship product is the Forge warehouse robot.",
+       "value": "Forge",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.96,
+    "elapsed": 45.86047423026913,
+    "attributed": [],
+    "settled_at": 45.86047423026913
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003172
+  },
+  "overconfident|3": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 0,
+    "canary_salt": "2f983b1771e7e1e1",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 60.0,
+     "locked_at": 0.0,
+     "p_success": 0.909
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-update-2026",
+       "quote": "After the round, Ironbark AI has 115 employees.",
+       "value": "115",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-profile-2024",
+       "quote": "Its flagship product is the Canopy warehouse robot.",
+       "value": "Canopy",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.924,
+    "elapsed": 57.55310389256696,
+    "attributed": [],
+    "settled_at": 57.55310389256696
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003292
+  },
+  "overconfident|1": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 3,
+    "canary_salt": "855e5a2dcbc8a3a9",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 42.0,
+     "locked_at": 0.0,
+     "p_success": 0.98
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "2015",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-profile-2024",
+       "quote": "Its flagship product is the Keel warehouse robot.",
+       "value": "Keel",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.926,
+    "elapsed": 42.849968600039716,
+    "attributed": [],
+    "settled_at": 42.849968600039716
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003122
+  },
+  "overconfident|2": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 3,
+    "canary_salt": "a0454fece20f547b",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 60.0,
+     "locked_at": 0.0,
+     "p_success": 0.904
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "Everline Systems announced a $48M funding round in May 2026.",
+       "value": "$48M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": true,
+       "passed": false,
+       "reason": "missing",
+       "semantic": null,
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 4,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.9,
+    "reported_cost": 0.938,
+    "elapsed": 38.73604057153938,
+    "attributed": [
+     "agt-olu-overconfident"
+    ],
+    "settled_at": 38.73604057153938
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003432
+  },
+  "overconfident|4": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 4,
+    "canary_salt": "71b6928e33fa5a4f",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 78.0,
+     "locked_at": 0.0,
+     "p_success": 0.9
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-update-2026",
+       "quote": "After the round, Fathom Mechatronics has 175 employees.",
+       "value": "175",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.963,
+    "elapsed": 59.76741347224872,
+    "attributed": [],
+    "settled_at": 59.76741347224872
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003362
+  },
+  "overconfident-2|0": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident-2",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 2,
+    "canary_salt": "076a2e1723565c47",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 42.0,
+     "locked_at": 0.0,
+     "p_success": 0.98
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Its flagship product is the Forge warehouse robot.",
+       "value": "Forge",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.904,
+    "elapsed": 38.33347905895733,
+    "attributed": [],
+    "settled_at": 38.33347905895733
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003007
+  },
+  "overconfident|5": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 3,
+    "canary_salt": "2070c79f5b308c62",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 78.0,
+     "locked_at": 0.0,
+     "p_success": 0.9
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems reported 2016 in its latest filing.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "quote does not appear in the cited document",
+       "semantic": null,
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 4,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.9,
+    "reported_cost": 0.937,
+    "elapsed": 86.4460430896244,
+    "attributed": [
+     "agt-olu-overconfident"
+    ],
+    "settled_at": 86.4460430896244
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003097
+  },
+  "opus|2": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-opus-worker",
+    "worker_model": "claude-opus-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 0,
+    "canary_salt": "4ffcc08732718833",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 1.6,
+    "prediction": {
+     "cost": 1.6,
+     "finish_s": 30.0,
+     "locked_at": 0.0,
+     "p_success": 0.9
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "Everline Systems announced a $48M funding round in May 2026.",
+       "value": "$48M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 1.6,
+    "reported_cost": 0.021016,
+    "elapsed": 8.489360167004634,
+    "attributed": [],
+    "settled_at": 8.489360167004634
+   },
+   "usage": {
+    "api_usd": 0.021016,
+    "tokens": 7473,
+    "api_seconds": 8.489360167004634,
+    "api_error": null
+   },
+   "judge_usd": 0.0003362
+  },
+  "opus|3": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-opus-worker",
+    "worker_model": "claude-opus-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 4,
+    "canary_salt": "24468f88476b969b",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 1.6,
+    "prediction": {
+     "cost": 1.6,
+     "finish_s": 30.0,
+     "locked_at": 0.0,
+     "p_success": 0.93
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-update-2026",
+       "quote": "After the round, Ironbark AI has 115 employees.",
+       "value": "115",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern warehouse robot",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-profile-2024",
+       "quote": "Its flagship product is the Canopy warehouse robot.",
+       "value": "Canopy warehouse robot",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 1.6,
+    "reported_cost": 0.021836,
+    "elapsed": 9.43007000000216,
+    "attributed": [],
+    "settled_at": 9.43007000000216
+   },
+   "usage": {
+    "api_usd": 0.021836,
+    "tokens": 7508,
+    "api_seconds": 9.43007000000216,
+    "api_error": null
+   },
+   "judge_usd": 0.0003462
+  },
+  "overconfident-2|1": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident-2",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 1,
+    "canary_salt": "141ad97ac72fef1b",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 42.0,
+     "locked_at": 0.0,
+     "p_success": 0.98
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "2015",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-profile-2024",
+       "quote": "Its flagship product is the Keel warehouse robot.",
+       "value": "Keel",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.925,
+    "elapsed": 45.03319902816025,
+    "attributed": [],
+    "settled_at": 45.03319902816025
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003797
+  },
+  "opus|5": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-opus-worker",
+    "worker_model": "claude-opus-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 3,
+    "canary_salt": "c1a4e19228a3ce1b",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 1.6,
+    "prediction": {
+     "cost": 1.6,
+     "finish_s": 30.0,
+     "locked_at": 0.0,
+     "p_success": 0.85
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 1.6,
+    "reported_cost": 0.022666,
+    "elapsed": 9.395946917007677,
+    "attributed": [],
+    "settled_at": 9.395946917007677
+   },
+   "usage": {
+    "api_usd": 0.022666,
+    "tokens": 7557,
+    "api_seconds": 9.395946917007677,
+    "api_error": null
+   },
+   "judge_usd": 0.00034219999999999997
+  },
+  "opus|4": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-opus-worker",
+    "worker_model": "claude-opus-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 2,
+    "canary_salt": "f61804ad835c3f8c",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 1.6,
+    "prediction": {
+     "cost": 1.6,
+     "finish_s": 30.0,
+     "locked_at": 0.0,
+     "p_success": 0.9
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-update-2026",
+       "quote": "After the round, Fathom Mechatronics has 175 employees.",
+       "value": "175",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 1.6,
+    "reported_cost": 0.022566,
+    "elapsed": 9.778329207969364,
+    "attributed": [],
+    "settled_at": 9.778329207969364
+   },
+   "usage": {
+    "api_usd": 0.022566000000000003,
+    "tokens": 7552,
+    "api_seconds": 9.778329207969364,
+    "api_error": null
+   },
+   "judge_usd": 0.0004277
+  },
+  "overconfident-2|2": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident-2",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 0,
+    "canary_salt": "4ac6adf31d70cba3",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 60.0,
+     "locked_at": 0.0,
+     "p_success": 0.927
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "Everline Systems announced a $48M funding round in May 2026.",
+       "value": "$48M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.996,
+    "elapsed": 66.6599341074157,
+    "attributed": [],
+    "settled_at": 66.6599341074157
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003237
+  },
+  "overconfident-2|3": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident-2",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 0,
+    "canary_salt": "6be492afcbee3469",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 60.0,
+     "locked_at": 0.0,
+     "p_success": 0.925
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-update-2026",
+       "quote": "After the round, Ironbark AI has 115 employees.",
+       "value": "115",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-profile-2024",
+       "quote": "Its flagship product is the Canopy warehouse robot.",
+       "value": "Canopy",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.926,
+    "elapsed": 58.13876012729945,
+    "attributed": [],
+    "settled_at": 58.13876012729945
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003437
+  },
+  "overconfident-2|5": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident-2",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 4,
+    "canary_salt": "6f7ad7853903c5bb",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 78.0,
+     "locked_at": 0.0,
+     "p_success": 0.9
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.945,
+    "elapsed": 77.5807735540529,
+    "attributed": [],
+    "settled_at": 77.5807735540529
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003772
+  },
+  "overconfident-2|4": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-olu-overconfident-2",
+    "worker_model": "corvid-1",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 0,
+    "canary_salt": "c7ce0a25377dd5c6",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 78.0,
+     "locked_at": 0.0,
+     "p_success": 0.9
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-update-2026",
+       "quote": "Fathom Mechatronics reported 175 in its latest filing.",
+       "value": "175",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation reported $62M in its latest filing.",
+       "value": "$62M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "quote does not appear in the cited document",
+       "semantic": null,
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "quote does not appear in the cited document",
+       "semantic": null,
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 3,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.9,
+    "reported_cost": 0.926,
+    "elapsed": 96.58205665235485,
+    "attributed": [
+     "agt-olu-overconfident-2"
+    ],
+    "settled_at": 96.58205665235485
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0002252
+  },
+  "padder|0": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 2,
+    "canary_salt": "77a9342e7638a190",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 31.5,
+     "locked_at": 0.0,
+     "p_success": 0.732
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Its flagship product is the Forge warehouse robot.",
+       "value": "Forge",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.7,
+    "reported_cost": 0.702,
+    "elapsed": 35.230228340065445,
+    "attributed": [],
+    "settled_at": 35.230228340065445
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003092
+  },
+  "padder|2": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 4,
+    "canary_salt": "8965c00ff754a1c8",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 45.0,
+     "locked_at": 0.0,
+     "p_success": 0.347
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "Everline Systems announced a $48M funding round in May 2026.",
+       "value": "$48M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo0",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": false,
+       "reason": "value is not supported by the quoted passage",
+       "semantic": null,
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 4,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.7,
+    "reported_cost": 0.722,
+    "elapsed": 37.545741020244016,
+    "attributed": [
+     "agt-pat-padder"
+    ],
+    "settled_at": 37.545741020244016
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003217
+  },
+  "padder|1": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 2,
+    "canary_salt": "08e1a6da4dc2db3f",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 31.5,
+     "locked_at": 0.0,
+     "p_success": 0.758
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "2015",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-profile-2024",
+       "quote": "Its flagship product is the Keel warehouse robot.",
+       "value": "Keel",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.7,
+    "reported_cost": 0.736,
+    "elapsed": 26.58350036257994,
+    "attributed": [],
+    "settled_at": 26.58350036257994
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003392
+  },
+  "padder|3": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 4,
+    "canary_salt": "782bff32ca218a03",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 45.0,
+     "locked_at": 0.0,
+     "p_success": 0.356
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-update-2026",
+       "quote": "After the round, Ironbark AI has 115 employees.",
+       "value": "115",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-profile-2024",
+       "quote": "Its flagship product is the Canopy warehouse robot.",
+       "value": "Canopy",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.7,
+    "reported_cost": 0.739,
+    "elapsed": 51.5988699718371,
+    "attributed": [],
+    "settled_at": 51.5988699718371
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003232
+  },
+  "padder-2|0": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder-2",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 4,
+    "canary_salt": "e881ed3c0d93c98c",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 31.5,
+     "locked_at": 0.0,
+     "p_success": 0.821
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": false,
+       "reason": "missing",
+       "semantic": null,
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 4,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.7,
+    "reported_cost": 0.724,
+    "elapsed": 25.91748800462369,
+    "attributed": [
+     "agt-pat-padder-2"
+    ],
+    "settled_at": 25.91748800462369
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.00028169999999999996
+  },
+  "padder|4": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 2,
+    "canary_salt": "15a626f536b6223b",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 58.5,
+     "locked_at": 0.0,
+     "p_success": 0.104
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-update-2026",
+       "quote": "After the round, Fathom Mechatronics has 175 employees.",
+       "value": "175",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation reported Tern in its latest filing.",
+       "value": "Tern",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "quote does not appear in the cited document",
+       "semantic": null,
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 4,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.7,
+    "reported_cost": 0.721,
+    "elapsed": 50.713710190885514,
+    "attributed": [
+     "agt-pat-padder"
+    ],
+    "settled_at": 50.713710190885514
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003117
+  },
+  "padder|5": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 0,
+    "canary_salt": "5ebdf1b16b8bb8e4",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 58.5,
+     "locked_at": 0.0,
+     "p_success": 0.138
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M0",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": true,
+       "passed": false,
+       "reason": "missing",
+       "semantic": null,
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "value is not supported by the quoted passage",
+       "semantic": null,
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 3,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.7,
+    "reported_cost": 0.706,
+    "elapsed": 60.49880100079514,
+    "attributed": [
+     "agt-pat-padder"
+    ],
+    "settled_at": 60.49880100079514
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003632
+  },
+  "padder-2|1": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder-2",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 3,
+    "canary_salt": "9d5b9058e9672a1f",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 31.5,
+     "locked_at": 0.0,
+     "p_success": 0.839
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "2015",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-profile-2024",
+       "quote": "Its flagship product is the Keel warehouse robot.",
+       "value": "Keel",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.7,
+    "reported_cost": 0.728,
+    "elapsed": 25.058344454989854,
+    "attributed": [],
+    "settled_at": 25.058344454989854
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0003022
+  },
+  "padder-2|2": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder-2",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 2,
+    "canary_salt": "c8d07224f0f2581d",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 45.0,
+     "locked_at": 0.0,
+     "p_success": 0.374
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "The company most recently raised a $25M round.",
+       "value": "$25M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics reported $110M in its latest filing.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo0",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "semantic check: a later document supersedes it (Quote states $25M as the latest round, but a later May 2026 document reports a $48M round.)",
+       "semantic": "fail",
+       "slot": 1
+      },
+      {
+       "canary": true,
+       "passed": false,
+       "reason": "quote does not appear in the cited document",
+       "semantic": null,
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "value is not supported by the quoted passage",
+       "semantic": null,
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 3,
+      "model": "claude-haiku-5-5",
+      "rejected": 1,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.7,
+    "reported_cost": 0.702,
+    "elapsed": 41.535755005214384,
+    "attributed": [
+     "agt-pat-padder-2"
+    ],
+    "settled_at": 41.535755005214384
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.00022119999999999998
+  },
+  "padder-2|3": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder-2",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 4,
+    "canary_salt": "8c48a84855cf4955",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 45.0,
+     "locked_at": 0.0,
+     "p_success": 0.344
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-update-2026",
+       "quote": "After the round, Ironbark AI has 115 employees.",
+       "value": "115",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation reported Tern in its latest filing.",
+       "value": "Tern",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-profile-2024",
+       "quote": "Its flagship product is the Canopy warehouse robot.",
+       "value": "Canopy",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "quote does not appear in the cited document",
+       "semantic": null,
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 4,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.7,
+    "reported_cost": 0.719,
+    "elapsed": 41.95019360920987,
+    "attributed": [
+     "agt-pat-padder-2"
+    ],
+    "settled_at": 41.95019360920987
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.00028869999999999997
+  },
+  "padder-2|4": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder-2",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 0,
+    "canary_salt": "68970eb8ba0efe4f",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 58.5,
+     "locked_at": 0.0,
+     "p_success": 0.09
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-update-2026",
+       "quote": "After the round, Fathom Mechatronics has 175 employees.",
+       "value": "175",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.7,
+    "reported_cost": 0.711,
+    "elapsed": 68.67849638243649,
+    "attributed": [],
+    "settled_at": 68.67849638243649
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.00035119999999999997
+  },
+  "padder-2|5": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-pat-padder-2",
+    "worker_model": "atlas-mini-2",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 4,
+    "canary_salt": "8a7452f93c57dd6e",
+    "status": "failed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.7,
+    "prediction": {
+     "cost": 0.7,
+     "finish_s": 58.5,
+     "locked_at": 0.0,
+     "p_success": 0.187
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "3400",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation reported Oslo in its latest filing.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "The company most recently raised a $40M round.",
+       "value": "$40M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "missing",
+       "semantic": null,
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "value is not supported by the quoted passage",
+       "semantic": null,
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "quote does not appear in the cited document",
+       "semantic": null,
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": false,
+       "reason": "semantic check: a later document supersedes it (2024 quote states $40M was most recent round, but a 2026 document reports a later $110M round.)",
+       "semantic": "fail",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 2,
+      "model": "claude-haiku-5-5",
+      "rejected": 1,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 0,
+    "cost": 0.7,
+    "reported_cost": 0.742,
+    "elapsed": 52.642337704126405,
+    "attributed": [
+     "agt-pat-padder-2"
+    ],
+    "settled_at": 52.642337704126405
+   },
+   "usage": {
+    "api_usd": 0,
+    "tokens": 0,
+    "api_seconds": 0,
+    "api_error": null
+   },
+   "judge_usd": 0.0001802
+  },
+  "sonnet|0": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-sonnet-worker",
+    "worker_model": "claude-sonnet-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 0,
+    "canary_salt": "71836588ea88519d",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 20.0,
+     "locked_at": 0.0,
+     "p_success": 0.93
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Its flagship product is the Forge warehouse robot.",
+       "value": "Forge",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.02297,
+    "elapsed": 8.53336791601032,
+    "attributed": [],
+    "settled_at": 8.53336791601032
+   },
+   "usage": {
+    "api_usd": 0.022970499999999998,
+    "tokens": 7518,
+    "api_seconds": 8.53336791601032,
+    "api_error": null
+   },
+   "judge_usd": 0.0002912
+  },
+  "sonnet|1": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-sonnet-worker",
+    "worker_model": "claude-sonnet-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics"
+      }
+     ]
+    },
+    "band": "easy",
+    "canary": 1,
+    "canary_salt": "4df0138b841bf91e",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 20.0,
+     "locked_at": 0.0,
+     "p_success": 0.95
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "2015",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-profile-2024",
+       "quote": "Its flagship product is the Keel warehouse robot.",
+       "value": "Keel warehouse robot",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern warehouse robot",
+       "via_job": null
+      },
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-profile-2024",
+       "quote": "Cobalt Dynamics was founded in 2012 and is headquartered in Pittsburgh.",
+       "value": "Pittsburgh",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.021672,
+    "elapsed": 9.169798333983636,
+    "attributed": [],
+    "settled_at": 9.169798333983636
+   },
+   "usage": {
+    "api_usd": 0.0216723,
+    "tokens": 7524,
+    "api_seconds": 9.169798333983636,
+    "api_error": null
+   },
+   "judge_usd": 0.0003447
+  },
+  "sonnet|2": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-sonnet-worker",
+    "worker_model": "claude-sonnet-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 0,
+    "canary_salt": "72da69e49e125b46",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 20.0,
+     "locked_at": 0.0,
+     "p_success": 0.93
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "Everline Systems announced a $48M funding round in May 2026.",
+       "value": "$48M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.016483,
+    "elapsed": 8.710417541995412,
+    "attributed": [],
+    "settled_at": 8.710417541995412
+   },
+   "usage": {
+    "api_usd": 0.0164827,
+    "tokens": 7481,
+    "api_seconds": 8.710417541995412,
+    "api_error": null
+   },
+   "judge_usd": 0.0003827
+  },
+  "sonnet|5": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-sonnet-worker",
+    "worker_model": "claude-sonnet-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 2,
+    "canary_salt": "22befa75fc07b86c",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 20.0,
+     "locked_at": 0.0,
+     "p_success": 0.9
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "hq_city",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Borealis Automation was founded in 2015 and is headquartered in Oslo.",
+       "value": "Oslo",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Cobalt Dynamics",
+       "doc_id": "cobalt-dynamics-update-2026",
+       "quote": "Cobalt Dynamics announced a $110M funding round in May 2026.",
+       "value": "$110M",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.010563,
+    "elapsed": 6.632703582989052,
+    "attributed": [],
+    "settled_at": 6.632703582989052
+   },
+   "usage": {
+    "api_usd": 0.010563,
+    "tokens": 7486,
+    "api_seconds": 6.632703582989052,
+    "api_error": null
+   },
+   "judge_usd": 0.0003412
+  },
+  "sonnet|4": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-sonnet-worker",
+    "worker_model": "claude-sonnet-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics"
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      }
+     ]
+    },
+    "band": "hard",
+    "canary": 2,
+    "canary_salt": "fcb5ed1e711459b6",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 20.0,
+     "locked_at": 0.0,
+     "p_success": 0.93
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "headcount",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "After the round, Borealis Automation has 340 employees.",
+       "value": "340",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Fathom Mechatronics",
+       "doc_id": "fathom-mechatronics-update-2026",
+       "quote": "After the round, Fathom Mechatronics has 175 employees.",
+       "value": "175",
+       "via_job": null
+      },
+      {
+       "attribute": "latest_funding",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-update-2026",
+       "quote": "Borealis Automation announced a $62M funding round in May 2026.",
+       "value": "$62M",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Its flagship product is the Atlas Picker warehouse robot.",
+       "value": "Atlas Picker",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.010423,
+    "elapsed": 6.893409124983009,
+    "attributed": [],
+    "settled_at": 6.893409124983009
+   },
+   "usage": {
+    "api_usd": 0.010423,
+    "tokens": 7472,
+    "api_seconds": 6.893409124983009,
+    "api_error": null
+   },
+   "judge_usd": 0.0003412
+  },
+  "sonnet|3": {
+   "row": {
+    "job_id": "job-0001",
+    "buyer_id": "agt-hw7-buyer",
+    "worker_id": "agt-claude-sonnet-worker",
+    "worker_model": "claude-sonnet-5-5",
+    "parent_job_id": null,
+    "match_id": null,
+    "spec": {
+     "acceptance": "Each fact must quote, verbatim, a passage from a permitted corpus document about that competitor, and the passage must contain the stated value. Values must be current as of the corpus date; some slots are spot-checked against known answers.",
+     "budget": 2.0,
+     "company": "Acme Robotics",
+     "corpus_ids": null,
+     "deadline_s": 300.0,
+     "domain": "sourced-research",
+     "slots": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation"
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems"
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI"
+      }
+     ]
+    },
+    "band": "medium",
+    "canary": 4,
+    "canary_salt": "a6bdcae24e23fd39",
+    "status": "passed",
+    "trial": 0,
+    "self_dealing": 0,
+    "created_at": 0.0,
+    "deadline_at": 300.0,
+    "budget": 2.0,
+    "price": 0.9,
+    "prediction": {
+     "cost": 0.9,
+     "finish_s": 20.0,
+     "locked_at": 0.0,
+     "p_success": 0.93
+    },
+    "delivery": {
+     "facts": [
+      {
+       "attribute": "founded_year",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-profile-2024",
+       "quote": "Everline Systems was founded in 2016 and is headquartered in Austin.",
+       "value": "2016",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-update-2026",
+       "quote": "After the round, Ironbark AI has 115 employees.",
+       "value": "115",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Borealis Automation",
+       "doc_id": "borealis-automation-profile-2024",
+       "quote": "Its flagship product is the Tern warehouse robot.",
+       "value": "Tern warehouse robot",
+       "via_job": null
+      },
+      {
+       "attribute": "headcount",
+       "competitor": "Everline Systems",
+       "doc_id": "everline-systems-update-2026",
+       "quote": "After the round, Everline Systems has 290 employees.",
+       "value": "290",
+       "via_job": null
+      },
+      {
+       "attribute": "flagship_product",
+       "competitor": "Ironbark AI",
+       "doc_id": "ironbark-ai-profile-2024",
+       "quote": "Its flagship product is the Canopy warehouse robot.",
+       "value": "Canopy warehouse robot",
+       "via_job": null
+      }
+     ]
+    },
+    "verdict": {
+     "facts": [
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 0
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 1
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 2
+      },
+      {
+       "canary": false,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 3
+      },
+      {
+       "canary": true,
+       "passed": true,
+       "reason": "verified",
+       "semantic": "pass",
+       "slot": 4
+      }
+     ],
+     "semantic_check": {
+      "judged": 5,
+      "model": "claude-haiku-5-5",
+      "rejected": 0,
+      "status": "ok"
+     },
+     "timeout": false,
+     "within_budget": true
+    },
+    "outcome": 1,
+    "cost": 0.9,
+    "reported_cost": 0.010378,
+    "elapsed": 8.576100832986413,
+    "attributed": [],
+    "settled_at": 8.576100832986413
+   },
+   "usage": {
+    "api_usd": 0.010378,
+    "tokens": 7460,
+    "api_seconds": 8.576100832986413,
+    "api_error": null
+   },
+   "judge_usd": 0.0003647
+  }
+ }
+}

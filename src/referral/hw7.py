@@ -136,11 +136,12 @@ def worker_usage(w, job_id: str) -> dict:
 def warmup_tasks(corpus: Corpus) -> list[TaskSpec]:
     rng = random.Random(f"hw7-warmup|{SEEDS['warmup']}")
     return [corpus.make_task(rng, band, budget=BUDGET, deadline_s=DEADLINE_S, competitors=TUNING)
-            for band in BANDS for _ in range(2)]
+            for band in BANDS for _ in range(3)]
 
 
 def run_warmup(keys: list[str], parallel: int = 6) -> dict:
-    """Every worker gets the same 6 trial jobs (2 per band) on tuning competitors."""
+    """Every worker gets the same 9 trial jobs (3 per band) on tuning competitors. Three per band
+    is the least at which the Scorer may use a band's forecasts (MIN_FORECASTS_FOR_TRUST)."""
     path = OUT / "warmup.json"
     done = json.loads(path.read_text()) if path.exists() else {"agents": {}, "jobs": {}}
     corpus = Corpus.default()

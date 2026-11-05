@@ -14,10 +14,12 @@ Seeds (tasks are drawn with `Corpus.make_task(rng, band, competitors=...)`, `rng
 
 | Step | Competitors | Seed | Tasks |
 |---|---|---|---|
-| Warm-up | tuning | 7001 | 6 (2 per band), the same for every worker |
+| Warm-up | tuning | 7001 | 9 (3 per band), the same for every worker |
 | Pilot | tuning | 7000 | 2 (easy, hard) |
 | Main run | fresh | 7002 | 12 (4 per band) |
 | Limit test | tuning | 7003 | 6 (2 per band) |
 | Retest | fresh | 7004 | 6 (2 per band) |
 
 Simulated personas use seed 865 plus the repeat number. Settings live in `src/referral/hw7.py`.
+
+Pre-run change (21:15 ET, before any pilot or main-run result): the warm-up was 6 jobs (2 per band). The Scorer only uses a band's forecasts after 3 forecasts in that band, so with 2 per band Full Referral would rank workers exactly like outcomes-only and the R vs B1 comparison would test nothing. The warm-up is now 9 jobs (3 per band). The first 6-job warm-up was discarded; its log is kept in `notes.md`.
