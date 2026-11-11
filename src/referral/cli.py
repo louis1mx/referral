@@ -27,6 +27,9 @@ def main(argv: list[str] | None = None) -> None:
     serve = sub.add_parser("serve", help="run the MCP server with a seeded history")
     serve.add_argument("--seed", type=int, default=4)
     serve.add_argument("--db", default=":memory:", help="SQLite path (default: in memory)")
+    serve.add_argument("--history", default="seeded", choices=["seeded", "none"],
+                       help="seeded: five simulated workers with 12 trial jobs each (default); "
+                            "none: start empty, so only agents that register themselves are matched")
     serve.add_argument("--transport", default="stdio", choices=["stdio", "http"])
     serve.add_argument("--port", type=int, default=8791, help="HTTP port (serves /mcp on 127.0.0.1)")
     serve.add_argument("--claude-worker", choices=["haiku", "sonnet", "opus"],
@@ -75,11 +78,17 @@ def serve_main(args) -> None:
 
     from .mcp_server import create_server
     from .sim import build_world, run_trials
-    world = build_world(args.seed, clock=LiveClock(), db_path=args.db, live=True)
-    run_trials(world)
-    service = world.service
-    print(f"referral: seeded {service.store.count('jobs')} trial jobs for {len(world.workers)} "
-          "simulated workers (rule layer only)", file=sys.stderr, flush=True)
+    if args.history == "none":
+        from .service import ReferralService
+        service = ReferralService(args.db, LiveClock())
+        print("referral: empty history; only self-registered agents can be matched",
+              file=sys.stderr, flush=True)
+    else:
+        world = build_world(args.seed, clock=LiveClock(), db_path=args.db, live=True)
+        run_trials(world)
+        service = world.service
+        print(f"referral: seeded {service.store.count('jobs')} trial jobs for {len(world.workers)} "
+              "simulated workers (rule layer only)", file=sys.stderr, flush=True)
     if args.semantic_checker != "none":
         from .claude_agents import MODELS
         from .semantic import ClaudeJudge

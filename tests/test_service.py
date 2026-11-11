@@ -153,3 +153,24 @@ def test_buyer_floor_turns_a_weak_pool_into_no_match(service, buyer, worker, eas
 def test_exclude_workers_by_name(service, buyer, worker, easy_task):
     match = service.request_match(*buyer, easy_task, exclude=("test-worker",))
     assert match["action"] == "no_eligible_match"
+
+
+def test_serve_with_no_history_matches_only_registered_agents(monkeypatch):
+    """`referral serve --history none` starts empty, so a Town buyer is matched only
+    with workers that registered themselves (used by the Nanda Town integration)."""
+    import referral.cli as cli
+    import referral.mcp_server as mcp_server
+
+    captured = {}
+
+    class FakeServer:
+        def run(self, transport, **kwargs):
+            captured["transport"] = transport
+
+    monkeypatch.setattr(mcp_server, "create_server",
+                        lambda service: captured.setdefault("service", service) and FakeServer())
+    cli.main(["serve", "--history", "none"])
+    service = captured["service"]
+    assert service.store.count("jobs") == 0
+    assert [a["name"] for a in service.workers("sourced-research")] == []
+    assert captured["transport"] == "stdio"

@@ -63,7 +63,7 @@ Every seed runs the same code; `--seed N` shows others.
 | --- | --- |
 | `referral demo [--seed N]` | narrated simulation of hires, misuse and a two-hop chain |
 | `referral eval --seeds N` | compares three ways of picking workers on identical histories |
-| `referral serve` | Referral as an MCP server over stdio. Add `--transport http --port 8791` for HTTP, `--claude-worker haiku` to add a Claude worker that Claude Code runs on dispatch, and `--semantic-checker haiku` to turn on the semantic layer for live jobs. |
+| `referral serve` | Referral as an MCP server over stdio. `--history none` starts with no simulated workers (the Nanda Town integration uses this). Add `--transport http --port 8791` for HTTP, `--claude-worker haiku` to add a Claude worker that Claude Code runs on dispatch, and `--semantic-checker haiku` to turn on the semantic layer for live jobs. |
 | `referral mvp [--checker-model haiku\|none]` | the HW6 run: a Claude buyer agent hires through Referral, then the run is audited |
 | `referral check-eval [--model haiku]` | 80 rule-passing facts (half stale or wrong-attribute) through the rule layer vs. both layers |
 | `referral audit runs/<timestamp>` | re-checks a saved run from its ledger and answer alone |
