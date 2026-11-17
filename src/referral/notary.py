@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     parent_job_id TEXT, match_id TEXT, spec TEXT, band TEXT, canary INTEGER, canary_salt TEXT,
     status TEXT, trial INTEGER, self_dealing INTEGER, created_at REAL, deadline_at REAL,
     budget REAL, price REAL, prediction TEXT, delivery TEXT, verdict TEXT, outcome INTEGER,
-    cost REAL, reported_cost REAL, elapsed REAL, attributed TEXT, settled_at REAL
+    cost REAL, reported_cost REAL, elapsed REAL, attributed TEXT, settled_at REAL, usage TEXT
 );
 CREATE TABLE IF NOT EXISTS notary_log (
     seq INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL, kind TEXT, job_id TEXT, actor TEXT,
@@ -41,10 +41,11 @@ CREATE TRIGGER IF NOT EXISTS notary_no_delete BEFORE DELETE ON notary_log
 BEGIN SELECT RAISE(ABORT, 'notary_log is append-only'); END;
 """
 
-JSON_COLUMNS = {"spec", "domains", "prediction", "delivery", "verdict", "attributed"}
+JSON_COLUMNS = {"spec", "domains", "prediction", "delivery", "verdict", "attributed", "usage"}
 # Columns added after runs were already recorded; older databases get them on open so they
 # can still be audited.
-ADDED_COLUMNS = {("agents", "declared_success"): "REAL", ("jobs", "reported_cost"): "REAL"}
+ADDED_COLUMNS = {("agents", "declared_success"): "REAL", ("jobs", "reported_cost"): "REAL",
+                 ("jobs", "usage"): "TEXT"}
 GENESIS = "0" * 64
 
 

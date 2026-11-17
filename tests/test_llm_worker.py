@@ -107,3 +107,17 @@ def test_live_eval_needs_confirmation(monkeypatch, tmp_path):
     assert live_eval.main(3, ["haiku"], str(tmp_path / "x.json"), yes=False, use_profile=False,
                           effort="medium") == 1
     assert not called
+
+
+def test_llm_worker_usage_is_persisted_in_the_ledger(service, buyer, corpus, easy_task):
+    """Token usage survives the worker object: it is in jobs.usage and in the signed delivery entry."""
+    w = LLMWorker("haiku", corpus, client=fake_client(corpus, p=0.7))
+    w.register(service)
+    job = service.direct_hire(*buyer, w.agent_id, easy_task)
+    usage = service._job(job["job_id"])["usage"]["worker"]
+    assert usage["calls"] == 2 and usage["input_tokens"] == 2000 and usage["output_tokens"] == 400
+    assert usage["total_tokens"] == 2400 and usage["models"] == ["claude-haiku-5-5"]
+    assert usage["usd_list"] == pytest.approx(2 * (1000 * 0.10 + 200 * 0.50) / 1e6)
+    delivery = [e for e in service.notary.entries(job["job_id"]) if e["kind"] == "delivery"][0]
+    assert delivery["payload"]["usage"] == usage
+    assert service.verify_ledger()["ok"]

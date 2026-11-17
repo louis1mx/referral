@@ -32,6 +32,25 @@ from .notary import Notary, Store, canonical
 from .scorer import Profile, build_profile, evidence_label, insights
 
 DERIVE = object()
+
+USAGE_KEYS = ("input_tokens", "output_tokens", "cache_read_tokens", "cache_write_tokens")
+
+
+def summarize_usage(calls: list) -> dict:
+    """Sum model calls (dicts or LLMCall objects) into one usage record for the ledger."""
+    out = {"calls": 0, **{k: 0 for k in USAGE_KEYS}, "usd_list": 0.0, "usd_billed": 0.0, "models": []}
+    for c in calls:
+        c = c if isinstance(c, dict) else c.__dict__
+        out["calls"] += 1
+        for k in USAGE_KEYS:
+            out[k] += int(c.get(k) or 0)
+        out["usd_list"] += float(c.get("usd") or 0)
+        out["usd_billed"] += float(c.get("billed_usd") or 0)
+        if c.get("model") and c["model"] not in out["models"]:
+            out["models"].append(c["model"])
+    out["total_tokens"] = sum(out[k] for k in USAGE_KEYS)
+    out["usd_list"], out["usd_billed"] = round(out["usd_list"], 6), round(out["usd_billed"], 6)
+    return out
 CREDENTIAL_TTL_S = 7 * 24 * 3600
 
 ACTION_NOTES = {
@@ -401,7 +420,7 @@ class ReferralService:
 
     @locked
     def submit_delivery(self, agent_id: str, key: str, job_id: str, facts: list[dict],
-                        cost: float | None = None) -> dict:
+                        cost: float | None = None, usage: dict | None = None) -> dict:
         self._auth(agent_id, key, ("worker",))
         job = self._assigned(agent_id, job_id)
         if job["status"] == Status.DISPATCHED:
@@ -417,9 +436,15 @@ class ReferralService:
         # is kept beside it, as a signal about its cost forecasts, but never billed.
         reported = float(cost) if cost is not None else None
         cost = job["price"]
-        self.notary.append("delivery", agent_id, {"facts": [asdict(f) for f in parsed], "cost": cost,
-                                                  "reported_cost": reported, "elapsed_s": elapsed}, job_id, now)
-        self.store.update("jobs", "job_id", job_id, {"reported_cost": reported})
+        # Token usage the worker reports for this job (model calls it made), kept in the signed
+        # log so spend can be audited later instead of living only in the worker's memory.
+        payload = {"facts": [asdict(f) for f in parsed], "cost": cost, "reported_cost": reported,
+                   "elapsed_s": elapsed}
+        if usage is not None:
+            payload["usage"] = usage
+        self.notary.append("delivery", agent_id, payload, job_id, now)
+        self.store.update("jobs", "job_id", job_id, {"reported_cost": reported,
+                                                     "usage": {"worker": usage} if usage is not None else None})
         self.store.update("jobs", "job_id", job_id, {"delivery": {"facts": [asdict(f) for f in parsed]}})
         if now > job["deadline_at"]:
             self._settle(job, Status.TIMEOUT, [], cost, elapsed, [agent_id], within_budget=True)
@@ -429,7 +454,13 @@ class ReferralService:
             semantic = None
             if self.judge is not None:
                 # Runs under the service lock: one model call per delivery, a few seconds.
+                judge_calls = getattr(getattr(self.judge, "runner", None), "calls", None)
+                seen = len(judge_calls) if judge_calls is not None else 0
                 verdicts, semantic = review_semantics(verdicts, spec, parsed, self.corpus, self.judge)
+                if judge_calls is not None and len(judge_calls) > seen:
+                    semantic["usage"] = summarize_usage(judge_calls[seen:])
+                    row = self._job(job_id)["usage"] or {}
+                    self.store.update("jobs", "job_id", job_id, {"usage": {**row, "checker": semantic["usage"]}})
             within_budget = cost <= spec.budget + 1e-9
             if all(v.passed for v in verdicts) and within_budget:
                 self._settle(job, Status.PASSED, verdicts, cost, elapsed, [], within_budget, semantic)

@@ -1,0 +1,463 @@
+{
+ "scale": {
+  "stats": {
+   "B0-raw": {
+    "requests": 90,
+    "error_rate": 9.11111111111111,
+    "ci": [
+     6.444444444444445,
+     12.222222222222223
+    ],
+    "wrong_per_delivered": 5.76036866359447,
+    "coverage": 96.44444444444444,
+    "success": 61.111111111111114,
+    "cost_per_correct": 0.1980440097799511,
+    "cost_per_request": 0.9,
+    "api_usd": 0.0011905024444444445,
+    "seconds": 65.64910545342259,
+    "wall": 11.377869061766658,
+    "tokens": 6172.6,
+    "rematch": 45.55555555555556,
+    "no_match": 0,
+    "api_errors": 0,
+    "picks": {
+     "olu-overconfident": 90
+    }
+   },
+   "B0": {
+    "requests": 90,
+    "error_rate": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "wrong_per_delivered": 0.0,
+    "coverage": 100.0,
+    "success": 100.0,
+    "cost_per_correct": 0.20733333333333331,
+    "cost_per_request": 1.0366666666666666,
+    "api_usd": 0.0011905024444444445,
+    "seconds": 65.64910545342259,
+    "wall": 11.377869061766658,
+    "tokens": 6172.6,
+    "rematch": 45.55555555555556,
+    "no_match": 0,
+    "api_errors": 0,
+    "picks": {
+     "olu-overconfident": 90
+    }
+   },
+   "B1": {
+    "requests": 90,
+    "error_rate": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "wrong_per_delivered": 0.0,
+    "coverage": 100.0,
+    "success": 100.0,
+    "cost_per_correct": 0.062,
+    "cost_per_request": 0.31,
+    "api_usd": 0.0017782791111111112,
+    "seconds": 11.445269754422235,
+    "wall": 15.768385775677775,
+    "tokens": 12374.022222222222,
+    "rematch": 1.1111111111111112,
+    "no_match": 0,
+    "api_errors": 0,
+    "picks": {
+     "claude-haiku-worker": 90
+    }
+   },
+   "R": {
+    "requests": 90,
+    "error_rate": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "wrong_per_delivered": 0.0,
+    "coverage": 100.0,
+    "success": 100.0,
+    "cost_per_correct": 0.062,
+    "cost_per_request": 0.31,
+    "api_usd": 0.001708792111111111,
+    "seconds": 11.541750160566663,
+    "wall": 15.898896904088886,
+    "tokens": 12392.577777777778,
+    "rematch": 1.1111111111111112,
+    "no_match": 0,
+    "api_errors": 0,
+    "picks": {
+     "claude-haiku-worker": 90
+    }
+   }
+  },
+  "significance": {
+   "R-B0": {
+    "tasks": 30,
+    "mean": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "wilcoxon_p": 1.0,
+    "sign_p": 1.0,
+    "tasks_R_better": 0,
+    "tasks_R_worse": 0,
+    "ties": 30
+   },
+   "R-B0-raw": {
+    "tasks": 30,
+    "mean": -9.11111111111111,
+    "ci": [
+     -12.222222222222223,
+     -6.222222222222222
+    ],
+    "wilcoxon_p": 1.7492017851435192e-05,
+    "sign_p": 2.384185791015625e-07,
+    "tasks_R_better": 23,
+    "tasks_R_worse": 0,
+    "ties": 7
+   },
+   "R-B1": {
+    "tasks": 30,
+    "mean": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "wilcoxon_p": 1.0,
+    "sign_p": 1.0,
+    "tasks_R_better": 0,
+    "tasks_R_worse": 0,
+    "ties": 30
+   },
+   "cost_R_B0": {
+    "pairs": 90,
+    "R": 0.31,
+    "B0": 1.0366666666666666,
+    "wilcoxon_p": 1.96980837689456e-17
+   }
+  },
+  "mcnemar_R_B0": {
+   "pairs": 90,
+   "R_only": 0,
+   "B0_only": 0,
+   "mcnemar_p": 1.0
+  },
+  "by_band": {
+   "B0-raw": {
+    "easy": 2.0,
+    "medium": 10.0,
+    "hard": 15.333333333333334
+   },
+   "B0": {
+    "easy": 0.0,
+    "medium": 0.0,
+    "hard": 0.0
+   },
+   "B1": {
+    "easy": 0.0,
+    "medium": 0.0,
+    "hard": 0.0
+   },
+   "R": {
+    "easy": 0.0,
+    "medium": 0.0,
+    "hard": 0.0
+   }
+  },
+  "checker": {
+   "true_accept": 1504,
+   "true_reject": 35
+  }
+ },
+ "nested": {
+  "groups": {
+   "haiku/relay": {
+    "runs": 12,
+    "errors": 0,
+    "sub_failed": 12,
+    "sub_blamed_on_faker": 12,
+    "parent_failed": 12,
+    "hop2_only": 12,
+    "hop1_named": 0,
+    "correct": 12,
+    "fakes_kept": 24,
+    "fakes_to_buyer_passed": 0
+   },
+   "haiku/relay-stale": {
+    "runs": 12,
+    "errors": 0,
+    "sub_failed": 12,
+    "sub_blamed_on_faker": 12,
+    "parent_failed": 12,
+    "hop2_only": 12,
+    "hop1_named": 0,
+    "correct": 12,
+    "fakes_kept": 24,
+    "fakes_to_buyer_passed": 0
+   },
+   "haiku/review": {
+    "runs": 12,
+    "errors": 0,
+    "sub_failed": 12,
+    "sub_blamed_on_faker": 12,
+    "parent_failed": 0,
+    "hop2_only": 0,
+    "hop1_named": 0,
+    "correct": 12,
+    "fakes_kept": 0,
+    "fakes_to_buyer_passed": 0
+   },
+   "haiku/review-stale": {
+    "runs": 12,
+    "errors": 0,
+    "sub_failed": 12,
+    "sub_blamed_on_faker": 12,
+    "parent_failed": 0,
+    "hop2_only": 0,
+    "hop1_named": 0,
+    "correct": 12,
+    "fakes_kept": 0,
+    "fakes_to_buyer_passed": 0
+   },
+   "sonnet/relay": {
+    "runs": 12,
+    "errors": 0,
+    "sub_failed": 12,
+    "sub_blamed_on_faker": 12,
+    "parent_failed": 12,
+    "hop2_only": 12,
+    "hop1_named": 0,
+    "correct": 12,
+    "fakes_kept": 24,
+    "fakes_to_buyer_passed": 0
+   },
+   "sonnet/relay-stale": {
+    "runs": 12,
+    "errors": 0,
+    "sub_failed": 12,
+    "sub_blamed_on_faker": 12,
+    "parent_failed": 12,
+    "hop2_only": 12,
+    "hop1_named": 0,
+    "correct": 12,
+    "fakes_kept": 24,
+    "fakes_to_buyer_passed": 0
+   },
+   "sonnet/review": {
+    "runs": 12,
+    "errors": 0,
+    "sub_failed": 12,
+    "sub_blamed_on_faker": 12,
+    "parent_failed": 0,
+    "hop2_only": 0,
+    "hop1_named": 0,
+    "correct": 12,
+    "fakes_kept": 0,
+    "fakes_to_buyer_passed": 0
+   },
+   "sonnet/review-stale": {
+    "runs": 12,
+    "errors": 0,
+    "sub_failed": 12,
+    "sub_blamed_on_faker": 12,
+    "parent_failed": 0,
+    "hop2_only": 0,
+    "hop1_named": 0,
+    "correct": 12,
+    "fakes_kept": 0,
+    "fakes_to_buyer_passed": 0
+   }
+  },
+  "attribution_correct": 96,
+  "runs": 96,
+  "caught_by": {
+   "rule layer (quote not in document)": 76,
+   "hidden check (not current)": 6,
+   "semantic layer (superseded)": 14
+  }
+ },
+ "usage": {
+  "warm-up": {
+   "totals": {
+    "checker.calls": 63,
+    "checker.input_tokens": 126,
+    "checker.output_tokens": 37737,
+    "checker.cache_read_tokens": 185154,
+    "checker.cache_write_tokens": 72927,
+    "checker.total_tokens": 295944,
+    "checker.usd_list": 0.02984900000000001,
+    "checker.usd_billed": 0.03531800000000001,
+    "worker.calls": 54,
+    "worker.input_tokens": 108,
+    "worker.output_tokens": 28638,
+    "worker.cache_read_tokens": 162180,
+    "worker.cache_write_tokens": 94761,
+    "worker.total_tokens": 285687,
+    "worker.usd_list": 0.43183699999999997,
+    "worker.usd_billed": 0.548303
+   },
+   "by_model": {
+    "checker:claude-haiku-5-5": {
+     "calls": 63.0,
+     "input_tokens": 126.0,
+     "output_tokens": 37737.0,
+     "cache_read_tokens": 185154.0,
+     "cache_write_tokens": 72927.0,
+     "total_tokens": 295944.0,
+     "usd_list": 0.02984900000000001,
+     "usd_billed": 0.03531800000000001
+    },
+    "worker:claude-haiku-5-5": {
+     "calls": 18.0,
+     "input_tokens": 36.0,
+     "output_tokens": 17868.0,
+     "cache_read_tokens": 48005.0,
+     "cache_write_tokens": 37918.0,
+     "total_tokens": 103827.0,
+     "usd_list": 0.014157999999999999,
+     "usd_billed": 0.017001999999999996
+    },
+    "worker:claude-opus-5-5": {
+     "calls": 18.0,
+     "input_tokens": 36.0,
+     "output_tokens": 5826.0,
+     "cache_read_tokens": 55271.0,
+     "cache_write_tokens": 30202.0,
+     "total_tokens": 91335.0,
+     "usd_list": 0.289781,
+     "usd_billed": 0.369337
+    },
+    "worker:claude-sonnet-5-5": {
+     "calls": 18.0,
+     "input_tokens": 36.0,
+     "output_tokens": 4944.0,
+     "cache_read_tokens": 58904.0,
+     "cache_write_tokens": 26641.0,
+     "total_tokens": 90525.0,
+     "usd_list": 0.127898,
+     "usd_billed": 0.161964
+    }
+   },
+   "worker_jobs": 27,
+   "ledgers": 63
+  },
+  "scale": {
+   "totals": {
+    "checker.calls": 311,
+    "checker.input_tokens": 622,
+    "checker.output_tokens": 197151,
+    "checker.cache_read_tokens": 995481,
+    "checker.cache_write_tokens": 246381,
+    "checker.total_tokens": 1439635,
+    "checker.usd_list": 0.13941299999999995,
+    "checker.usd_billed": 0.15788099999999997,
+    "worker.calls": 446,
+    "worker.input_tokens": 892,
+    "worker.output_tokens": 457236,
+    "worker.cache_read_tokens": 2055478,
+    "worker.cache_write_tokens": 73149,
+    "worker.total_tokens": 2586755,
+    "worker.usd_list": 0.281567,
+    "worker.usd_billed": 0.2916729999999999
+   },
+   "by_model": {
+    "checker:claude-haiku-5-5": {
+     "calls": 311.0,
+     "input_tokens": 622.0,
+     "output_tokens": 197151.0,
+     "cache_read_tokens": 995481.0,
+     "cache_write_tokens": 246381.0,
+     "total_tokens": 1439635.0,
+     "usd_list": 0.13941299999999995,
+     "usd_billed": 0.15788099999999997
+    },
+    "worker:claude-haiku-5-5": {
+     "calls": 442.0,
+     "input_tokens": 884.0,
+     "output_tokens": 456161.0,
+     "cache_read_tokens": 2040752.0,
+     "cache_write_tokens": 68871.0,
+     "total_tokens": 2566668.0,
+     "usd_list": 0.25716,
+     "usd_billed": 0.26232300000000003
+    },
+    "worker:claude-sonnet-5-5": {
+     "calls": 4.0,
+     "input_tokens": 8.0,
+     "output_tokens": 1075.0,
+     "cache_read_tokens": 14726.0,
+     "cache_write_tokens": 4278.0,
+     "total_tokens": 20087.0,
+     "usd_list": 0.024406999999999998,
+     "usd_billed": 0.02935
+    }
+   },
+   "worker_jobs": 223,
+   "ledgers": 270
+  },
+  "nested": {
+   "totals": {
+    "checker.calls": 119,
+    "checker.input_tokens": 238,
+    "checker.output_tokens": 59578,
+    "checker.cache_read_tokens": 339130,
+    "checker.cache_write_tokens": 103016,
+    "checker.total_tokens": 501962,
+    "checker.usd_list": 0.04608700000000002,
+    "checker.usd_billed": 0.05381000000000002,
+    "worker.calls": 192,
+    "worker.input_tokens": 384,
+    "worker.output_tokens": 128076,
+    "worker.cache_read_tokens": 830072,
+    "worker.cache_write_tokens": 97680,
+    "worker.total_tokens": 1056212,
+    "worker.usd_list": 0.5058850000000001,
+    "worker.usd_billed": 0.5407299999999999
+   },
+   "by_model": {
+    "checker:claude-haiku-5-5": {
+     "calls": 119.0,
+     "input_tokens": 238.0,
+     "output_tokens": 59578.0,
+     "cache_read_tokens": 339130.0,
+     "cache_write_tokens": 103016.0,
+     "total_tokens": 501962.0,
+     "usd_list": 0.04608700000000002,
+     "usd_billed": 0.05381000000000002
+    },
+    "worker:claude-haiku-5-5": {
+     "calls": 96.0,
+     "input_tokens": 192.0,
+     "output_tokens": 104157.0,
+     "cache_read_tokens": 415603.0,
+     "cache_write_tokens": 49281.0,
+     "total_tokens": 569233.0,
+     "usd_list": 0.06241900000000001,
+     "usd_billed": 0.06611600000000001
+    },
+    "worker:claude-sonnet-5-5": {
+     "calls": 96.0,
+     "input_tokens": 192.0,
+     "output_tokens": 23919.0,
+     "cache_read_tokens": 414469.0,
+     "cache_write_tokens": 48399.0,
+     "total_tokens": 486979.0,
+     "usd_list": 0.4434660000000001,
+     "usd_billed": 0.4746139999999999
+    }
+   },
+   "worker_jobs": 96,
+   "ledgers": 96
+  },
+  "per_request": {
+   "B0": 0.0011905777777777777,
+   "R": 0.0017087,
+   "B1": 0.0017782777777777777
+  }
+ }
+}

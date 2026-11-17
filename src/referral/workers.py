@@ -286,6 +286,7 @@ class LLMCall:
     cache_read_tokens: int
     cache_write_tokens: int
     usd: float
+    billed_usd: float = 0.0     # what the provider reported charging, when it reports it
 
 
 class LLMWorker:
@@ -348,7 +349,7 @@ class LLMWorker:
         price_in, price_out = LLM_PRICING.get(self.model, (0.0, 0.0))
         usd = (u.input_tokens + 1.25 * write + 0.1 * read) * price_in / 1e6 + u.output_tokens * price_out / 1e6
         self.calls.append(LLMCall(job_id, stage, self.model, seconds, u.input_tokens, u.output_tokens,
-                                  read, write, usd))
+                                  read, write, usd, float(getattr(u, "billed_usd", 0.0) or 0.0)))
         if response.stop_reason in ("refusal", "max_tokens"):
             raise LLMOutputError(f"{stage}: stop_reason={response.stop_reason}")
         text = next((b.text for b in response.content if b.type == "text"), None)
@@ -385,4 +386,6 @@ class LLMWorker:
         facts = [{k: str(fact.get(k, "")) for k in FACT_FIELDS} for fact in d.get("facts", [])]
         # Report what the job really cost in API calls; the buyer is billed the contract price.
         spent = round(sum(c.usd for c in self.calls[started:]), 6)
-        service.submit_delivery(self.agent_id, self.key, job_id, facts, spent)
+        from .service import summarize_usage
+        service.submit_delivery(self.agent_id, self.key, job_id, facts, spent,
+                                usage=summarize_usage(self.calls[started:]))

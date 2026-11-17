@@ -167,9 +167,14 @@ class ApiRunner:
             raise JudgeError(f"API call failed: {e}") from e
         u = response.usage
         price_in, price_out = LLM_PRICING.get(model, (0.0, 0.0))
+        read = getattr(u, "cache_read_input_tokens", 0) or 0
+        write = getattr(u, "cache_creation_input_tokens", 0) or 0
         self.calls.append({"model": model, "seconds": time.perf_counter() - t0,
                            "input_tokens": u.input_tokens, "output_tokens": u.output_tokens,
-                           "usd": (u.input_tokens * price_in + u.output_tokens * price_out) / 1e6})
+                           "cache_read_tokens": read, "cache_write_tokens": write,
+                           "usd": ((u.input_tokens + 1.25 * write + 0.1 * read) * price_in
+                                   + u.output_tokens * price_out) / 1e6,
+                           "billed_usd": float(getattr(u, "billed_usd", 0.0) or 0.0)})
         if response.stop_reason in ("refusal", "max_tokens"):
             raise JudgeError(f"API judge stopped: stop_reason={response.stop_reason}")
         text = next((b.text for b in response.content if b.type == "text"), None)

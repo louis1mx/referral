@@ -33,13 +33,16 @@ from .scorer import build_profile
 from .semantic import ApiRunner, ClaudeJudge
 from .workers import PERSONAS, LLMOutputError, LLMWorker, SimWorker
 
-OUT = Path("results/hw7")
-RUNS = Path("runs/hw7")
+# Follow-up runs write elsewhere (REFERRAL_HW7_TAG=followup -> results/followup, runs/followup)
+# so the submitted HW7 evidence is never touched.
+_TAG = os.environ.get("REFERRAL_HW7_TAG", "hw7")
+OUT = Path("results") / _TAG
+RUNS = Path("runs") / _TAG
 
 FRESH = ["Dunmore Robotics", "Gantry Labs", "Halcyon Motion"]
 TUNING = ["Borealis Automation", "Cobalt Dynamics", "Everline Systems", "Fathom Mechatronics",
           "Ironbark AI"]
-SEEDS = {"warmup": 7001, "pilot": 7000, "main": 7002, "limit": 7003, "retest": 7004}
+SEEDS = {"warmup": 7001, "pilot": 7000, "main": 7002, "limit": 7003, "retest": 7004, "scale": 7005}
 PERSONA_SEED = 865
 BUDGET, DEADLINE_S = 2.0, 300.0
 WORKER_EFFORT = "low"
@@ -85,7 +88,8 @@ class CliMessages:
         u = out.get("usage") or {}
         usage = SimpleNamespace(input_tokens=u.get("input_tokens", 0), output_tokens=u.get("output_tokens", 0),
                                 cache_read_input_tokens=u.get("cache_read_input_tokens", 0),
-                                cache_creation_input_tokens=u.get("cache_creation_input_tokens", 0))
+                                cache_creation_input_tokens=u.get("cache_creation_input_tokens", 0),
+                                billed_usd=out.get("total_cost_usd", 0.0))
         if out.get("is_error") or not isinstance(out.get("structured_output"), dict):
             raise LLMOutputError(f"claude CLI returned no structured output: {str(out.get('result'))[:200]}")
         text = json.dumps(out["structured_output"])
@@ -258,7 +262,10 @@ def run_request(step: str, cond: str, strategy: str, spec: TaskSpec, task_id: st
                c["input_tokens"] + c["output_tokens"] for c in judge.calls),
            "seconds": sum(a.get("seconds") or 0 for a in attempts),
            "wall_s": time.perf_counter() - t0,
-           "ledger_ok": s.verify_ledger()["ok"], "ledger": f"runs/hw7/{tag}.sqlite"}
+           "ledger_ok": s.verify_ledger()["ok"], "ledger": str(RUNS / f"{tag}.sqlite"),
+           # Token usage as persisted in the ledger (jobs.usage), not the in-memory counters.
+           "ledger_usage": {j["job_id"]: j["usage"] for j in s.store.query("SELECT job_id, usage FROM jobs")
+                            if j["usage"]}}
     s.store.db.close()
     return out
 
@@ -305,7 +312,9 @@ def items(step, conds, tasks, pool, repeats=1, **extra):
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser(prog="referral.hw7")
-    ap.add_argument("step", choices=["warmup", "pilot", "main", "limit", "retest", "analyze"])
+    ap.add_argument("step", choices=["warmup", "pilot", "main", "limit", "retest", "scale", "analyze"])
+    ap.add_argument("--per-band", type=int, default=10)
+    ap.add_argument("--conds", default="B0,B1,R")
     ap.add_argument("--parallel", type=int, default=6)
     ap.add_argument("--variant", default="before", help="retest: before | after")
     ap.add_argument("--repeats", type=int, default=2)
@@ -319,6 +328,10 @@ def main(argv=None) -> None:
     elif a.step == "main":
         run_batch("main", items("main", list(CONDITIONS), tasks_for("main", FRESH, 4), POOLS["main"],
                                 repeats=a.repeats), a.parallel)
+    elif a.step == "scale":
+        # Follow-up: the main comparison scaled up (default 30 tasks x 3 repeats), fixed Checker rule.
+        run_batch("scale", items("scale", a.conds.split(","), tasks_for("scale", FRESH, a.per_band),
+                                 POOLS["main"], repeats=a.repeats), a.parallel)
     elif a.step == "limit":
         tasks = tasks_for("limit", TUNING, 2)
         for setting in ("u0", "main", "u80", "newcomer"):

@@ -4,4 +4,5 @@ __pycache__/
 .pytest_cache/
 results/*
 !results/hw7/
+!results/followup/
 *.db
