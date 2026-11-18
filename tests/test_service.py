@@ -205,3 +205,24 @@ def test_older_databases_gain_new_columns_on_open(tmp_path):
     s = ReferralService(str(path), SimClock())
     cols = {r["name"] for r in s.store.db.execute("PRAGMA table_info(agents)")}
     assert "declared_success" in cols
+
+
+def test_serve_with_no_history_matches_only_registered_agents(monkeypatch):
+    """`referral serve --history none` starts empty, so a Town buyer is matched only
+    with workers that registered themselves (used by the Nanda Town integration)."""
+    import referral.cli as cli
+    import referral.mcp_server as mcp_server
+
+    captured = {}
+
+    class FakeServer:
+        def run(self, transport, **kwargs):
+            captured["transport"] = transport
+
+    monkeypatch.setattr(mcp_server, "create_server",
+                        lambda service: captured.setdefault("service", service) and FakeServer())
+    cli.main(["serve", "--history", "none"])
+    service = captured["service"]
+    assert service.store.count("jobs") == 0
+    assert [a["name"] for a in service.workers("sourced-research")] == []
+    assert captured["transport"] == "stdio"
