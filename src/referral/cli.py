@@ -1,4 +1,4 @@
-"""Command line: `referral demo | eval | live-eval | check-eval | serve | mvp | audit`."""
+"""Command line: `referral demo | eval | live-eval | check-eval | serve | mvp | coldstart | audit`."""
 
 from __future__ import annotations
 
@@ -49,6 +49,11 @@ def main(argv: list[str] | None = None) -> None:
     ce = sub.add_parser("check-eval", help="adversarial facts through the rule layer vs. rules + semantic layer (runs the claude CLI)")
     ce.add_argument("--model", default="haiku", choices=["haiku", "sonnet", "opus"])
     ce.add_argument("--out", default="results/semantic_check.json")
+    cs = sub.add_parser("coldstart", help="HW9: a fresh Claude Code session uses Referral from its docs alone, then is graded")
+    cs.add_argument("--task", default="brief", choices=["brief", "boundary"])
+    cs.add_argument("--model", default="sonnet", choices=["haiku", "sonnet", "opus"])
+    cs.add_argument("--out", default="runs/hw9")
+    cs.add_argument("--tag", default="", help="label added to the run folder name, e.g. before/after")
     aud = sub.add_parser("audit", help="independently check a run: ledger, Checker vs ground truth, answer")
     aud.add_argument("run_dir")
     args = parser.parse_args(argv)
@@ -70,6 +75,9 @@ def main(argv: list[str] | None = None) -> None:
     elif args.cmd == "check-eval":
         from .check_eval import run as check_eval
         sys.exit(check_eval(args.model, args.out))
+    elif args.cmd == "coldstart":
+        from .coldstart import run as coldstart
+        sys.exit(coldstart(args.task, args.model, args.out, tag=args.tag))
     elif args.cmd == "audit":
         from .audit import main as audit_main
         sys.exit(audit_main(args.run_dir))
