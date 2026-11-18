@@ -1,0 +1,10 @@
+{"facts":[
+{"competitor":"Gantry Labs","attribute":"headcount","value":"420","doc_id":"gantry-labs-update-2026","job_id":"job-0061"},
+{"competitor":"Gantry Labs","attribute":"latest_funding","value":"$75M","doc_id":"gantry-labs-update-2026","job_id":"job-0061"},
+{"competitor":"Ironbark AI","attribute":"headcount","value":"115","doc_id":"ironbark-ai-update-2026","job_id":"job-0061"},
+{"competitor":"Ironbark AI","attribute":"latest_funding","value":"$22M","doc_id":"ironbark-ai-update-2026","job_id":"job-0061"},
+{"competitor":"Dunmore Robotics","attribute":"headcount","value":"190","doc_id":"dunmore-robotics-update-2026","job_id":"job-0061"},
+{"competitor":"Dunmore Robotics","attribute":"latest_funding","value":"$31M","doc_id":"dunmore-robotics-update-2026","job_id":"job-0061"}
+],
+"unsupported":[],
+"conclusions":{"largest_headcount":"Gantry Labs","largest_latest_funding":"Gantry Labs"}}

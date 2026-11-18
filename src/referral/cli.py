@@ -50,9 +50,11 @@ def main(argv: list[str] | None = None) -> None:
     ce.add_argument("--model", default="haiku", choices=["haiku", "sonnet", "opus"])
     ce.add_argument("--out", default="results/semantic_check.json")
     cs = sub.add_parser("coldstart", help="HW9: a fresh Claude Code session uses Referral from its docs alone, then is graded")
-    cs.add_argument("--task", default="brief", choices=["brief", "boundary"])
+    cs.add_argument("--task", default="brief", choices=["brief", "boundary", "budget"])
     cs.add_argument("--model", default="sonnet", choices=["haiku", "sonnet", "opus"])
     cs.add_argument("--out", default="runs/hw9")
+    cs.add_argument("--docs", default="file", choices=["file", "none"],
+                    help="file: the client gets REFERRAL.md; none: only the MCP server's own descriptions")
     cs.add_argument("--tag", default="", help="label added to the run folder name, e.g. before/after")
     aud = sub.add_parser("audit", help="independently check a run: ledger, Checker vs ground truth, answer")
     aud.add_argument("run_dir")
@@ -77,7 +79,7 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(check_eval(args.model, args.out))
     elif args.cmd == "coldstart":
         from .coldstart import run as coldstart
-        sys.exit(coldstart(args.task, args.model, args.out, tag=args.tag))
+        sys.exit(coldstart(args.task, args.model, args.out, tag=args.tag, docs=args.docs == "file"))
     elif args.cmd == "audit":
         from .audit import main as audit_main
         sys.exit(audit_main(args.run_dir))
