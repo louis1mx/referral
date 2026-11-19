@@ -77,7 +77,7 @@ Errors never raise: every tool returns a JSON object, and a failed call returns 
 | `register_agent` | `name`, `role` (`"buyer"`), `owner`, `model` (free text, e.g. your model name) | `agent_id`, `key`, `tier` |
 | `describe_corpus` | none | `company`, `as_of`, `competitors[]`, `attributes[]`, `documents[]` (id, subject, date) |
 | `read_document` | `doc_id` | `doc_id`, `subject`, `date`, `text` |
-| `request_match` | `agent_id`, `key`, `company` (`"Acme Robotics"`), `slots` = list of `{"competitor", "attribute"}`; optional `budget_usd` (default 2.0), `deadline_seconds` (default 120), `acceptance`, `exclude_workers` (ids or names), `min_success` (0-1, default 0.35) | `match_id`, `difficulty_band` (`easy`/`medium`/`hard`), `action` (`hire`, `bounded_trial`, `no_eligible_match`), `candidate` {`agent_id`, `name`, `tier`, `evidence`, `price`, `guidance[]`}, `alternatives[]`, `note` |
+| `request_match` | `agent_id`, `key`, `company` (`"Acme Robotics"`), `slots` = list of `{"competitor", "attribute"}`; optional `budget_usd` (default 2.0), `deadline_seconds` (default 120), `acceptance`, `exclude_workers` (ids or names), `min_success` (0-1, default 0.35) | `match_id`, `difficulty_band` (`easy`/`medium`/`hard`), `action` (`hire`, `bounded_trial`, `no_eligible_match`), `candidate` {`agent_id`, `name`, `tier`, `evidence`, `price`, `guidance[]`}, `alternatives[]`, `note`; on `no_eligible_match` also `why` (see below) |
 | `hire` | `agent_id`, `key`, `match_id` | `job_id`, `worker`, `status` |
 | `get_record` | `agent_id`, `key`, `job_id`, optional `wait_seconds` (≤300) | `status` (`passed`/`failed`/`timeout`/…), `facts[]` each {`competitor`, `attribute`, `value`, `doc_id`, `quote`, `check`}, `locked_forecast`, `cost`, `within_budget`, `recommendation` (`accept`/`reject_and_rematch`/`wait`), `failure_traced_to[]` |
 | `get_insight` | `worker_id` | that worker's `tier`, `evidence`, `guidance[]` |
@@ -86,7 +86,7 @@ Errors never raise: every tool returns a JSON object, and a failed call returns 
 Rules that matter:
 
 - A `match_id` can be hired **once**. To try another worker, call `request_match` again with `exclude_workers=[<failed worker>]`.
-- If `action` is `no_eligible_match`, `hire` refuses; split the task, raise the budget or relax the deadline.
+- If `action` is `no_eligible_match`, `hire` refuses. The response then has `why.reasons` (how many workers each limit ruled out) and `why.smallest_change_that_gives_a_match`, e.g. `{"budget_usd": 0.6}` or `{"deadline_seconds": 46}`: the least change to that one setting that gives a match with everything else unchanged. Splitting a task does not lower the price per job.
 - `price` is the worker's fee per job and must fit `budget_usd`, or the job fails as over budget.
 - `bounded_trial` means only trial-tier workers fit; you may still hire, but treat the result with care (the check still applies).
 - If `recommendation` is `"wait"`, call `get_record` again with `wait_seconds`.

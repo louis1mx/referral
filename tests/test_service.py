@@ -226,3 +226,42 @@ def test_serve_with_no_history_matches_only_registered_agents(monkeypatch):
     assert service.store.count("jobs") == 0
     assert [a["name"] for a in service.workers("sourced-research")] == []
     assert captured["transport"] == "stdio"
+
+
+def test_no_match_says_which_limit_blocks_and_the_smallest_fix():
+    """HW9 budget boundary: with a $0.50 cap every client stopped correctly but told its buyer
+    the wrong budget, because no_eligible_match gave no reason. The response now names the
+    blocking limit and the smallest change that gives a match, and that change works."""
+    from referral.models import LiveClock
+    from referral.sim import build_world, run_trials
+
+    world = build_world(4, clock=LiveClock(), live=True)
+    run_trials(world)
+    s = world.service
+    b = s.register_agent("hw9-buyer", "buyer", "hw9-org", "any")
+    ids = (b["agent_id"], b["key"])
+    cheapest = min(a["price"] for a in s.workers("sourced-research"))
+    task = {"company": "Acme Robotics", "slots": [{"competitor": "Gantry Labs", "attribute": "headcount"}],
+            "budget": 0.50, "deadline_s": 120}
+
+    m = s.request_match(*ids, task)
+    assert m["action"] == "no_eligible_match"
+    assert m["why"]["reasons"]["over_budget"] == m["why"]["reasons"]["workers_considered"] == 5
+    assert m["why"]["smallest_change_that_gives_a_match"] == {"budget_usd": cheapest}
+    assert f"{cheapest:.2f}" in m["note"]
+    assert s.request_match(*ids, {**task, "budget": cheapest})["action"] != "no_eligible_match"
+
+    slow = s.request_match(*ids, {**task, "budget": 2.0, "deadline_s": 10})
+    need = slow["why"]["smallest_change_that_gives_a_match"]["deadline_seconds"]
+    assert slow["action"] == "no_eligible_match" and "deadline_seconds" in slow["note"]
+    assert s.request_match(*ids, {**task, "budget": 2.0, "deadline_s": need})["action"] != "no_eligible_match"
+    assert s.request_match(*ids, {**task, "budget": 2.0, "deadline_s": need - 1})["action"] == "no_eligible_match"
+
+    picky = s.request_match(*ids, {**task, "budget": 2.0}, min_success=0.999)
+    assert "min_success" in picky["why"]["smallest_change_that_gives_a_match"]
+    assert "estimate" not in json_dumps(picky)        # still no raw scores
+
+
+def json_dumps(obj):
+    import json
+    return json.dumps(obj)

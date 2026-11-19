@@ -15,6 +15,7 @@ does with no record at all, only the workers' own descriptions.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 from .models import BAND_TIME, Action, Band, TaskSpec, Tier
@@ -98,3 +99,35 @@ def decide(spec: TaskSpec, band: Band, workers: list[tuple[dict, Profile]], stra
         return Decision(Action.NO_MATCH, None, ranked)
     action = Action.BOUNDED_TRIAL if chosen.profile.tier == Tier.TRIAL else Action.HIRE
     return Decision(action, chosen, ranked)
+
+
+def explain_no_match(spec: TaskSpec, band: Band, workers: list[tuple[dict, Profile]], strategy: str,
+                     exclude: set[str] = frozenset(), min_success: float | None = None) -> dict:
+    """Why no worker was matched, and the smallest change to each buyer setting that would give
+    a match with everything else unchanged. Added after the HW9 budget boundary runs, where
+    clients told the buyer the wrong budget because `no_eligible_match` gave no reason.
+    It reports counts, prices and deadlines only, never estimates or other raw scores."""
+    floor = DEFAULT_MIN_SUCCESS if min_success is None else min_success
+    pool = [a for a, _ in workers if a["agent_id"] not in exclude]
+    est = {a["agent_id"]: estimate(p, band, strategy, a) for a, p in workers}
+    fast = lambda a: a["typical_seconds"] is None or a["typical_seconds"] * BAND_TIME[band] <= spec.deadline_s
+    cheap = lambda a: a["price"] is None or a["price"] <= spec.budget
+    likely = lambda a: est[a["agent_id"]] >= floor
+    reasons = {
+        "workers_considered": len(pool),
+        "excluded_by_you": len(workers) - len(pool),
+        "over_budget": sum(not cheap(a) for a in pool),
+        "too_slow_for_deadline": sum(not fast(a) for a in pool),
+        "below_min_success": sum(not likely(a) for a in pool),
+    }
+    unblock: dict[str, float] = {}
+    prices = [a["price"] or 0.0 for a in pool if fast(a) and likely(a)]
+    if prices and min(prices) > spec.budget:
+        unblock["budget_usd"] = round(min(prices), 2)
+    times = [a["typical_seconds"] * BAND_TIME[band] for a in pool
+             if cheap(a) and likely(a) and a["typical_seconds"] is not None]
+    if times and min(times) > spec.deadline_s:
+        unblock["deadline_seconds"] = float(math.ceil(min(times)))
+    if any(cheap(a) and fast(a) for a in pool) and not any(cheap(a) and fast(a) and likely(a) for a in pool):
+        unblock["min_success"] = "lower it, or split the task into easier parts"
+    return {"reasons": reasons, "smallest_change_that_gives_a_match": unblock}

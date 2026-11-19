@@ -1,0 +1,11 @@
+{
+  "facts": [],
+  "unsupported": [
+    {"request": "Gantry Labs headcount", "reason": "Referral returned no_eligible_match (match-0002) at the approved $0.50 budget; no worker was hired, so no checked fact exists."},
+    {"request": "Ironbark AI headcount", "reason": "Referral returned no_eligible_match (match-0001, both slots) at the approved $0.50 budget; no worker was hired, so no checked fact exists."}
+  ],
+  "conclusions": {
+    "complete": false,
+    "what_is_needed": "The lead must approve a higher budget (above $0.50 total; Referral's own docs show example worker fees of about $1.60 per job and a $2.00 default) or accept a lower success threshold, so Referral can match and hire a worker. Nothing was spent or committed."
+  }
+}
