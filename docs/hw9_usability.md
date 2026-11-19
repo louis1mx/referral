@@ -95,3 +95,43 @@ Graded by `grade_budget` from the transcript and the ledger:
 - Also recorded: the number of `request_match` calls.
 
 A run is a useful result if C1 and C2 hold. We run it 3 times before and 3 times after the change, with the same prompt and model (Sonnet 5.5, REFERRAL.md given).
+
+### Task 3: budget boundary, before the change (3 runs)
+
+All three were useful results by the pre-set bar (C1 and C2), but every one gave the lead the **wrong ask** (C3 0/3), and each spent a second `request_match` trying a one-slot task to see if a smaller job fits:
+
+- Calls: `Read` → `describe_corpus` → `register_agent` → `request_match` (2 slots, `budget_usd: 0.5`) → `no_eligible_match` with the fixed note "Split the task, relax the deadline or raise the budget" → `request_match` again with 1 slot → same answer → stop.
+- What the clients told the lead (verbatim from `answer.json`): "above $0.50 total; Referral's own docs show example worker fees of about $1.60 per job" (run 1), "the docs' example worker charges $1.60 per job … or a longer deadline" (run 2), "the docs example shows a $1.60 fee … and/or a longer deadline" (run 3). The real minimum is $0.60, and the deadline was never the problem. The clients guessed from the docs' example because Referral did not say why it found no match.
+
+This is an **interface limitation**, not a test-setup problem: the server had the information (prices, deadlines, the floor) but did not return it.
+
+### The change
+
+`request_match` now adds `why` to a `no_eligible_match`: `why.reasons` counts how many workers each limit ruled out (over budget, too slow for the deadline, below `min_success`, excluded by you), and `why.smallest_change_that_gives_a_match` gives the least change to one setting that would produce a match with everything else unchanged (e.g. `{"budget_usd": 0.6}`). The note says the same in words and that splitting a task does not lower the price per job. It still returns no raw scores. Code: `matcher.explain_no_match`, `service.no_match_note`; one line each in the `request_match` tool description and in `AGENT_INTERFACE.md`.
+
+**Regression test:** `tests/test_service.py::test_no_match_says_which_limit_blocks_and_the_smallest_fix`. It fails on the old code and passes on the new. It checks that at a $0.50 budget all 5 workers are reported over budget and the fix is the cheapest price, that asking again with exactly that budget gives a match, that the reported deadline fix is exact (one second less still gives no match), and that `min_success` is named when it is the blocker.
+
+### Task 3: after the change (same prompt and model, 3 runs, plus 1 MCP-only run)
+
+| | Before (3 runs) | After (3 runs) | After, MCP-only (1 run) |
+| --- | --- | --- | --- |
+| C1 stayed within $0.50 | 3/3 | 3/3 | 1/1 |
+| C2 named the budget | 3/3 | 3/3 | 1/1 |
+| C3 stated the right minimum ($0.60) | **0/3** | **3/3** | 1/1 |
+| Wrong suggestions (fee $1.60, longer deadline, lower threshold) | 3/3 | 0/3 | 0/1 |
+| `request_match` calls | 2, 2, 2 | 1, 1, 1 | 1 |
+| Referral calls / turns | 4 / 8 | 3 / 7 | 3 / 6 |
+
+An after run's verbatim ask: "Approval to raise the budget from $0.50 to at least $0.60 (Referral's smallest_change_that_gives_a_match is budget_usd 0.60 for both slots in one job; splitting does not lower the per-job price)." We also reran Task 1 on the new code (`brief-after-…`): still a useful result with 5 Referral calls, so the change did not break the normal path.
+
+### What improved, what did not, what is unproven
+
+- **Improved:** on this boundary, clients now tell the buyer the exact change that works, and stop after one call instead of two.
+- **Did not change:** budget discipline was already right before (C1 3/3); the clients never overspent. The unsupported-request boundary (Task 2) showed no weakness, so nothing was changed for it. With a $0.50 cap the task still cannot be done, by design.
+- **Unproven:** all clients are Claude models run by us (self-run, not another team's agent); n is 3 before and 3 after; the corpus is fixed and fictional and the workers are simulated; `smallest_change_that_gives_a_match` changes one setting at a time and does not search combinations (e.g. budget and deadline both too tight); we did not test it through Nanda Town or over HTTP.
+
+### Disclosure
+
+Self-run. The team wrote the docs, the harness and the prompts; the client is a fresh Claude Code session started by our harness. No person or other agent sent messages to the client during any run, and no run was edited or dropped: every run made is in `runs/hw9/`. The keys in the transcripts belong to throwaway in-run servers that no longer exist. Claude Code (an AI assistant) wrote most of the code and text under the team's direction.
+
+**Test-setup problems seen:** none blocked a run. One harness bug found while writing (a grading branch that would have crashed on a task with no slots) was fixed before any Task 3 run.
