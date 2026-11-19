@@ -53,6 +53,25 @@ def summarize_usage(calls: list) -> dict:
     return out
 CREDENTIAL_TTL_S = 7 * 24 * 3600
 
+def no_match_note(why: dict, spec: TaskSpec) -> str:
+    r, fix = why["reasons"], why["smallest_change_that_gives_a_match"]
+    if not r["workers_considered"]:
+        return "No workers are registered for this domain (or you excluded all of them)."
+    parts = []
+    if "budget_usd" in fix:
+        parts.append(f"budget_usd of at least {fix['budget_usd']:.2f} (you sent {spec.budget:.2f})")
+    if "deadline_seconds" in fix:
+        parts.append(f"deadline_seconds of at least {fix['deadline_seconds']:.0f} (you sent {spec.deadline_s:.0f})")
+    if "min_success" in fix:
+        parts.append("a lower min_success or an easier task")
+    if not parts:
+        return ("No single change to budget, deadline or min_success gives a match; see why.reasons. "
+                "Splitting the task does not lower the price per job.")
+    tail = " Splitting the task does not lower the price per job." if "budget_usd" in fix else ""
+    return ("No worker fits. Any one of these would give a match with everything else unchanged: "
+            + "; ".join(parts) + "." + tail)
+
+
 ACTION_NOTES = {
     Action.HIRE: "Call hire(match_id) to lock a contract. The worker must lock its forecast "
                  "before it delivers, and the Checker verifies every fact.",
@@ -266,7 +285,12 @@ class ReferralService:
             "match_id": match_id, "buyer": agent_id, "band": str(band), "strategy": strategy,
             "action": str(decision.action), "candidate": chosen,
         }, None, self.clock.now())
-        return self._match_view(match_id, decision, band)
+        view = self._match_view(match_id, decision, band)
+        if decision.action == Action.NO_MATCH:
+            why = matcher.explain_no_match(spec, band, pool, strategy, excluded, min_success)
+            view["why"] = why
+            view["note"] = no_match_note(why, spec)
+        return view
 
     def _match_view(self, match_id: str, decision: matcher.Decision, band: Band) -> dict:
         view = {"match_id": match_id, "difficulty_band": str(band), "action": str(decision.action),

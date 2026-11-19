@@ -1,0 +1,166 @@
+{
+  "useful_result": true,
+  "S1_correct": true,
+  "S2_from_passed_jobs": true,
+  "S3_used_in_conclusion": true,
+  "S4_ledger_ok": true,
+  "ledger_entries": 252,
+  "client_buyers": [
+    "acme-strategy-buyer"
+  ],
+  "n_matches": 1,
+  "match_actions": [
+    "hire"
+  ],
+  "jobs": [
+    {
+      "job_id": "job-0061",
+      "worker": "nia-newcomer",
+      "band": "hard",
+      "status": "passed",
+      "n_slots": 6
+    }
+  ],
+  "rematches": 0,
+  "facts": [
+    {
+      "slot": [
+        "Gantry Labs",
+        "headcount"
+      ],
+      "value": "420",
+      "truth": "420",
+      "correct": true,
+      "job_id": "job-0061",
+      "job_status": "passed",
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Gantry Labs",
+        "latest_funding"
+      ],
+      "value": "$75M",
+      "truth": "$75M",
+      "correct": true,
+      "job_id": "job-0061",
+      "job_status": "passed",
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Ironbark AI",
+        "headcount"
+      ],
+      "value": "115",
+      "truth": "115",
+      "correct": true,
+      "job_id": "job-0061",
+      "job_status": "passed",
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Ironbark AI",
+        "latest_funding"
+      ],
+      "value": "$22M",
+      "truth": "$22M",
+      "correct": true,
+      "job_id": "job-0061",
+      "job_status": "passed",
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Dunmore Robotics",
+        "headcount"
+      ],
+      "value": "190",
+      "truth": "190",
+      "correct": true,
+      "job_id": "job-0061",
+      "job_status": "passed",
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Dunmore Robotics",
+        "latest_funding"
+      ],
+      "value": "$31M",
+      "truth": "$31M",
+      "correct": true,
+      "job_id": "job-0061",
+      "job_status": "passed",
+      "from_passed_job": true
+    }
+  ],
+  "conclusions": {
+    "largest_headcount": "Gantry Labs",
+    "largest_latest_funding": "Gantry Labs"
+  },
+  "task": "brief",
+  "docs_given": true,
+  "model": "claude-sonnet-5-5",
+  "wall_s": 17.4,
+  "files_left_by_client": [
+    "REFERRAL.md",
+    "answer.json",
+    "brief.md"
+  ],
+  "calls": [
+    "Read",
+    "describe_corpus",
+    "register_agent",
+    "request_match",
+    "hire",
+    "get_record",
+    "Write",
+    "Write"
+  ],
+  "request_match_calls": [
+    {
+      "input": {
+        "agent_id": "agt-acme-strategy-buyer",
+        "company": "Acme Robotics",
+        "slots": [
+          {
+            "competitor": "Gantry Labs",
+            "attribute": "headcount"
+          },
+          {
+            "competitor": "Ironbark AI",
+            "attribute": "headcount"
+          },
+          {
+            "competitor": "Dunmore Robotics",
+            "attribute": "headcount"
+          },
+          {
+            "competitor": "Gantry Labs",
+            "attribute": "latest_funding"
+          },
+          {
+            "competitor": "Ironbark AI",
+            "attribute": "latest_funding"
+          },
+          {
+            "competitor": "Dunmore Robotics",
+            "attribute": "latest_funding"
+          }
+        ]
+      },
+      "action": "hire",
+      "error": null
+    }
+  ],
+  "n_tool_calls": 8,
+  "n_referral_calls": 5,
+  "n_error_responses": 0,
+  "error_responses": [],
+  "reads_outside_workdir": [],
+  "num_turns": 9,
+  "cost_usd": 0.0668581,
+  "client_final_text": "Gantry Labs has the most employees and also had the largest latest funding round. I wrote `answer.json` and `brief.md` in the current folder.\n\n| Company | Headcount | Latest funding |\n|---|---|---|\n| Gantry Labs | 420 | $75M |\n| Dunmore Robotics | 190 | $31M |\n| Ironbark AI | 115 | $22M |\n\nI hired one Referral worker, nia-newcomer, for all six facts (job-0061). Every fact passed the check, and Referral recommended accepting the result. Each figure quotes the company's 2026 update document, such as `gantry-labs-update-2026`. The funding rounds were all announced in May 2026.\n\nThe data comes from Referral's fixed test corpus as of 2026-09-30, not live sources. Nothing was left unsupported, so `unsupported` in `answer.json` is empty."
+}

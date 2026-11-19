@@ -1,0 +1,144 @@
+{
+  "useful_result": true,
+  "S1_correct": true,
+  "S2_from_passed_jobs": true,
+  "S3_used_in_conclusion": true,
+  "S4_ledger_ok": true,
+  "ledger_entries": 257,
+  "client_buyers": [
+    "acme-strategy-research"
+  ],
+  "n_matches": 2,
+  "match_actions": [
+    "hire",
+    "hire"
+  ],
+  "jobs": [
+    {
+      "job_id": "job-0061",
+      "worker": "nia-newcomer",
+      "band": "hard",
+      "status": "failed",
+      "n_slots": 6
+    },
+    {
+      "job_id": "job-0062",
+      "worker": "rae-reliable",
+      "band": "hard",
+      "status": "passed",
+      "n_slots": 6
+    }
+  ],
+  "rematches": 1,
+  "facts": [
+    {
+      "slot": [
+        "Gantry Labs",
+        "headcount"
+      ],
+      "value": "420",
+      "truth": "420",
+      "correct": true,
+      "job_id": "job-0062",
+      "job_status": "passed",
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Gantry Labs",
+        "latest_funding"
+      ],
+      "value": "$75M",
+      "truth": "$75M",
+      "correct": true,
+      "job_id": "job-0062",
+      "job_status": "passed",
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Ironbark AI",
+        "headcount"
+      ],
+      "value": "115",
+      "truth": "115",
+      "correct": true,
+      "job_id": "job-0062",
+      "job_status": "passed",
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Ironbark AI",
+        "latest_funding"
+      ],
+      "value": "$22M",
+      "truth": "$22M",
+      "correct": true,
+      "job_id": "job-0062",
+      "job_status": "passed",
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Dunmore Robotics",
+        "headcount"
+      ],
+      "value": "190",
+      "truth": "190",
+      "correct": true,
+      "job_id": "job-0062",
+      "job_status": "passed",
+      "from_passed_job": true
+    },
+    {
+      "slot": [
+        "Dunmore Robotics",
+        "latest_funding"
+      ],
+      "value": "$31M",
+      "truth": "$31M",
+      "correct": true,
+      "job_id": "job-0062",
+      "job_status": "passed",
+      "from_passed_job": true
+    }
+  ],
+  "conclusions": {
+    "largest_headcount": "Gantry Labs",
+    "largest_latest_funding": "Gantry Labs",
+    "notes": "All six facts are from Referral job-0062 (status passed, recommendation accept, every check pass). Corpus as_of date is 2026-09-30, so 'current' means as of that date. Job-0061 was rejected: its Ironbark AI funding quote did not appear in the cited document, so none of its facts were used."
+  },
+  "task": "brief",
+  "model": "claude-haiku-5-5",
+  "wall_s": 22.0,
+  "files_left_by_client": [
+    "REFERRAL.md",
+    "answer.json",
+    "brief.md"
+  ],
+  "calls": [
+    "Read",
+    "describe_corpus",
+    "register_agent",
+    "read_document",
+    "read_document",
+    "read_document",
+    "request_match",
+    "hire",
+    "get_record",
+    "request_match",
+    "hire",
+    "get_record",
+    "Write",
+    "Write"
+  ],
+  "n_tool_calls": 14,
+  "n_referral_calls": 11,
+  "n_error_responses": 0,
+  "error_responses": [],
+  "reads_outside_workdir": [],
+  "num_turns": 15,
+  "cost_usd": 0.008216380000000002,
+  "client_final_text": "Gantry Labs has the most employees (420) and also the largest latest funding round ($75M). I wrote `answer.json` and `brief.md` to the current folder.\n\n| Company | Headcount | Latest funding |\n| --- | --- | --- |\n| Gantry Labs | 420 | $75M |\n| Dunmore Robotics | 190 | $31M |\n| Ironbark AI | 115 | $22M |\n\nAll six facts come from Referral accepted job job-0062. Each value matches the source text in the 2026-06-10 company update documents, which I read directly.\n\n- **Failed first job:** My first hire (job-0061) was rejected. The worker quoted an Ironbark AI funding line that does not appear in the cited document, so I did not use any of that job's output. I rematched with that worker excluded.\n- **Date caveat:** The Referral corpus is dated 2026-09-30, so \"current\" means as of that date, not today (2026-11-18).\n- **Unsupported requests:** None. All six slots were supported."
+}

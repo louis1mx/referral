@@ -10,11 +10,16 @@ src/referral/cli.py
 src/referral/corpus.py
 src/referral/credentials.py
 src/referral/evaluate.py
+src/referral/followup_analyze.py
+src/referral/hw7.py
+src/referral/hw7_analyze.py
+src/referral/hw7_change.py
 src/referral/live_eval.py
 src/referral/matcher.py
 src/referral/mcp_server.py
 src/referral/models.py
 src/referral/mvp.py
+src/referral/nested.py
 src/referral/notary.py
 src/referral/scorer.py
 src/referral/semantic.py

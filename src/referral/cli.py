@@ -1,4 +1,4 @@
-"""Command line: `referral demo | eval | live-eval | check-eval | serve | mvp | audit`."""
+"""Command line: `referral demo | eval | live-eval | check-eval | serve | mvp | coldstart | audit`."""
 
 from __future__ import annotations
 
@@ -27,6 +27,9 @@ def main(argv: list[str] | None = None) -> None:
     serve = sub.add_parser("serve", help="run the MCP server with a seeded history")
     serve.add_argument("--seed", type=int, default=4)
     serve.add_argument("--db", default=":memory:", help="SQLite path (default: in memory)")
+    serve.add_argument("--history", default="seeded", choices=["seeded", "none"],
+                       help="seeded: five simulated workers with 12 trial jobs each (default); "
+                            "none: start empty, so only agents that register themselves are matched")
     serve.add_argument("--transport", default="stdio", choices=["stdio", "http"])
     serve.add_argument("--port", type=int, default=8791, help="HTTP port (serves /mcp on 127.0.0.1)")
     serve.add_argument("--claude-worker", choices=["haiku", "sonnet", "opus"],
@@ -46,6 +49,13 @@ def main(argv: list[str] | None = None) -> None:
     ce = sub.add_parser("check-eval", help="adversarial facts through the rule layer vs. rules + semantic layer (runs the claude CLI)")
     ce.add_argument("--model", default="haiku", choices=["haiku", "sonnet", "opus"])
     ce.add_argument("--out", default="results/semantic_check.json")
+    cs = sub.add_parser("coldstart", help="HW9: a fresh Claude Code session uses Referral from its docs alone, then is graded")
+    cs.add_argument("--task", default="brief", choices=["brief", "boundary", "budget"])
+    cs.add_argument("--model", default="sonnet", choices=["haiku", "sonnet", "opus"])
+    cs.add_argument("--out", default="runs/hw9")
+    cs.add_argument("--docs", default="file", choices=["file", "none"],
+                    help="file: the client gets REFERRAL.md; none: only the MCP server's own descriptions")
+    cs.add_argument("--tag", default="", help="label added to the run folder name, e.g. before/after")
     aud = sub.add_parser("audit", help="independently check a run: ledger, Checker vs ground truth, answer")
     aud.add_argument("run_dir")
     args = parser.parse_args(argv)
@@ -67,6 +77,9 @@ def main(argv: list[str] | None = None) -> None:
     elif args.cmd == "check-eval":
         from .check_eval import run as check_eval
         sys.exit(check_eval(args.model, args.out))
+    elif args.cmd == "coldstart":
+        from .coldstart import run as coldstart
+        sys.exit(coldstart(args.task, args.model, args.out, tag=args.tag, docs=args.docs == "file"))
     elif args.cmd == "audit":
         from .audit import main as audit_main
         sys.exit(audit_main(args.run_dir))
@@ -77,11 +90,17 @@ def serve_main(args) -> None:
 
     from .mcp_server import create_server
     from .sim import build_world, run_trials
-    world = build_world(args.seed, clock=LiveClock(), db_path=args.db, live=True)
-    run_trials(world)
-    service = world.service
-    print(f"referral: seeded {service.store.count('jobs')} trial jobs for {len(world.workers)} "
-          "simulated workers (rule layer only)", file=sys.stderr, flush=True)
+    if args.history == "none":
+        from .service import ReferralService
+        service = ReferralService(args.db, LiveClock())
+        print("referral: empty history; only self-registered agents can be matched",
+              file=sys.stderr, flush=True)
+    else:
+        world = build_world(args.seed, clock=LiveClock(), db_path=args.db, live=True)
+        run_trials(world)
+        service = world.service
+        print(f"referral: seeded {service.store.count('jobs')} trial jobs for {len(world.workers)} "
+              "simulated workers (rule layer only)", file=sys.stderr, flush=True)
     if args.semantic_checker != "none":
         from .claude_agents import MODELS
         from .semantic import ApiRunner, ClaudeJudge

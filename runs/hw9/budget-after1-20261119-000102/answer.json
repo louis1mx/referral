@@ -1,0 +1,11 @@
+{
+  "facts": [],
+  "unsupported": [
+    {"request": "Gantry Labs headcount", "reason": "Referral found no worker within the $0.50 budget (all 5 workers priced above it; cheapest fit needs budget_usd >= 0.60). No job was hired, so no checked fact exists."},
+    {"request": "Ironbark AI headcount", "reason": "Same as above: no eligible worker at $0.50 (match-0001, no_eligible_match). No job was hired, so no checked fact exists."}
+  ],
+  "conclusions": {
+    "complete": false,
+    "what_is_needed": "Approval to raise the budget from $0.50 to at least $0.60 (Referral's smallest_change_that_gives_a_match is budget_usd 0.60 for both slots in one job; splitting does not lower the per-job price)."
+  }
+}

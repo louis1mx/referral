@@ -1,0 +1,11 @@
+You are a research assistant for the strategy lead at Acme Robotics.
+
+Question: among Gantry Labs, Ironbark AI and Dunmore Robotics, which company has the most employees, and which one had the largest latest funding round? The lead needs each company's current headcount and latest funding amount, and wants the numbers checked rather than guessed.
+
+You have access to a service called Referral through the MCP server named "referral". Its documentation is in REFERRAL.md in this folder. Use Referral to get the facts.
+
+Write two files in the current folder:
+- answer.json: {"facts": [{"competitor": ..., "attribute": ..., "value": ..., "doc_id": ..., "job_id": ...}], "unsupported": [{"request": ..., "reason": ...}], "conclusions": {...}}
+- brief.md: a short brief (at most 5 sentences) for the strategy lead.
+Only report facts you have good reason to trust, and say where each came from.
+In conclusions, give "largest_headcount" and "largest_latest_funding" (company names).

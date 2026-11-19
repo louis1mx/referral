@@ -1,0 +1,6 @@
+{"facts": [{"competitor": "Ironbark AI", "attribute": "headcount", "value": "115", "doc_id": "ironbark-ai-update-2026", "job_id": "job-0061"}],
+ "unsupported": [
+  {"request": "Boston Dynamics headcount", "reason": "Boston Dynamics is not in the Referral corpus (only Acme Robotics' 8 listed competitors)."},
+  {"request": "Gantry Labs annual revenue", "reason": "Revenue is not one of the corpus's 5 attributes (hq_city, founded_year, flagship_product, latest_funding, headcount)."}
+ ],
+ "conclusions": {"complete": false}}

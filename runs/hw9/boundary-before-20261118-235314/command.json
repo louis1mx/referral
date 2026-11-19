@@ -1,0 +1,27 @@
+{
+  "cmd": [
+    "claude",
+    "-p",
+    "<prompt.txt>",
+    "--model",
+    "claude-sonnet-5-5",
+    "--setting-sources",
+    "",
+    "--settings",
+    "{\"disableAllHooks\": true}",
+    "--mcp-config",
+    "/tmp/coldstart-w6otwmo2/mcp.json",
+    "--strict-mcp-config",
+    "--tools",
+    "Read,Write",
+    "--allowedTools",
+    "mcp__referral,Read,Write",
+    "--max-turns",
+    "40",
+    "--output-format",
+    "stream-json",
+    "--verbose",
+    "--no-session-persistence"
+  ],
+  "cwd": "<empty temp folder>/client"
+}

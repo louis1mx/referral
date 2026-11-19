@@ -1,0 +1,3 @@
+# Brief for the strategy lead
+
+Only one of the three numbers could be verified: Ironbark AI has 115 employees (source: ironbark-ai-update-2026, "After the round, Ironbark AI has 115 employees."; checked by Referral, job-0061, accepted). Boston Dynamics' headcount is unavailable because that company is not in Referral's corpus, which covers only Acme Robotics' 8 listed competitors. Gantry Labs' annual revenue is unavailable because revenue is not a supported attribute. I did not estimate either number, so the slide needs another source for them. The Ironbark figure is as of the corpus date, 2026-09-30.

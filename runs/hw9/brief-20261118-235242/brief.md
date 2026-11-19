@@ -1,0 +1,3 @@
+# Competitor brief: headcount and latest funding
+
+Gantry Labs has the most employees (420, vs. Dunmore Robotics 190 and Ironbark AI 115) and also the largest latest funding round ($75M, vs. Dunmore $31M and Ironbark $22M). All six figures come from each company's 2026-06-10 update document (e.g. gantry-labs-update-2026), extracted by worker nia-newcomer in Referral job-0061. Referral's checker passed every fact (verbatim quote containing the value) and recommended accept. The corpus is a fixed dataset as of 2026-09-30, so "current" means that date. The worker is only verified-tier with moderate evidence on a hard task, but the quotes are source-bound and checked.

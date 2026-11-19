@@ -1,0 +1,16 @@
+{
+  "facts": [
+    {"competitor": "Gantry Labs", "attribute": "headcount", "value": "420", "doc_id": "gantry-labs-update-2026", "job_id": "job-0062"},
+    {"competitor": "Gantry Labs", "attribute": "latest_funding", "value": "$75M", "doc_id": "gantry-labs-update-2026", "job_id": "job-0062"},
+    {"competitor": "Ironbark AI", "attribute": "headcount", "value": "115", "doc_id": "ironbark-ai-update-2026", "job_id": "job-0062"},
+    {"competitor": "Ironbark AI", "attribute": "latest_funding", "value": "$22M", "doc_id": "ironbark-ai-update-2026", "job_id": "job-0062"},
+    {"competitor": "Dunmore Robotics", "attribute": "headcount", "value": "190", "doc_id": "dunmore-robotics-update-2026", "job_id": "job-0062"},
+    {"competitor": "Dunmore Robotics", "attribute": "latest_funding", "value": "$31M", "doc_id": "dunmore-robotics-update-2026", "job_id": "job-0062"}
+  ],
+  "unsupported": [],
+  "conclusions": {
+    "largest_headcount": "Gantry Labs",
+    "largest_latest_funding": "Gantry Labs",
+    "notes": "All six facts are from Referral job-0062 (status passed, recommendation accept, every check pass). Corpus as_of date is 2026-09-30, so 'current' means as of that date. Job-0061 was rejected: its Ironbark AI funding quote did not appear in the cited document, so none of its facts were used."
+  }
+}

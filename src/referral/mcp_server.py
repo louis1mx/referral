@@ -74,7 +74,8 @@ def create_server(service: ReferralService) -> MCPServer:
         """Buyers: ask for a worker. slots is a list of {"competitor": ..., "attribute": ...}
         (see describe_corpus). Returns a candidate with tier, evidence strength and guidance,
         and an action: hire, bounded_trial or no_eligible_match. min_success (0-1) is the
-        lowest chance of success worth paying for; below it Referral answers no match.
+        lowest chance of success worth paying for; below it Referral answers no match. A no
+        match comes with why.smallest_change_that_gives_a_match (e.g. the budget that would work).
         exclude_workers takes agent ids or names, e.g. a worker whose job failed."""
         task = {"company": company, "slots": slots, "budget": budget_usd,
                 "deadline_s": deadline_seconds, "acceptance": acceptance, "corpus_ids": corpus_ids}

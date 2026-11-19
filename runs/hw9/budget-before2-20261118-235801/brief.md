@@ -1,0 +1,3 @@
+# Competitor headcount brief
+
+I could not get checked headcounts for Gantry Labs or Ironbark AI, so I am reporting no numbers. Referral found no eligible worker for either company within your $0.50 cap (match-0001 for both together, match-0002 for Gantry alone at $0.25), so I hired no one and spent nothing. Worker fees seem to be above $0.50 (the Referral docs' example worker charges $1.60 per job), so a higher budget would probably be needed. Please approve a larger budget, for example up to $2.00, or tell me whether I may read the source documents directly and give you unchecked figures. I have not guessed any values.
